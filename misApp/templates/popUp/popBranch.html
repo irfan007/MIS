@@ -1,0 +1,156 @@
+{% extends 'dashboard.html'%}
+
+{% block header %}{%endblock%}
+{% block leftMenu %}{%endblock%}
+{% block topNavigation %}{%endblock%}
+{% block form2 %}{%endblock%}
+{% block form3 %}{%endblock%}
+
+
+
+{% block form1Title%}
+Add Branch:
+{%endblock%}
+
+{%block form1Body%}
+<script>
+function getCity(stateId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("citydiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/accMresponder?state="+stateId,true);
+xmlhttp.send();
+}
+
+</script>
+
+                                  {% for error in errors %}
+                                    <font color="red">
+                                    {{error}}<br>
+                                    </font>
+                                    {% endfor %}
+                                    
+                                    
+                                      <form id="add_user" method="post" action="">
+                                      <div class="section" >
+                                                <label>Branch Code<sup>*</sup></label>   
+                                                <div> <input type="text" name="code" value="{{code}}"class=" large"  /></div>
+                                           </div> 
+                                            <div class="section" >
+                                                <label>Branch Name<sup>*</sup> </label>   
+                                                <div> <input type="text" name="name" value="{{name}}"class=" large"  /></div>
+                                           </div>
+                                           
+                                         
+                                           
+                                           
+                                           <div class="section" >
+                                                <label>Branch Description</label>   
+                                                <div> <input type="text" name="description" value="{{description}}"class=" large"  /></div>
+                                           </div>
+                                           <div class="section" >
+                                                <label>ContactNo</label>   
+                                                <div> <input type="text" name="contactno" value="{{contactno}}"class=" large"  /></div>
+                                           </div>
+                                           
+                                                <div class="section" >
+                                                <label>State<sup>*</sup></label>   
+                                                <div class="selectWidth1" id="statediv">
+                                                <select class="small" name="state"  onchange="getCity(this.value)" >
+                                               
+                                                
+                                                <option value="-1">select</option>
+                                                {% for s in getstates %}
+                                                 {% ifequal getstate s.id %}
+                                                
+                                                <option value="{{s.id}}" selected>{{s.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{s.id}}" >{{s.name}}</option>
+                                                {%endifequal%}
+                                                {% endfor %}
+                                                
+                                              </select>
+                                                
+                                      </div>
+                                        </div>
+                                        
+                                        <div class="section" >
+                                                <label>City<sup>*</sup></label>   
+                                                <div class="selectWidth1" id="citydiv">
+                                                <select class="small" name="city" >
+                                               
+                                                <option value="-1">select</option>
+                                                
+                                                {% for c in getcities %}
+                                                 {% ifequal getcity c.id %}
+                                                
+                                                <option value="{{c.id}}" selected>{{c.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{c.id}}" >{{c.name}}</option>
+                                                {%endifequal%}
+                                                {% endfor %}
+                                                
+                                              </select>       
+                                      </div>
+                                        </div> 
+                                           
+                                                <div class="section" >
+                                                <label>Address<sup>*</sup></label>   
+                                                <div> <input type="text" name="address" value="{{address}}"class=" large"  /></div>
+                                           </div>
+                                             <div class="section" >
+                                                <label>Pincode</label>   
+                                                <div> <input type="text" name="pincode" value="{{pincode}}"class=" large"  /></div>
+                                           </div>
+                                           
+                                            <div class="section" >
+                                                <label>status</label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="status" >
+                                                
+                                                {% if status %}
+                                                {% ifequal status "1" %}
+                                                
+                                                <option value="1" selected>Active</option>
+                                                
+                                                <option value="2">InActive</option>
+                                                {% else %}
+                                                 <option value="2" selected>InActive</option>
+                                                
+                                                <option value="1">Active</option>
+                                                {% endifequal %}
+                                                {% else %}
+                                                  <option value="1" selected>Active</option>
+                                                   <option value="2">InActive</option>
+                                                   {% endif %}                                          
+                                                </select>       
+                                      </div>
+                                           </div>
+                        
+
+<div class="section last">
+                                                <div>
+                                                   <input type="submit" name="addBranch" value="Save" class="btn submit_form"></input>
+<a class="btn" title="Reset Form" onclick="ResetForm()">Clear Form</a> </div>
+                                           </div>
+                                        </form>
+{%endblock%}
+
+
+

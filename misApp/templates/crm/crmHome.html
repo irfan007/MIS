@@ -1,0 +1,209 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}            
+              <!-- left_menu -->
+             {% block leftMenu %}
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     
+                      <li class="select"><a href="/CRM/" ><span class="ico gray shadow pictures_folder"></span><b>Complaints</b></a></li>
+                      <li ><a href="/sales/" ><span class="ico gray shadow pictures_folder"></span><b>Contacts</b></a></li>
+                      
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+               </div>
+               {% endblock %}
+              
+                    		 {% block form1Title %} 
+                                Manage Complaints 
+                             {% endblock %}  
+                             
+                             {% block form1Header%}
+								<div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+								<form action="" method="post">
+								<input type="submit" name="my_tickets" class="btn  btn-large" value="MY TICKETS" />
+  								</form>	
+  								</div>
+  								
+  								<div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+  								<a class="btn  btn-large " href="/CRM/newticket/" >
+  									<strong>NEW TICKET</strong>
+  								</a>
+  								</div>
+							 {%endblock%}
+                             
+                             
+                             
+                             
+                             
+                             {% block form1Body %}
+                             <div style="background:lightyellow;{%if errors%}border:1px solid yellow;{%endif%}">
+						      <ul style="color:red;style:disk;font-size:13px;">
+						                	{% for e in errors %}
+						                	  <li>&nbsp;{{e}}</li>
+						                	{%endfor%}
+						      </ul>
+						      </div>
+						      
+						      
+						      <div style="background:lightyellow;{%if cuMessages%}border:1px solid yellow;{%endif%}">
+						      <ul style="color:green;style:disk;font-size:13px;">
+						                	{% for m in cuMessages %}
+						                	  <li>&nbsp;{{m}}</li>
+						                	{%endfor%}
+						      </ul>
+						      </div>
+						      
+						      <div style="background:lightyellow;{%if cuWarnings%}border:1px solid yellow;{%endif%}">
+						      <ul style="font-size:13px;">
+						                	{% for w in cuWarnings %}
+						                	  <li>&nbsp;{{w}}</li>
+						                	{%endfor%}
+						      </ul>
+						      </div>
+						      <br/>
+                               
+                                <div id="UITab" style="position:relative;" >
+                                	<div>
+                                		<div id="tab1" class="tab_content" >
+                                			
+                                			<form action="" method="post">
+                                			<table width="100%" style="background:lightgrey;" cellpadding="15" >
+                                				<tbody align="center" class="font_wght">
+                                                    
+                                                      <tr>
+                                                        <td width=""><label>TICKET NO.</label></td>
+                                                        <td width=""><input type="text" style="width:125px;border:1px solid black;" name="search_ticket" value="{{search_ticket}}"/> </td>
+                                                        
+                                                        <td width="">(OR)</td>
+                                                        
+                                                        <td width=""><label>SUBSCRIPTION NO.</label></td>
+                                                        <td width=""><input type="text" style="width:125px;border:1px solid black;" name="search_subscription" value="{{search_subscription}}"/></td>
+                                                        
+                                                        <td width="">(OR)</td>
+                                                        
+                                                        
+                                                        <td><label>STATUS</label></td>
+                                                        <td>
+                                                        
+                                                            <table>
+                                                            	<tr>
+                                                            		<td>
+                                                            			<select name="search_status">
+                                                            			    {%ifequal '-1' search_status%}
+								                                    		<option value="-1" selected>----</option>
+								                                    		{%else%}
+								                                    		<option value="-1">----</option>
+								                                    		{%endifequal%}
+								                                    		
+					                                        		 		{%ifequal 'n' search_status%}
+								                                    		<option value="n" selected>NEW</option>
+								                                    		{%else%}
+								                                    		<option value="n">NEW</option>
+								                                    		{%endifequal%}
+								                                    		
+								                                    		{%ifequal 'u' search_status%}
+								                                    		<option value="u" selected>IN PROCESS</option>
+								                                    		{%else%}
+								                                    		<option value="u">IN PROCESS</option>
+								                                    		{%endifequal%}
+								                                    		
+								                                    		
+								                                    		{%ifequal 'r' search_status%}
+								                                    		<option value="r" selected>RESOLVED</option>
+								                                    		{%else%}
+								                                    		<option value="r">RESOLVED</option>
+								                                    		{%endifequal%}
+								                                    		
+					                                    				</select>
+					                                    			</td>
+					                                    			<td></td>
+					                                    		</tr>
+					                                    	</table>
+                                                        </td>
+                                                        
+                                                        <td width=""><input type="submit" class="btn" style="border:1px solid black;" value="SEARCH" name="crm_search"/>  </a></td>
+                                                        
+                                                      </tr>
+                                                </tbody>
+                                          	
+                                          	</table>
+                                          	</form>
+                                          	
+                                          	
+                                          	
+                                          	
+                                			<table class="table table-bordered table-striped" width="100%">
+                                				<thead align="center"  class="tr_bg_list">
+                                					<tr>
+                                						<td width="">Sr. No.</td>
+                                                        <td width="">Ticket No.</td>
+                                                        <td width="">Subscription No.</td>
+                                                        <td width="">Subscriber Name</td>
+                                                        <td width="">Employee Follower</td>
+                                                        <td width="">Status</td>
+                                                        <td width="">Action</td>
+                                                      </tr>
+                                                </thead>
+                                                    
+                                                <tbody align="center" class="font_wght">
+                                                    {% for ticket in tickets %}
+                                                      <tr>
+                                                        <td width="">{%if tickets.start_index%}{{tickets.start_index|add:forloop.counter0}}{%else%}{{forloop.counter}} {%endif%}</td>
+                                                        <td width="">{{ps.TICKET_PREFIX}}{{ticket.id}}</td>
+                                                        <td width="">{{ps.getSubPrefix}}{{ticket.subId}}</td>
+                                                        <td width="">{{ticket.hasSubscriberName}}</td>
+                                                        <td width="">{%if ticket.currentFollower%}{{ps.empCodePrefix}}{{ticket.currentFollower}}{%else%}----{%endif%}</td>
+                                                        <td width="">{{ticket.hasStatus}}</td>
+                                                        <td><a href="/CRM/{{ticket.id}}/" class="btn submit_form">View/Edit</a></td>
+                                                      </tr>
+                                                    {%empty%}
+                                                     <tr>
+                                                        <td style="background:lightyellow" colspan="7"> <label> NOT FOUND ! </label></td>
+                                                     </tr>
+                                                    {% endfor %}
+                                                    
+                                                         
+                                                </tbody>
+                                          	</table>
+                                          	
+                                          	    {%if myPaginator.num_pages and tickets%}
+                                          		<div  align="right" >
+                                          		       <table border="0" width="100%">
+                                          		        <tr>
+                                          		       		<td  align="left">&nbsp;&nbsp;Page {{page}} of {{myPaginator.num_pages}}</td>
+                                          		       		<td align="right">
+		                                          		        {%if tickets.has_previous%}
+		                                                        <a href="?page={{ tickets.previous_page_number }}&search_status={{search_status}}"><< PREVIOUS</a>
+		                                                        {%endif%}
+		                                                        
+		                                                        &nbsp;&nbsp;
+		                                                         
+			                                                    {%if tickets.has_next%}
+			                                                    <a href="?page={{ tickets.next_page_number }}&search_status={{search_status}}">NEXT>></a>
+			                                                    {%endif%}
+			                                                    
+			                                                    
+			                                                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+			                                                    
+                                          		       	    </td>
+                                          		       	</tr>
+                                          		       </table>
+                                          		       
+                                          		<div/>
+                                          		{%endif%}
+                                                        
+                                              
+                                     
+                                      </div>
+                                      </div>
+                                      </div>
+                                      </div>
+                                
+                     
+                                   {% endblock %}       
+                                   
+                                   
+                                   
+{%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}       

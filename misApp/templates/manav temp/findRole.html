@@ -1,0 +1,85 @@
+{%extends 'dashboard.html' %}
+{% load staticfiles%}
+{% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                      <li><a href="/departments/"><span class="ico gray shadow pictures_folder" ></span><b>Department</b></a></li>
+                      <li class="select"><a href="/role/list"><span class="ico gray shadow  pictures_folder"></span><b>Role</b> </a></li>
+                      <li ><a href="/user/list" ><span class="ico gray shadow pictures_folder"></span><b>User</b></a></li>
+                      
+                      <li><a href="/magazine/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine</b></a></li>
+                      <li><a href="/combo/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine Combo</b></a></li>
+                      <li><a href="/gifts/"><span class="ico gray shadow pictures_folder" ></span><b>Gift</b></a></li>
+                      <li><a href="/tenures/"><span class="ico gray shadow pictures_folder" ></span><b>Tenure</b></a></li>
+                      <li><a href="/schemes/"><span class="ico gray shadow pictures_folder"></span><b>Scheme</b></a></li>
+                      
+                      
+                      <li><a href="/sources/"><span class="ico gray shadow pictures_folder"></span><b>Source</b></a></li>
+                      <li><a href="/locations/"><span class="ico gray shadow pictures_folder"></span><b>Location</b></a></li>
+                      <li><a href="/couriers/"><span class="ico gray shadow pictures_folder"></span><b>Courier</b></a></li>
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              {%endblock%}
+{% block form1Title%}Roles List{%endblock%}
+
+{% block form1Header%}
+<div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+  <a class="btn  btn-large " href="/role/add">
+  	<strong>Create New Role</strong>
+  </a>
+</div>
+{%endblock%}
+
+{% block form1Body%}
+<div id="UITab" style="position:relative; ">
+                                         
+                                          <div class="" >
+                                          <div id="tab1" class="tab_content"> 
+                                           
+                                                  <table class="table table-bordered table-striped data_table3 "  id="data_table3" width="100%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr >
+                                                        <td width="7%">Role ID</td>
+                                                        <td width="55%">Role Name</td>
+                                                        <td width="7%">Status</td>
+                                                        <td width="7%">Action</td>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                      {%for r in findrole%}
+                                                      		<tr>
+                                                      			<td>{{r.id}}</td>
+                                                      			<td>{{r.name}}</td>
+                                                        		<td>
+                                                        			{%if r.isActive%}
+                                                        				<img src="{% static 'images/icon_success.gif'%}">
+                                                        			{%else%}
+                                                        			    <img src="{% static 'images/inactive.gif'%}" width="13" height="15"> 
+                                                        			{%endif%}
+                                                        			
+                                                        		</td>
+                                                        		<td class="brdrnone"><a href="/role/edit/{{r.id}}"><img src="{% static 'images/edit.png'%}" width="28" height="28" alt="Edit" title="Edit Role"></a></td>
+                                                        	</tr>		
+                                                      {%endfor%}
+                                                      
+                                                      
+                                                    </tbody>
+                                                  </table>
+                                         </div>
+                                         </div>
+                                      </div>
+
+
+                                </div>
+                                
+                                
+                                
+                            </div></div>
+                     <div style="float:left; width:20%; float:left; margin-left:64%; position:fixed"><div class="widget  clearfix">
+
+                                <div class="widget-header">
+                                    <span><img src="images/new_icon/app_1.png" width="20" height="20">Calander</span>
+                                </div>
+{%endblock%}
+

@@ -1,0 +1,154 @@
+{%extends 'dashboard.html' %}
+{% load staticfiles%}
+
+
+{% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                      <li class="select"><a href="/subscription/list"><span class="ico gray shadow pictures_folder" ></span><b>Subscription</b></a></li>
+                      <li><a href="/complement/"><span class="ico gray shadow pictures_folder" ></span><b>Complementary</b></a></li>
+                    </ul>
+                    
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}
+
+{% block form1Title%}Subscriptions List{%endblock%}
+
+{%block form1Header%}
+<div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+	<a class="btn  btn-large " href="/subscription/add"><strong>Add Subscription</strong></a>
+</div>
+{%endblock%}
+{% block form1Body%}
+	
+<div id="UITab" style="position:relative; ">
+                                         
+                                          <div class="" >
+                                          <div id="tab1" class="tab_content"> 
+                                           
+                                                  <table class="table table-bordered table-striped data_table3 "  id="data_table3" width="100%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr >
+                                                        
+                                                        <td width="5%">Customer ID</td>
+                                                        <td width="5%">Subscription ID</td>
+                                                        <td width="11%">Subscriber Name</td>
+                                                        <td width="5%">Subscription Date</td>
+                                                        <!--<td width="5%">Subscriber Type</td>-->
+                                                        
+                                                        <td width="9%">City</td>
+                                                        <td width="9%">Mobile No.</td>
+                                                        <td width="1%">Status</td>
+                                                        <td width="1%">Action</td>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                    {% if find_by_checksubcode %}
+                                                      
+                                                      		<tr>
+                                                      		    
+                                                      			
+                                                      			<td>{{find_by_checksubcode.getcusID}}</td>
+                                                      			<td>{{unique_subscription.getsubID}}</td>
+                                                      			<td>{{find_by_checksubcode.firstName}}</td>
+                                                      			<td>{{unique_subscription.date}}</td>
+                                                      			
+                                                      			<td>{%if find_by_checksubcode.city%}{{find_by_checksubcode.city}}{%else%}----{%endif%}</td>
+                                                                <td>{%if find_by_checksubcode.mobileNo%}{{find_by_checksubcode.mobileNo}}{%else%}----{%endif%}</td>
+                                                      			<td>
+                                                        			{%if find_by_checksubcode.isActive%}
+                                                        				<img src="{% static 'images/icon_success.gif'%}">
+                                                        			{%else%}
+                                                        			    <img src="{% static 'images/inactive.gif'%}" width="13" height="15">
+                                                        			{%endif%}
+                                                        			
+                                                        		</td>
+                                            		<td class="brdrnone"><a href="/subscription/edit/{{find_by_checksubcode.id}}">
+          <img src="{% static 'images/edit.png'%}" width="28" height="28" alt="Edit Subscription" title="edit subscription"></a></td>
+                                                        	</tr>
+                                                     {% else %}
+                                                     {% if find_by_checkcustcode %}
+                                                     {% for item in find_by_checkcustcode.subscriptions.all %}
+                                                         			<tr>
+                                                      		    
+                                                      			
+                                                      			<td>{{find_by_checkcustcode.getcusID}}</td>
+                                                      			<td>{{item.getsubID}}</td>
+                                                      			<td>{{find_by_checkcustcode.firstName}}</td>
+                                                      			<td>{{item.date}}</td>
+                                                      			
+                                                      			<td>{%if find_by_checkcustcode.city%}{{find_by_checkcustcode.city}}{%else%}----{%endif%}</td>
+                                                                <td>{%if find_by_checkcustcode.mobileNo%}{{find_by_checkcustcode.mobileNo}}{%else%}----{%endif%}</td>
+                                                      			<td>
+                                                        			{%if item.isActive%}
+                                                        				<img src="{% static 'images/icon_success.gif'%}">
+                                                        			{%else%}
+                                                        			    <img src="{% static 'images/inactive.gif'%}" width="13" height="15">
+                                                        			{%endif%}
+                                                        			
+                                                        		</td>
+                                            		<td class="brdrnone"><a href="/subscription/edit/{{item.id}}">
+          <img src="{% static 'images/edit.png'%}" width="28" height="28" alt="Edit Subscription" title="edit subscription"></a></td>
+                                                        	</tr>
+                                                        	{% endfor %}
+                                                    {% else %}
+                                                    
+                                                    {% for item in findcust %}
+                                                    {% for subscription in item.subscriptions.all %}
+                                                    		<tr>
+                                                      		    
+                                                      			
+                                                      			<td>{{item.getcusID}}</td>
+                                                      			<td>{{subscription.getsubID}}</td>
+                                                      			<td>{{item.firstName}}</td>
+                                                      			<td>{{subscription.date}}</td>
+                                                      			
+                                                      			<td>{%if item.city%}{{item.city}}{%else%}----{%endif%}</td>
+                                                                <td>{%if item.mobileNo%}{{item.mobileNo}}{%else%}----{%endif%}</td>
+                                                      			<td>
+                                                        			{%if subscription.isActive%}
+                                                        				<img src="{% static 'images/icon_success.gif'%}">
+                                                        			{%else%}
+                                                        			    <img src="{% static 'images/inactive.gif'%}" width="13" height="15">
+                                                        			{%endif%}
+                                                        			
+                                                        		</td>
+                                            		<td class="brdrnone"><a href="/subscription/edit/{{subscription.id}}">
+          <img src="{% static 'images/edit.png'%}" width="28" height="28" alt="Edit Subscription" title="edit subscription"></a></td>
+                                                        	</tr>
+                                                       {% endfor %} 	
+                                                       {% endfor %}    	
+                                                     {% endif %}
+                                                   {% endif %}   
+                                                    </tbody>
+                                                  </table>
+                                         </div>
+                                         </div>
+                                      </div>
+
+
+                                </div>
+                                
+                                
+                                
+                            </div></div>
+                     {%endblock%}
+
+{%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}
+
+
+
+
+
+
+
+
+
+
+              
+
+
+

@@ -1,0 +1,802 @@
+{% extends 'dashboard.html' %}
+
+{% load staticfiles %}
+               
+              
+       {% block leftMenu %}
+               
+               
+                    <script>
+function getCompMagazine(companyId)
+{
+
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("compMagdiv").innerHTML=xmlhttp.responseText;
+    
+    
+    }
+  }
+
+xmlhttp.open("GET","/Mresponder?company="+companyId,true);
+xmlhttp.send();
+}
+
+function setPopCompetitor(id)
+{
+
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  
+  
+  xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    
+    //alert(xmlhttp.responseText);
+    document.getElementById("idOf_popCompetitor").innerHTML=xmlhttp.responseText;
+    
+    }
+  }
+xmlhttp.open("GET","/responder?popCompetitor="+id,true);
+xmlhttp.send();
+}
+
+function isNumberKey(evt)
+          {
+             var charCode = (evt.which) ? evt.which : event.keyCode
+             if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+ 
+             return true;
+          }
+
+
+</script>
+               
+               
+               
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     
+                     <li><a href="/report/gift/"><span class="ico gray shadow pictures_folder"></span><b>Gift Tracker Report</b></a></li>
+                      <li><a href="/report/offer/"><span class="ico gray shadow pictures_folder"></span><b>Offers Report</b></a></li>
+                       <li><a href="/report/srcsub/"><span class="ico gray shadow pictures_folder"></span><b>Source SubsReport</b></a></li>
+                       <li><a href="/report/cheque/"><span class="ico gray shadow pictures_folder"></span><b>PaymentReport</b></a></li>
+                      
+                       <li><a href="/report/monthlySubscriptions/"><span class="ico gray shadow pictures_folder"></span><b>Monthly SubsReport</b></a></li>
+                       <li><a href="/report/MIS/"><span class="ico gray shadow pictures_folder"></span><b>MIS Report</b></a></li>
+                       <li><a href="/report/PO/"><span class="ico gray shadow pictures_folder"></span><b>PO Report</b></a></li>
+                        <li class="select"><a href="/competitors/"><span class="ico gray shadow pictures_folder"></span><b>Competitors</b></a></li>
+                     
+                      
+                       
+                    </ul>
+                   
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}                 
+                                         
+                    
+                    
+                   
+                   
+
+                              
+                        {% block form1Title %}
+                          Competitors{% endblock %} {% block form1Header %}
+                          <div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+                           
+                          </div>
+                          {% endblock %}
+                                
+
+                          {% block form1Body %}
+                         
+                         <form action="/competitor/add/" method="POST"> 
+                          
+                          <table >
+                          <tr>
+                          <td><font face="verdana"><b>Enter Year:</b></font></td> 
+                          <td><input type="text" name="curyear" value="{{curyear}}" style="width:130px;" />
+                          </td>
+                          <td>
+                          <font face="verdana"><b>Select Month:</b></font></td> 
+                          <td width="40px"><select name="getmonth" class="selectWidth1" >
+                          {% for mon in months %} 
+                          {% ifequal forloop.counter month %} 
+                          <option value="{{forloop.counter}}" selected>{{mon}}</option>
+                          {% else %}
+                          <option value="{{forloop.counter}}" >{{mon}}</option>
+                          {% endifequal %}
+                          {% endfor %}
+                          </select></td>
+                          <td></td>
+                          </tr>
+                          
+                          </table>
+                        
+                        
+                          {% for error in errors %}
+                          <font color="red">{{error}}</font>
+                          {% endfor %}
+                          
+                          <div id="UITab" style="position:relative; ">
+                                         
+                               <div class="" >
+                                          <div id="tab1" class="tab_content"> 
+                                           
+               <table class="table table-bordered table-striped"  id="" width="200%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr>
+                                                        
+                                                      <td width="5%">SrNo</td>
+                                                        <td width="12%">Company</td>
+                                                        <td width="12%">Magazine</td>
+                                                        
+                                                        <td width="10%">CoverPrice</td>
+                                                        <td width="10%">issuetype</td>
+                                                        <td width="1%">Duration</td>
+                                                        <td width="10%">Mrp</td>
+                                                        <td width="10%">Issues</td>
+                                                        <td width="10%">Subs.Price</td>
+                                                        <td width="10%">Offers</td>
+                                                       <!--
+                                                        <td width="10%">Save</td>
+                                                        -->
+                                                        
+                                                    
+                                                       
+                                                      </tr>
+                                                    </thead>
+                                                    
+                                                    <tbody align="center" class="font_wght">
+                                                 
+                                                      {% for r in overall %}
+                                                     <tr>
+                                                       
+                                                       
+                                                        <td rowspan="{{r.0}}" style="vertical-align:top;">{{forloop.counter}}</td>
+                                                        <td rowspan="{{r.0}}" style="vertical-align:top;">{{r.1}}</td>
+                                                        <td rowspan="{{r.0}}" style="vertical-align:top;">{{r.2}}</td>
+                                                        
+                                                         <td rowspan="{{r.0}}" style="vertical-align:top;"><input type="text" style="width:30px;" onkeypress="return isNumberKey(event)" name="{{r.5.0.id}}coverPrice" value="{{r.3}}" /></td>
+                                                          <td rowspan="{{r.0}}" style="vertical-align:top;">{{r.4}}</td>
+                                                          
+                                                          {% for data in r.5 %}
+                                                          <td>
+                                                          <select name="{{data.id}}duration">
+                                                          {% for item in durations %}
+                                                          {% ifequal item data.duration %}
+                                                          <option value="{{item}}" selected>{{item}}</option>
+                                                          {% else %}
+                                                          <option value="{{item}}">{{item}}</option>
+                                                          {% endifequal %}
+                                                          {% endfor %} 
+                                                          </select>
+                                                          </td>
+                                                          <td><input type="text" name="{{data.id}}mrp" onkeypress="return isNumberKey(event)" value="{{data.mrp}}" style="width:40px;" /></td>
+                                                          <td><input type="text" name="{{data.id}}noofIssues" onkeypress="return isNumberKey(event)" value="{{data.noofIssues}}" style="width:40px;" /></td>
+                                                          <td><input type="text" name="{{data.id}}subsPrice" onkeypress="return isNumberKey(event)" value="{{data.subsPrice}}" style="width:40px;" /></td>
+                                                          <td><input type="text" name="{{data.id}}offers"  value="{{data.offers}}" style="width:250px;" /></td>
+                                                          </tr>
+                                                          
+                                                          <tr>                                               
+                                                      
+                                                  {% endfor %}
+                                                  </tr>
+                                                  {% endfor %}
+                                                    </tbody>
+                                              {% if overall %}      
+                                           <tr>         
+                                           <td colspan="10" align="center">
+                                           <input type="submit" value="update" class="btn" name="updateall" />
+                                           </td>
+                                           
+                                           </tr>
+                                           {% endif %}
+                                               {% if error %}
+                          
+                          
+                                           <tr>
+                                           <td colspan="10">
+                                           <font color="red">{{error}}</font>
+                                           </td>
+                                           </tr>        
+                                           {% endif %}
+                                                  <tr>
+                                                  <td rowspan="5" style="vertical-align:top;" >new</td>
+                                                  
+                                                  <td rowspan="5" style="vertical-align:top;">
+                                                  <table>
+                                                  <tr>
+                                                  <td rowspan="1" style="vertical-align:top;">
+                                                  <div id="idOf_popCompetitor">
+                                                  <select name="competitors">
+                                                  <option value="0">select</option>
+                                                  {% for item in companies %}
+                                                  
+                                                  <option value="{{item.id}}">{{item.companyName}}</option>
+                                                  {% endfor %}
+                                                  </select>
+                                                  </div>
+                                                  </td>
+                                                  <td rowspan="1" style="vertical-align:top;">
+                                                  <a href="/add/Competitor" onclick="return openURLInCenterOfScreen('/add/Competitor');">
+                                                  <img src="{% static 'images/icon_addlink.gif' %}"></a>
+                                                  </td>
+                                                  </tr>
+                                                  </table>
+                                                  
+                                                  </td>
+                                                  <td rowspan="5" style="vertical-align:top;"><input type="text" name="magazinename1" style="width:160px;" value="{{magazinename1}}" /></td>
+                                                  <td rowspan="5" style="vertical-align:top;"><input type="text" style="width:30px;" name="coverPrice1" value="{{coverPrice1}}" /></td>
+                                                  <td rowspan="5" style="vertical-align:top;"><select name="issuetype1" style="width:30px;">
+                                                  {% ifequal issuetype1 "Bi-monthly" %}
+                                                  <option value="Bi-monthly" selected>Bi-monthly</option>
+                                                  <option value="monthly">monthly</option>
+                                                  {% else %} 
+                                                  <option value="monthly" selected>monthly</option>
+                                                  <option value="Bi-monthly">Bi-monthly</option>
+                                                  {% endifequal %}
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  </select> </td>
+                                                  <td><select name="duration1" style="width:30px;" >
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp1" value="{{mrp1}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues1" value="{{issues1}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice1" value="{{subprice1}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers1" value="{{offers1}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag1" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  
+                                                  </tr>
+                  <tr>
+                                                 
+                                                  
+                                               
+                                                  
+                                                  <td><select name="duration2" style="width:30px;" >
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp2" value="{{mrp2}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues2" value="{{issues2}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice2" value="{{subprice2}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers2" value="{{offers2}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag2" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  </tr>
+                                                  <tr>
+                                                  <td><select name="duration3" style="width:30px;" >
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp3" value="{{mrp3}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues3" value="{{issues3}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice3" value="{{subprice3}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers3" value="{{offers3}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  </tr>
+                                                  <tr>
+                                                  <td><select name="duration4" style="width:30px;" >
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="3 year">3 year</option>
+                                                  
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp4" value="{{mrp4}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues4" value="{{issues4}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice4" value="{{subprice4}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers4" value="{{offers4}}" /></td>
+                                                  <!--
+                                                  <td>
+                                                  <input type="submit" value="Add" name="addCompMag4" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  </tr>
+                                                  
+                                                  <tr>
+                                                  <td><select name="duration5" style="width:30px;" >
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="4 year">4 year</option>
+                                                  
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp5" value="{{mrp5}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues5" value="{{issues5}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice5" value="{{subprice5}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers5" value="{{offers5}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag5" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  
+                                                  </tr>     
+                                                  <tr>
+                                                  <td rowspan="5" style="vertical-align:top;" >new</td>
+                                                  
+                                                  <td rowspan="5" style="vertical-align:top;">
+                                                  
+                                                  
+                                                  
+                                                  <div id="idOf_popCompetitor2">
+                                                  <select name="competitors2">
+                                                  
+                                                  <option value="0">select</option>
+                                                  {% for item in companies %}
+                                                  
+                                                  <option value="{{item.id}}">{{item.companyName}}</option>
+                                                  {% endfor %}
+                                                  </select>
+    												</div>                                              
+                                                  </td>
+                                                 
+                                                  
+ 	                                                 
+                                                  
+                                                  <td rowspan="5" style="vertical-align:top;"><input type="text" name="magazinename2" style="width:160px;" value="{{magazinename2}}" /></td>
+                                                  <td rowspan="5" style="vertical-align:top;"><input type="text" style="width:30px;" name="coverPrice2" value="{{coverPrice2}}" /></td>
+                                                  <td rowspan="5" style="vertical-align:top;"><select name="issuetype2" style="width:30px;">
+                                                  {% ifequal issuetype2 "Bi-monthly" %}
+                                                  <option value="Bi-monthly" selected>Bi-monthly</option>
+                                                  <option value="monthly">monthly</option>
+                                                  {% else %} 
+                                                  <option value="monthly" selected>monthly</option>
+                                                  <option value="Bi-monthly">Bi-monthly</option>
+                                                  {% endifequal %}
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  </select> </td>
+                                                  <td><select name="duration6" style="width:30px;" >
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                    
+                                                  <td><input type="text" name="mrp6" value="{{mrp6}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues6" value="{{issues6}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice6" value="{{subprice6}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers6" value="{{offers6}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag1" class="btn" /></td>
+                                                  -->
+                                                
+                                                  
+                                                  </tr>
+                  <tr>
+                                                 
+                                                  
+                                               
+                                                  
+                                                  <td><select name="duration7" style="width:30px;" >
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                   
+                                                  <td><input type="text" name="mrp7" value="{{mrp7}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues7" value="{{issues7}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice7" value="{{subprice7}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers7" value="{{offers7}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag1" class="btn" /></td>
+                                                  -->
+                                                                                                  
+                                                  
+                                                  </tr>
+                                                  <tr>
+                                                  <td><select name="duration8" style="width:30px;" >
+                                                   <option value="3 year">3 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                 
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp8" value="{{mrp8}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues8" value="{{issues8}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice8" value="{{subprice8}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers8" value="{{offers8}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  </tr>
+                                                  <tr>
+                                                  <td><select name="duration9" style="width:30px;" >
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="3 year">3 year</option>
+                                                  
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp9" value="{{mrp9}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues9" value="{{issues9}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice10" value="{{subprice10}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers10" value="{{offers10}}" /></td>
+                                                  <!--
+                                                  <td>
+                                                  <input type="submit" value="Add" name="addCompMag4" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  </tr>
+                                                  
+                                                  <tr>
+                                                  <td><select name="duration10" style="width:30px;" >
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="4 year">4 year</option>
+                                                  
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp10" value="{{mrp10}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues10" value="{{issues10}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice10" value="{{subprice10}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers10" value="{{offers10}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag5" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  
+                                                  </tr>
+                                                  <tr>
+                                                  <td rowspan="5" style="vertical-align:top;" >new</td>
+                                                  
+                                                  <td rowspan="5" style="vertical-align:top;">
+                                                  
+                                                  
+                                                  <div id="idOf_popCompetitor3">
+                                                  <select name="competitors3">
+                                                  <option value="0">select</option>
+                                                  {% for item in companies %}
+                                                  
+                                                  <option value="{{item.id}}">{{item.companyName}}</option>
+                                                  {% endfor %}
+                                                  </select>
+                                                  </div>
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  <td rowspan="5" style="vertical-align:top;"><input type="text" name="magazinename3" style="width:160px;" value="{{magazinename3}}" /></td>
+                                                  <td rowspan="5" style="vertical-align:top;"><input type="text" style="width:30px;" name="coverPrice3" value="{{coverPrice3}}" /></td>
+                                                  <td rowspan="5" style="vertical-align:top;"><select name="issuetype3" style="width:30px;">
+                                                  {% ifequal issuetype3 "Bi-monthly" %}
+                                                  <option value="Bi-monthly" selected>Bi-monthly</option>
+                                                  <option value="monthly">monthly</option>
+                                                  {% else %} 
+                                                  <option value="monthly" selected>monthly</option>
+                                                  <option value="Bi-monthly">Bi-monthly</option>
+                                                  {% endifequal %}
+                                                  
+                                                  
+                                                  
+                                                  
+                                                  </select> </td>
+                                                  <td><select name="duration11" style="width:30px;" >
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp11" value="{{mrp11}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues11" value="{{issues11}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice11" value="{{subprice11}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers11" value="{{offers11}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag1" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  
+                                                  </tr>
+                  <tr>
+                                                 
+                                                  
+                                               
+                                                  
+                                                  <td><select name="duration12" style="width:30px;" >
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp12" value="{{mrp12}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues12" value="{{issues12}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice12" value="{{subprice12}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers12" value="{{offers12}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag2" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  </tr>
+                                                  <tr>
+                                                  <td><select name="duration13" style="width:30px;" >
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp13" value="{{mrp13}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues13" value="{{issues13}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice13" value="{{subprice13}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers13" value="{{offers13}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  </tr>
+                                                  <tr>
+                                                  <td><select name="duration14" style="width:30px;" >
+                                                  <option value="4 year">4 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="3 year">3 year</option>
+                                                  
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp14" value="{{mrp14}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues14" value="{{issues14}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice14" value="{{subprice14}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers14" value="{{offers14}}" /></td>
+                                                  <!--
+                                                  <td>
+                                                  <input type="submit" value="Add" name="addCompMag4" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  </tr>
+                                                  
+                                                  <tr>
+                                                  <td><select name="duration15" style="width:30px;" >
+                                                  <option value="5 year">5 year</option>
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="4 year">4 year</option>
+                                                  
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select>
+                                                  
+                                                  
+                                                  
+                                                  </td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp15" value="{{mrp15}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues15" value="{{issues15}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice15" value="{{subprice15}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers15" value="{{offers15}}" /></td>
+                                                  <!--
+                                                  <td><input type="submit" value="Add" name="addCompMag5" class="btn" /></td>
+                                                  -->
+                                                  
+                                                  
+                                                  
+                                                  </tr>
+                                                  
+                                                  
+                                                                    
+                                                  
+                                                  
+                                           <tr>         
+                                           <td colspan="10" align="center">
+                                           <input type="submit" value="Add All" name="saveall" class="btn" />
+                                           </td>
+                                           
+                                           </tr>       
+                                          </table>
+                                           
+                                          
+                                          
+                                             </form>
+                                      </div>
+                                              
+                                      </div>
+                                      </div>
+                                
+                     {% endblock %}
+  {%block form1Width%}150%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}
+                    

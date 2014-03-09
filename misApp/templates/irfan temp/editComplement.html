@@ -1,0 +1,750 @@
+{% extends 'dashboard.html'%}
+{%load static%}
+
+{% block form1Title%}
+Edit Complimentary:
+{%endblock%}
+
+
+{% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                      <li ><a href="/subscription/list"><span class="ico gray shadow pictures_folder" ></span><b>Subscription</b></a></li>
+                      <li><a href="/customer/"><span class="ico gray shadow pictures_folder" ></span><b>Subscriber</b></a></li>
+                      <li ><a href="/subscription/renew"><span class="ico gray shadow pictures_folder" ></span><b>Lapse Subscription</b></a></li>
+                      <li class="select"><a href="/compliment/"><span class="ico gray shadow pictures_folder" ></span><b>Complimentary</b></a></li>
+                    </ul>
+                    
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}
+              
+{%block widgetContent%}
+<script>
+function calcAge(dobString) {
+  dobString=dobString.split("-")
+  dobString=dobString[1]+'/'+dobString[0]+'/'+dobString[2];
+  
+  var birthday = new Date(dobString);
+  var age=~~((Date.now() - birthday) / (31557600000));
+  if(age<2)
+  {alert("please enter valid birth date!");}
+  else{
+  document.getElementById('age').value=age;}
+}
+
+function enableGroup(value)
+{
+if (value=='g')
+{
+document.getElementById("gDiv").innerHTML="<label> Group Name <sup>*</sup></label><div> <input type='text' name='groupName' class='medium'  value='{{groupName}}' /></div>";
+
+}
+else
+{
+document.getElementById("gDiv").innerHTML="<label> Group Name </label><div> <input type='text'  name='groupName' class='medium'  value='{{groupName}}'/></div>";
+}
+}
+
+function getSubSources(sourceId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("sub_source_div").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?source="+sourceId,true);
+xmlhttp.send();
+}
+
+
+function getState(countryId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("statediv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?country="+countryId,true);
+xmlhttp.send();
+}
+
+
+
+function getCity(stateId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("citydiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?state="+stateId,true);
+xmlhttp.send();
+}
+
+
+function getSchemeByMagazine(id)
+{
+
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    
+    document.getElementById("schemeselect").innerHTML=xmlhttp.responseText;
+    
+    }
+  }
+xmlhttp.open("GET","/responder?magazine="+id,true);
+xmlhttp.send();
+}
+
+function getSchemeByCombo(id)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("schemeselect").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?combo="+id,true);
+xmlhttp.send();
+}
+
+
+function getGiftBySchemeId(id)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("giftdiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?scheme="+id,true);
+xmlhttp.send();
+}
+
+</script>
+
+<div class="content" style="margin:0 10px 0 10px; width:100%" >
+<div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+                	
+      </ul>
+      
+      </div>
+     
+		<!-- Smart Wizard -->
+  		<div id="wizard" class="swMain" style="width:100%;" >
+  			<ul>
+            
+  			 <li><a href="#step-1"><span class="stepDesc">Personal Detail</span></a></li>
+  		     
+
+             <li><a href="#step-3"><span class="stepDesc">Gift Dispatch</span></a></li>
+             <li><a href="#step-4"><span class="stepDesc">Subscription Detail</span></a></li>
+         
+             <li><a href="#step-6"><span class="stepDesc">Complaints</span></a></li>
+  			 
+  			</ul>
+            
+            <form id="" method="post" action=""> 
+  			<div id="step-1" style="width:100%;">
+			          <div class="widget-content">
+                                    <!-- title box -->
+
+                                           <div class="section" >
+                                                <label>Subscription id </label>   
+                                                <div> <input type="text" name="subid" class="medium" value="{{subid}}"  readonly /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label> Subscription Date </label>   
+                                                <div> <input type="text" name="date"  value="{{date}}" readonly class="medium"  /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Title <sup>*</sup></label>   
+                                                <div  class="selectWidth1"> <select class="small"  name="title">
+
+                                                <option value="-1" selected >Select Title</option>
+                                                   {%if title == 'm'%}
+                                                   <option value="m"  selected>Mr.</option>
+                                                   {%else%}
+                                                   <option value="m" >Mr.</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if title == 'f'%}
+                                                   <option value="f"  selected>Mrs.</option>
+                                                   {%else%}
+                                                   <option value="f" >Mrs.</option>
+                                                   {%endif%}
+                                                   
+                                                   
+                                                   {%if title == 'mis'%}
+                                                   <option value="mis"  selected>Miss</option>
+                                                   {%else%}
+                                                   <option value="mis" >Miss</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if title == 'd'%}
+                                                   <option value="d"  selected>Dr.</option>
+                                                   {%else%}
+                                                   <option value="d" >Dr.</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if title == 'o'%}
+                                                   <option value="o"  selected>Other</option>
+                                                   {%else%}
+                                                   <option value="o" >Other</option>
+                                                   {%endif%}
+                                              </select></div>
+                                           </div>
+                                           <div class="section" >
+                                                <label>First Name <sup>*</sup></label>   
+                                                <div> <input type="text" name="firstname" value="{{firstname}}" class="medium"  /></div>
+
+                                           </div>
+                                           <div class="section" >
+                                                <label>Last Name <sup>*</sup></label>   
+                                                <div> <input type="text" name="lastname" value="{{lastname}}" class="medium"  /></div>
+
+                                           </div>
+                                           <div class="section" >
+                                                <label>DOB</label>   
+                                                <div> <input type="text" name="dob" class="datepicker" style="text-align:left" value="{{dob}}" class="medium"  onchange="calcAge(this.value);" /></div>
+
+                                           </div>
+                                           <div class="section" >
+                                                <label>age </label>   
+                                                <div> <input type="text" name="age" id="age" value="{{age}}" class="small"  readonly/></div>
+
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Sex <sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                <select class="small"  name="sex">
+                                                
+                                                <option value="-1" selected >Select Sex</option>
+                                                   {%if sex == 'm'%}
+                                                   <option value="m"  selected>Male</option>
+                                                   {%else%}
+                                                   <option value="m" >Male</option>
+                                                   {%endif%}
+                                                   {%if sex == 'f'%}
+                                                   <option value="f"  selected>Female.</option>
+                                                   {%else%}
+                                                   <option value="f" >Female</option>
+                                                   {%endif%}
+                                                   
+
+                                              </select>       
+                                      </div>
+                                           </div>
+                                           
+                                           
+                                           <div class="section" >
+                                                <label>Designation</label>   
+                                                <div> <input type="text" name="designation" class="medium" value="{{designation}}" /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Company</label>   
+                                                <div> <input type="text" name="company" class="medium" value="{{company}}" /></div>
+
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Address Line 1 <sup>*</sup></label>   
+                                                <div> <input type="text" name="address1" value="{{address1}}"class="large"  /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Address Line 2</label>   
+                                                <div> <input type="text" name="address2" value="{{address2}}" class="large"  /></div>
+
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Address Line 3</label>   
+                                                <div> <input type="text" name="address3" class="large" value="{{address3}}" /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>State <sup>*</sup></label>   
+                                                <div class="selectWidth1" >
+                                                	<select class="small"  name="state" onchange="getCity(this.value)">
+                                                		<option value="-1"  selected>Select State</option>
+                                                	  {%for s in states%}
+                                                	    {%ifequal state s.id%}
+                                                		<option value="{{s.id}}" selected>{{s.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{s.id}}" >{{s.name|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" > no states found ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	
+                                                	        
+                                                </div>
+                                           </div>
+                                           <div class="section" >
+                                                <label>City <sup>*</sup></label>   
+                                                <div class="selectWidth1" id="citydiv">
+                                                	<select class="small"  name="city" >
+                                                	<option value="-1" selected>Select City</option>
+                                                	    {%for c in cities%}
+                                                	    {%ifequal city c.id%}
+                                                	    <option value="{{c.id}}" selected  >{{c.name}}</option>
+                                                	    {%else%}
+                                                	    <option value="{{c.id}}"  >{{c.name}}</option>
+                                                	    {%endifequal%}
+                                                	    {%empty%}
+                                                		<option value="-1" selected  >Select State First</option>
+                                                		{%endfor%}
+                                                	</select>       
+                                                </div>
+                                           </div>
+                                                                                      
+                                           <div class="section" >
+                                                <label>Pincode <sup>*</sup></label>   
+                                                <div> <input type="text" name="pincode" value="{{pincode}}" class="medium"  /></div>
+
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Telephone (O)</label>   
+                                                <div> <input type="text" name="teleo" value="{{teleo}}" class="medium"  /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Telephone (R)</label>   
+                                                <div> <input type="text" name="teler" value="{{teler}}" class="medium"  /></div>
+
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Mobile no. </label>   
+                                                <div> <input type="text" name="mobileno" value="{{mobileno}}" class="medium"  /></div>
+                                           </div>
+                                              <div class="section" >
+                                                <label>Email Id </label>   
+                                                <div> <input type="text" name="email" value="{{email}}" class="medium"  /></div>
+
+                                           </div>
+                                           
+                                           <div class="section last">
+                                               <div>
+                                              
+                                                <input type="submit" name="editCom" class="btn" value="save"  />
+                                              
+                                               </div>
+                                            </div>
+                                           
+                                </div>
+
+            
+			
+			</div>
+  		                                
+  			<div id="step-3" style="padding-right:20px;">
+			            <div style="float:left; width:100%;"> 
+                       <table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td valign="top" style="padding:5px 0 0 0"><strong>Subscription id</strong></td>
+
+    <td width="5">&nbsp;</td>
+    <td><input type="text" name="subid" class="large" value="{{subid}}" readonly  /></td>
+     <td width="10">&nbsp;</td>
+    <td  valign="top" style="padding:5px 0 0 0"><strong>Date</strong></td>
+     <td width="5">&nbsp;</td>
+    <td  valign="top" ><input type="text" name="date" class="large" value="{{date}}" readonly  /></td>
+    
+  </tr>
+</table>
+
+</div> 
+ <div style="float:left; width:100%;">   
+                                                  <table class="table table-bordered table-striped "  id="data_table3" width="100%">
+                                                    <thead align="center"  class="tr_bg_list" >
+                                                      
+                                                      <tr >
+                                                        
+                                                        <td width="15%">Gift</td>
+                                                        <td width="15%">Dispatch Date</td>
+                                                        <td width="15%">Received Date</td>
+                                                        <td width="15%">Tracking No.</td>
+                                                        <td width="15%">Received By</td>
+                                                        <td width="15%">Courier Name</td>
+                                                        <td width="1%">Status</td>
+                                                        <td width="1%">Edit</td>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                       
+                                                      
+                                                      <tr class="font_wght">
+                                                      {%for g in disGifts%}
+                                                       
+                                                        <td>{{g.getItemName}}</td>
+                                                        <td>{%if g.dispatchDate%}{{g.dispatchDate}}{%else%}----{%endif%}</td>
+                                                        <td>{%if g.receivedDate%}{{g.receivedDate}}{%else%}----{%endif%}</td>
+                                                        <td>{%if g.courierNo%}{{g.courierNo}}{%else%}----{%endif%}</td>
+                                                        <td>{%if g.receivedBy%}{{g.receivedBy}}{%else%}----{%endif%}</td>
+                                                        <td>{%if g.courierType%}{{g.courierType.name}}{%else%}----{%endif%}</td>
+                                                        <td>
+                                                        {{g.getStatus}}
+                                                        </td>
+                                                        <td class="brdrnone"><a href="/dispatch/gedit/{{g.id}}"><img src="{% static 'images/edit.png'%}" width="28" height="28" alt="Edit" title="Edit"></a></td>
+                                                      {%empty%}
+                                                      <td colspan="9">CUSTOMER HAS NO GIFT</td>
+                                                      {%endfor%}
+                                                      </tr>
+                                                    </tbody>
+                                                  </table>
+                                                  
+                                                  </div>
+                                                  
+                                   
+
+			</div>
+            
+            
+            <div id="step-4"  style="padding-right:20px;">
+             	<div class="widget-content">
+
+                                           
+                                           
+             							   <div class="section" >
+                                                <label>Subscription id </label>   
+                                                <div> <input type="text" name="subid"  value="{{subid}}"  readonly /></div>
+                                           </div>
+	                            			
+	                            			
+	                            			
+	                            			<div class="section" >
+                                                <label> Subscription Date </label>   
+                                                <div> <input type="text" name="date" value="{{date}}"  style="text-align:left" readonly/></div>
+
+                                            </div>
+                                           
+                                            <!--
+                                            <div class="section" >
+                                                <label>Magazine <sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                	<select class="small"  name="submag">
+                                                		<option value="-1"  selected>Select Magazine</option>
+                                                	  {%for m in magazines%}
+                                                	    {%ifequal submag m.id%}
+                                                		<option value="{{m.id}}" selected>{{m.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{m.id}}" >{{m.name|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" > no magazines found ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	
+                                                	        
+                                                </div>
+                                           </div>
+                                           
+                                            <div class="section" >
+                                                <label>Period <sup>*</sup></label>   
+                                                <div class="selectWidth1" >
+                                                	<select class="small"  name="subperiod" >
+                                                		<option value="-1"  selected>Select Period</option>
+                                                	  {%for t in tenures%}
+                                                	    {%ifequal subperiod t.timePeriod%}
+                                                		<option value="{{t.timePeriod}}" selected>{{t.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{t.timePeriod}}" >{{t.name|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" > no periods found! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	
+                                                	        
+                                                </div>
+                                           </div>
+                                           -->
+                                           
+                                           <div class="section" >
+                                                <label> Magazine </label>   
+                                                <div> <input type="text" name="submag" value="{{submag}}"  style="text-align:left" readonly/></div>
+
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label> period </label>   
+                                                <div> <input type="text" name="subperiod" value="{{subperiod}} Month"  style="text-align:left" readonly/></div>
+
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label> start Issue </label>   
+                                                <div> <input type="text" name="start_issue" value="{{start_issue}}"  style="text-align:left" readonly/></div>
+
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label> end Issue </label>   
+                                                <div> <input type="text" name="end_issue" value="{{end_issue}}"  style="text-align:left" readonly/></div>
+
+                                           </div>
+                                           
+                                           
+                                           
+                                                      
+                                           
+                                           
+                                          
+                                           <div class="section" >
+                                                <label>Scheme</label>   
+                                                <div class="selectWidth1">
+                                                    <div id="schemeselect">
+                                                	<select class="small" id="selectOfschemes" name="sschemes" multiple readonly>
+                                                	   
+                                                	  
+                                                	  {%for s in sschemes%}
+                                                	    
+                                                		<option value="{{s.id}}">{{s.name|title}} </option>
+                                                		
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	</div>       
+                                                </div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Main source <sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                	<select class="small"  name="source" onchange="getSubSources(this.value);">
+                                                		<option value="-1"  selected>Select Source</option>
+                                                	  {%for s in sources%}
+                                                	    {%ifequal source s.id%}
+                                                		<option value="{{s.id}}" selected>{{s.categoryName|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{s.id}}" >{{s.categoryName|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" > no sources found ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	
+                                                	        
+                                                </div>
+                                           </div>     
+                                                                                 
+                                           <div class="section" >
+                                                <label>Sub source <sup>*</sup></label>   
+                                                <div class="selectWidth1"  id="sub_source_div" >
+                                                	<select class="small"  name="subSource" >
+                                                	    <option value="-1" selected >Select Subsource</option>
+                                                	    {%for ss in subsources%}
+                                                	    {%ifequal subSource ss.id %}
+                                                	    <option value="{{ss.id}}" selected  >{{ss.categoryName}}</option>
+                                                	    {%else%}
+                                                	    <option value="{{ss.id}}" >{{ss.categoryName}}</option>
+                                                	    {%endifequal%}
+                                                	    {%empty%}
+                                                	    <option value="-1" selected>Select Source First</option>
+                                                		{%endfor%}
+                                                		
+                                                	</select>       
+                                                </div>
+                                           </div>                                              
+                                           
+                                           <div class="section" >
+                                                <label>Emp. Id </label>   
+                                                <div> <input type="text" name="empid" class="medium"  value="{{empid}}" readonly/></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>status</label>   
+                                                <div class="selectWidth1">
+                                                	<select class="small" name="subStatus" >
+                                                	  {% ifequal subStatus "1" %}
+                                                	  	<option value="1" selected>Active</option>
+                                                      	
+                                                      {% else %}
+                                                        <option value="1" >Active</option>
+                                                	  {% endifequal %}
+                                                      	
+                                                      {% ifequal subStatus "0" %}
+                                                	  	<option value="0" selected>Inactive</option>
+                                                      {% else %}
+                                                        <option value="0" >Inactive</option>
+                                                	  {% endifequal %}
+                                                      	
+                                                      	
+                                                      
+                                                  
+                                                   </select>       
+                                               </div>
+                                           </div> 
+                                          
+                                                  
+                                           <div class="section last">
+                                               <div>
+                                                <input type="submit" name="editCom" class="btn" value="save"  />
+                                               </div>
+                                            </div> 
+				</div>          
+            </div>
+            
+            
+           
+            <div id="step-6" style="padding-right:20px;">
+			            
+                      <div style="float:left; width:100%;"> 
+                        
+                        <table border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td valign="top" style="padding:5px 0 0 0"><strong>Subscription id</strong></td>
+    <td width="5">&nbsp;</td>
+    <td><input type="text" name="subid" class="large" value="{{subid}}" readonly  /></td>
+     <td width="10">&nbsp;</td>
+
+    <td  valign="top" style="padding:5px 0 0 0"><strong>Date</strong></td>
+     <td width="5">&nbsp;</td>
+    <td  valign="top" ><input type="text" name="date" class="large" value="{{date}}" readonly  /></td>
+    
+  </tr>
+</table></div>
+ <div style="float:left; width:100%;">    
+                                                  <table class="table table-bordered table-striped "  id="data_table3" width="100%">
+                                                    <thead align="center"  class="tr_bg_list" >
+                                                      
+                                                      <tr >
+
+                                                        <td width="1%">S.N.</td>
+                                                        <td width="15%">Magazine</td>
+                                                        
+                                                        <td width="15%">Complaint No.</td>
+                                                        <td width="15%">Department</td>
+														<td width="15%">Employee ID</td>
+                                                        <td width="1%">Status</td>
+                                                        <td width="1%">Edit</td>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                      
+                                                      
+                                                      {%for c in complaints%}
+                                                        <tr class="font_wght">
+                                                        <td width="1%">{{forloop.counter}}</td>
+                                                        <td width="15%">{{disMags.0.getItemName}}</td>
+                                                        
+                                                        <td width="15%">{{c.getComplaintNo}}</td>
+                                                        <td width="15%">{%if c.getDepartment%}{{c.getDepartment}}{%else%}----{%endif%}</td>
+														<td width="15%">{{c.getEmployeeId}}</td>
+                                                        <td width="1%">{{c.getStatus}}</td>
+                                                        <td class="brdrnone"><a href="/CRM/edit/{{c.id}}"><img src="{% static 'images/edit.png'%}" width="28" height="28" alt="Edit" title="Edit"></a></td>
+                                                        </tr>
+                                                       {%empty%}
+                                                        <tr class="font_wght">
+                                                        <td colspan="8">NO COMPLAINTS FOUND!</td>
+                                                        </tr>
+                                                      {%endfor%}
+                                                      
+                                                        
+                                                      
+                                                      
+                                                      
+                                                    </tbody>
+
+                                                  </table>
+                                                  
+                                                  </div>
+
+			</div>
+            
+            
+            
+            
+           
+           
+            </form>
+  			
+  		</div><!-- End SmartWizard Content -->  		
+				
+{%endblock%}                            
+{%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}
+                                        
+                                        

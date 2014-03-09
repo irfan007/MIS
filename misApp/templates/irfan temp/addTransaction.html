@@ -1,0 +1,156 @@
+{% extends 'dashboard.html'%}
+{% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                    <li class="select"><a href="/subscription/list"><span class="ico gray shadow pictures_folder" ></span><b>Subscription</b></a></li>
+                    </ul>
+                    
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}
+{% block form1Title%}
+New Transaction :
+{%endblock%}
+
+{%block form1Body%}
+<form id="add_user" method="post" action="">
+<div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+      </ul>
+      
+      
+     
+      </div>
+      
+      
+      									<div class="section" >
+                                                <label>Customer Id </label>   
+                                                <div> <input type="text"  value="{{cid}}" class="medium"  readonly/></div>
+
+                                        </div>
+                                        <div class="section" >
+                                                <label>Total Subscription Amount</label>   
+                                                <div> <input type="text"  value="{{TSAmnt}}" class="medium"  readonly/></div>
+
+                                        </div>
+                                        <div class="section" >
+                                                <label>Total Received Amount</label>   
+                                                <div> <input type="text"  value="{{TRAmnt}}" class="medium"  readonly/></div>
+
+                                        </div>
+                                        
+                                        <div class="section" >
+                                                <label>Subscription Id </label>   
+                                                <div> <input type="text"  name="subid" value="{{subid}}" class="medium" /></div>
+
+                                        </div>
+                                        
+                                         <div class="section" >
+                                                <label>Received Amount <sup>*</sup></label>   
+                                                <div> <input type="text" name="recAmnt" value="{{recAmnt}}" class="medium"  /></div>
+                                           </div>
+                                           
+                                           <div class="section">
+                                                <td colspan="3" align="right"><label>Discount</label></td>
+	                                            <td align="left"><input  name="dis" value="{{dis}}" type="text" /></td>
+	                                       </div>
+	                                       
+	                                       <div class="section" >
+                                                 <td colspan="3" align="right"><label>Comission Discount</label></td>
+	                                             <td align="left"><input  name="comdis" type="text" value="{{comdis}}"/></td>
+	                                       </div>
+                                           
+                                           <div class="section" >
+                                                  <td colspan="3" align="right"><label>Additional Discount</label></td>
+	                                              <td align="left"><input name="addis" type="text" value="{{addis}}" /></td>
+	                                       </div>
+                                              									
+                                        <div class="section" >
+                                                <label>Payment Mode <sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                <select class="medium"  name="paymode" onchange="setPaymentDetails(this.value);">
+                                                
+                                                <option value="-1" selected >Select Payment Mode</option>
+                                                   {%if paymode == 'c'%}
+                                                   <option value="c"  selected>Cash</option>
+                                                   {%else%}
+                                                   <option value="c" >Cash</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if paymode == 'd'%}
+                                                   <option value="d"  selected>Draft</option>
+                                                   {%else%}
+                                                   <option value="d" >Draft</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if paymode == 'chq'%}
+                                                   <option value="chq"  selected>Cheque</option>
+                                                   {%else%}
+                                                   <option value="chq" >Cheque</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if paymode == 'a'%}
+                                                   <option value="a"  selected>NEFT</option>
+                                                   {%else%}
+                                                   <option value="a" >NEFT</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if paymode == 'o'%}
+                                                   <option value="o"  selected>Online</option>
+                                                   {%else%}
+                                                   <option value="o" >Online</option>
+                                                   {%endif%}
+
+
+                                              </select>       
+                                             </div>
+                                           </div>
+                                           
+                                          
+                                           
+                                           
+                                           <div class="division">
+                                        
+                                        <div class="section when_cash" >
+                                                <label >Bank Name</label>   
+                                                <div> <input type="text" name="bank" value="{{bank}}" class="medium"  /></div>
+
+                                        </div>
+                                        <div class="section" >
+                                                <label id="pt_no">Cheque DD No.</label>   
+                                                <div> <input type="text" name="chequeno" value="{{chequeno}}" class="medium"  /></div>
+                                           </div>   
+                                        
+                                           <div class="section" >
+                                                <label id="pt_date">Cheque DD date</label>   
+                                                <div> <input type="text" name="chequedate" class="datepicker" style="text-align:left" value="{{chequedate}}" class="medium"  /></div>
+
+                                           </div>
+                                           
+                                           
+                                           
+                                                                                      
+                                           <div class="section when_online when_cash" >
+                                                <label id="pt_ddate">Cheque/DD Deposite Date </label>   
+                                                <div> <input type="text" name="depositedate" class="datepicker" style="text-align:left" value="{{depositedate}}" class="medium"  /></div>
+                                           </div>
+                                           
+                                           <div class="section when_cash" >
+                                                <label id="pt_cdate">Cheque/DD Clearance Date </label>   
+                                                <div> <input type="text" name="cleardate" class="datepicker" style="text-align:left" value="{{cleardate}}" class="medium"  /></div>
+
+                                           </div>
+                                       </div>
+                                           
+                                           
+                                          
+                                            <div class="section last">
+                                               <div>
+                                                <input type="submit" name="button" class="btn" value="submit"  />
+                                               </div>
+                                           </div>
+                                       </form>
+{%endblock%}

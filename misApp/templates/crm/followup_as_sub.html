@@ -1,0 +1,196 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}            
+              
+{% block leftMenu %}
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     
+                      <li ><a href="/CRM/" ><span class="ico gray shadow pictures_folder"></span><b>Complaints</b></a></li>
+                      <li class="select"><a href="/sales/" ><span class="ico gray shadow pictures_folder"></span><b>Contacts</b></a></li>
+                      
+                      
+              </ul>
+              <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              
+              
+{% endblock %}
+
+
+
+              
+ {% block form1Title %} 
+  <label>  New Follow Up > STEP:1 </label> 
+ {% endblock %}  
+                             
+ {% block form1Header%}
+	<div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+	
+	</div>
+ {%endblock%}
+                             
+                             
+ 
+                             
+                             
+{% block form1Body %}
+
+<div style="background:lightyellow;{%if errors%}border:1px solid yellow;{%endif%}">
+  <ul style="color:red;style:disk;font-size:13px;">
+            	{% for e in errors %}
+            	  <li>&nbsp;{{e}}</li>
+            	{%endfor%}
+  </ul>
+  </div>
+  
+  
+  <div style="background:lightyellow;{%if cuMessages%}border:1px solid yellow;{%endif%}">
+  <ul style="color:green;style:disk;font-size:13px;">
+            	{% for m in cuMessages %}
+            	  <li>&nbsp;{{m}}</li>
+            	{%endfor%}
+            	
+  </ul>
+  </div>
+  
+  <div style="background:lightyellow;{%if cuWarnings%}border:1px solid yellow;{%endif%}">
+  <ul style="font-size:13px;">
+            	{% for w in cuWarnings %}
+            	  <li>&nbsp;{{w}}</li>
+            	{%endfor%}
+  </ul>
+  </div>
+  
+  
+  <br/>
+            <div id="UITab" style="position:relative;">
+            	<div>
+            		<div id="tab1" class="tab_content">
+            			
+            			<form action="" method="post">
+            			<table border="0" cellpadding="" width="50%" style="background:">
+            				<tbody align="center" class="font_wght">
+                                  
+                                  
+                                  <tr>
+                                    <td width="" align="left"><label>SUBSCRIPTION NO.</label></td>
+                                    <td width=""><input type="text" style="border:1px solid black;" name="subscription_no" value="{{subscription_no}}"/></td>
+                                    <td width="">(OR)</td>
+                                    
+                                  </tr>  
+                                    
+                                  <tr>
+                                    <td width="" align="left"><label>SUBSCRIBER FIRST NAME</label></td>
+                                    <td width=""><input type="text" style="border:1px solid black;" name="first_name" value="{{first_name}}"/></td>
+                                    
+                                    <td width="">(OR)</td>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td width="" align="left"><label>MOBILE NO.</label></td>
+                                    <td width=""><input type="text" style="border:1px solid black;" name="mobile_no" value="{{mobile_no}}"/> </td>
+                                  
+                                    <td width="">(OR)</td>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td width="" align="left"><label>EMAIL</label></td>
+                                    <td width=""><input type="text" style="border:1px solid black;" name="email" value="{{email}}"/> </td>
+                                    <td width="">(OR)</td>
+                                  </tr>  
+                                    
+                                    
+                                  <tr>
+                                    <td width="" align="left"><label>LAPSE YEAR</label></td>
+                                    <td width=""><input type="text"  style="border:1px solid black;" name="lapse_year" value="{{lapse_year}}"/> </td>
+                                    <td width="">(OR)</td>
+                                  </tr>  
+                                  
+                                  
+                                  
+                                  <tr>
+                                    <td width="" align="left"><label>LAPSE MONTH</label></td>
+                                    <td >
+                                  	<table>
+                                        	<tr>
+                                        		<td>
+                                        		 	<select name="lapse_month">
+					                                   	<option value="-1" selected > -----</option>
+			                                            {%for id,name in months%}
+			                                            {%ifequal lapse_month id%}
+			                                           <option value="{{id}}" selected>{{name|upper}}</option>
+			                                            {%else%}
+			                                           <option value="{{id}}">{{name|upper}}</option>
+			                                            {%endifequal%}
+			                                            {%endfor%}
+                                     				</select>
+                                        		</td>
+                                        		
+                                        		<td>
+                                        		
+                                        		</td>
+                                        	</tr>
+                                    	
+                                    </table>
+                                    </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td colspan="3"><hr/></td>
+                                  </tr>
+                                  
+                                    
+                                  <tr>
+                                    <br/> 
+                                    <td width="" colspan="3" align="left"><input type="submit" class="btn" style="border:1px solid black;" value="SEARCH" name="crm_search"/>  </a></td>
+                                  </tr>
+                                  
+                            </tbody>
+                      	
+                      	</table>
+                      	</form>
+                      	
+                      <table class="table table-bordered table-striped" width="100%">
+                                				<thead align="center"  class="tr_bg_list">
+                                					<tr>
+                                						<td width="">Sr. No.</td>
+                                                        
+                                                        <td width="">Subscription No.</td>
+                                                        <td width="">Subscriber Name</td>
+                                                        <td width="">Mobile No.</td>
+                                                        <td width="">Email</td>
+														<td width="">Follow Up</td>
+                                                      </tr>
+                                                </thead>
+                                                    
+                                                <tbody align="center" class="font_wght">
+                                                    {% for c,s in rows %}
+                                                      <tr>
+                                                        <td width="">{{forloop.counter}}</td>
+                                                        <td width="">{{ps.getSubPrefix}}{{s.id}}</td>
+                                                        <td width="">{{c.firstName}} {{c.lastName}}</td>
+                                                        <td width="">{%if c.mobileNo %}{{c.mobileNo}}{%else%}----{%endif%}</td>
+                                                        <td width="">{%if c.email %}{{c.email}}{%else%}----{%endif%}</td>
+                                                        <td><a href="/CRM/subscription/{{s.id}}/" class="btn submit_form">follow Up</a></td>
+                                                      </tr>
+                                                    {%empty%}
+                                                     <tr>
+                                                        <td style="background:lightyellow" colspan="6"> <label>  - - - - -  </label></td>
+                                                     </tr>
+                                                    {% endfor %}   
+                                                </tbody>
+                     </table>
+                  
+                  </div>
+                  </div>
+                  </div>
+                  
+            
+ 
+{% endblock %}       
+                                   
+                                   
+                                   
+{%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}       

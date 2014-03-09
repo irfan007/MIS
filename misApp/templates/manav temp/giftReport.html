@@ -1,0 +1,181 @@
+{% extends 'dashboard.html'%}
+{%load staticfiles%}
+{% block leftMenu %}
+              
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                     
+                   
+                      <li class="select"><a href="/report/gift/"><span class="ico gray shadow pictures_folder"></span><b>Gift Tracker Report</b></a></li>
+                      <li><a href="/report/offer/"><span class="ico gray shadow pictures_folder"></span><b>Offers Report</b></a></li>
+                       <li><a href="/report/srcsub/"><span class="ico gray shadow pictures_folder"></span><b>Source SubsReport</b></a></li>
+                       <li><a href="/report/cheque/"><span class="ico gray shadow pictures_folder"></span><b>PaymentReport</b></a></li>
+                       
+                       <li><a href="/report/monthlySubscriptions/"><span class="ico gray shadow pictures_folder"></span><b>Monthly SubsReport</b></a></li>
+                       <li><a href="/report/MIS/"><span class="ico gray shadow pictures_folder"></span><b>MIS Report</b></a></li>
+                       <li><a href="/report/PO/"><span class="ico gray shadow pictures_folder"></span><b>PO Report</b></a></li>
+                        <li><a href="/competitors/"><span class="ico gray shadow pictures_folder"></span><b>Competitors</b></a></li>
+                   
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}                  
+
+{% block form1Title%}
+View Report 
+{%endblock%}
+
+
+
+{%block widgetContent%}
+
+<div class="widget-content">
+                                    <!-- title box -->
+                                    
+                                      <form method="POST" action="/report/gift/"> 
+              
+                                            <!--<div class="section" >
+                                                <label>Date </label>   
+                                                <div> <input type="text"  id="datepick" class="datepicker small"  name="datepicker"   style="text-align:left" /> &nbsp; <strong>To</strong> &nbsp;&nbsp;<input type="text"  id="datepick2" class="datepicker small"  name="datepicker"   style="text-align:left" /></div>
+                                           </div>-->
+                                           <!--
+                                           <div class="section">
+                                                <label>Enter Year</label>   
+                                                <div class="selectWidth1">
+
+                                            <input type="text" name="year" value="{{curyear}}" />       
+                                                </div>
+                                           </div>
+                                           
+                                           
+                                           <div class="section">
+                                                <label>Select Month</label>   
+                                                <div class="selectWidth1">
+
+                                                <select class="small" name="getmonth" >
+                                               {% for item in months %}
+                                               {% ifequal month forloop.counter %} 
+                                                       <option value="{{forloop.counter}}" selected>{{item}}</option>
+                                                       {% else %}
+                                                       <option value="{{forloop.counter}}"> {{item}}</option>
+                                                       {% endifequal %}
+                                                       {% endfor %}
+                                                                                          
+                                              </select>
+                                              <br>       
+                                                </div>
+                                           </div>
+                                           -->
+                                           <br>
+                                           {% for error in errors %} 
+                                           <font color="red">{{error}}<br></font>
+                                           {% endfor %}
+                                           <font face="verdana" size="3"><b>From:</b></font> 
+                                           <input type="text"  id="datepick" class="datepicker"  name="startdate"  value="{{startdate}}" style="text-align:left" />
+                                            
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font face="verdana" size="3"><b>To:</b></font>
+											<input type="text"  id="datepick2" class="datepicker"  name="enddate" value="{{enddate}}"  style="text-align:left" />			
+                                            <div class="section ">
+                                                <div>
+                                                  <input type="submit" class="btn" value="View" name="whenview"/> <input type="submit" class="btn" value="Export To Excel" name="whenexport"/>
+		 </form>
+ </div>
+                                           </div>
+                                        
+                                </div>
+                                
+                            </div>
+                    
+                    <div class="widget  clearfix" style="margin-top:20px;">
+                                <div class="widget-header">
+                                    <span>Gift Tracker Report</span> 
+                                </div>
+
+                                
+                                <div class="widget-content">
+                                <div id="UITab" style="position:relative; ">
+                                         
+                                        <div style="width:100%" class="" id="scroll_area" >
+                                          <div id="tab1" class="tab_content"> 
+                                          
+          															<table class="table table-bordered table-striped "  id="data_table3" width="200%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr>
+                                                        <td width="3%">S.No.</td>
+                                                        <td width="5%">SubscriberName</td>
+                                                        <td width="11%">SubsId/CustId</td>
+                                                        <td width="5%">Gift Type</td>
+                                                        <td width="5%">Dispatch Date</td>
+                                                        
+                                                        <td width="9%">Dispatch Through</td>
+                                                        <td width="6%">AWB details</td>
+                                                        <td width="2%">Dispatch Status</td>
+                      
+                                                      </tr>
+                                                    </thead>
+                                                    
+                                                    <tbody align="center" class="font_wght">
+                                                      
+                                                      {% for item in rows %}
+                                                      <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{item.1.firstName}}</td>
+                                                        <td>
+                                                        
+                                                        {{item.2}}
+                                                        
+                                                        </td>
+                                                        <td>{{item.0.getItemName}}</td>
+                                                        
+                                                        <td>{{item.0.dispatchDate}}</td>                                                        
+                                                        <td>{{item.0.courierType.name}}</td>
+                                                        <td>{{item.0.courierNo}}</td>
+                                                        <td>
+                                                        {{item.0.getStatus}}	
+                                                        </td>
+                                                        
+                                                      </tr>
+                                                      {%empty%}
+                                                      <tr>
+                                                          {%if rows%}
+                                                          
+                                                          {%else%}
+                                                          <td colspan='8'>No gift record</td>
+                                                          {% endif %}
+                                                      </tr>
+                                                      {%endfor%}
+                                                    </tbody>
+                                                    
+                                          </table>                                 
+                                     <div class="section last" align="right">
+                                      <div >
+                                      
+     
+									     
+									  </div>
+									 </div>
+									
+									 <br>
+                                      </div>
+                                      </div>
+                                      </div>
+                                      </div>
+                                
+                            </div></div>
+                     <div style="float:left; width:18%; float:left; margin-left:65%; position:fixed"><div class="widget  clearfix">
+
+                               <!-- End widget-header -->	
+                                
+                                
+                                
+                                     
+                                
+{%endblock%}
+
+
+
+
+                                  
+                                    
+                                      
+        

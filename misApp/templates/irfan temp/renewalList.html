@@ -1,0 +1,112 @@
+{%extends 'dashboard.html' %}
+{% load staticfiles%}
+
+{%load staticfiles%}
+{% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                      <li ><a href="/subscription/list"><span class="ico gray shadow pictures_folder" ></span><b>Subscription</b></a></li>
+                      <li><a href="/customer/"><span class="ico gray shadow pictures_folder" ></span><b>Subscriber</b></a></li>
+                      <li class="select"><a href="/subscription/renew"><span class="ico gray shadow pictures_folder" ></span><b>Lapse Subscription</b></a></li>
+                      <li><a href="/compliment/"><span class="ico gray shadow pictures_folder" ></span><b>Complimentary</b></a></li>
+                      <li ><a href="/suspended/"><span class="ico gray shadow pictures_folder" ></span><b>Suspended</b></a></li>
+                    </ul>
+                    
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}
+
+
+{% block form1Title%}Lapse Subscriptions List{%endblock%}
+
+
+{% block form1Body%}
+<div id="UITab" style="position:relative; ">
+                                         
+                                          <div class="" >
+                                          <div id="tab1" class="tab_content"> 
+                                           
+                                                  <table class="table table-bordered table-striped data_table3 "  id="data_table3" width="100%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr >
+                                                        <!--<td width="3%">S.N.</td>-->
+                                                        <td width="5%">Customer ID</td>
+                                                        <td width="5%">Subscription ID</td>
+                                                        <td width="11%">Subscriber Name</td>
+                                                        <td width="5%">Subscription Date</td>
+                                                        <!--<td width="5%">Subscriber Type</td>-->
+                                                        
+                                                        <td width="9%">City</td>
+                                                        <!--<td width="9%">Mobile No.</td>-->
+                                                        <td width="1%">Status</td>
+                                                        <td width="1%">view</td>
+                                                        <td width="1%"></td>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                      {%for r in rows%}
+                                                      		<tr>
+                                                      		    
+                                                      			<!--<td>{{forloop.counter}}</td>-->
+                                                      			<td>{{cprefix}}{{r.cId}}</td>
+                                                      			<td>{{prefix}}{{r.id}}</td>
+                                                      			<td>{{r.cName}}</td>
+                                                      			<td>{{r.date}}</td>
+                                                      			<!--<td>{%if r.1.type == 'i'%}Individual{%else%}Group{%endif%}</td>-->
+                                                      			<td>{%if r.cCity%}{{r.cCity}}{%else%}----{%endif%}</td>
+                                                                <!--<td>{%if r.0.mobileNo%}{{r.0.mobileNo}}{%else%}----{%endif%}</td>-->
+                                                      			<td>
+                                                        			{%if r.isActive%}
+                                                        				<img src="{% static 'images/icon_success.gif'%}">
+                                                        			{%else%}
+                                                        			    <img src="{% static 'images/inactive.gif'%}" width="13" height="15">
+                                                        			{%endif%}
+                                                        			
+                                                        		</td>
+                                                        		<td class="brdrnone"><a href="/subscription/edit/{{r.id}}"><img src="{% static 'images/edit.png'%}" width="28" height="28" alt="Edit Subscription" title="edit subscription"></a></td>
+                                                        		<td class="brdrnone"><a href="/subscription/renew/{{r.id}}" class='btn'>RENEW</a></td>
+                                                        	</tr>
+                                                      {%endfor%}
+                                                      {%if rows%}
+                                                      <tr style="border:border-collapse;">
+                                                      	<td colspan="2">showing {{FROM}}-{{TO}} of {{totalRows}}</td>
+                                                      	
+                                                      	<td colspan="8" align="right">
+                                                      		<a href="/previous/lapse/{{nextStart}}"">{%if hasPre%}Previous{%endif%}</a>
+                                                      		&nbsp;&nbsp;&nbsp;
+                                                      		<a href="/next/lapse/{{nextStart}}">{%if hasNext%} Next &nbsp;&nbsp;&nbsp;{%endif%}</a>
+                                                      	</td>
+                                                      
+                                                      </tr>
+                                                     {%endif%}
+                                                    </tbody>
+                                                  </table>
+                                         </div>
+                                         </div>
+                                      </div>
+
+
+                                </div>
+                                
+                                
+                                
+                            </div></div>
+                     {%endblock%}
+
+{%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}
+
+
+
+
+
+
+
+
+
+
+              
+
+
+

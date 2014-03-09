@@ -1,0 +1,323 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+{% block leftMenu %}
+              <div id="left_menu">
+                   <ul id="main_menu" class="main_menu">
+                       {%if CUP.department.0 or cu.isAdmin%}
+                      <li ><a href="/departments/"><span class="ico gray shadow pictures_folder" ></span><b>Department</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.role.0 or cu.isAdmin %}
+                      <li ><a href="/role/list"><span class="ico gray shadow  pictures_folder"></span><b>Role</b> </a></li>
+                      {%endif%}
+                      
+                      {%if CUP.employee.0 or cu.isAdmin%}
+                      <li ><a href="/user/list" ><span class="ico gray shadow pictures_folder"></span><b>User</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazine.0 or cu.isAdmin%}
+                      <li ><a href="/magazine/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazineC.0 or cu.isAdmin%}
+                      <li ><a href="/combo/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine Combo</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.gift.0 or cu.isAdmin%}
+                      <li ><a href="/gifts/"><span class="ico gray shadow pictures_folder" ></span><b>Gift</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.tenure.0 or cu.isAdmin%}
+                      <li ><a href="/tenures/"><span class="ico gray shadow pictures_folder" ></span><b>Tenure</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.scheme.0 or cu.isAdmin%}
+                      <li class="select"><a href="/schemes/"><span class="ico gray shadow pictures_folder"></span><b>Scheme</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.source.0 or cu.isAdmin%}
+                      <li ><a href="/sources/"><span class="ico gray shadow pictures_folder"></span><b>Source</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.location.0 or cu.isAdmin%}
+                      <li ><a href="/locations/"><span class="ico gray shadow pictures_folder"></span><b>Location</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.courier.0 or cu.isAdmin%}
+                      <li ><a href="/couriers/"><span class="ico gray shadow pictures_folder"></span><b>Courier</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.branch.0 or cu.isAdmin%}
+                      <li ><a href="/branch/"><span class="ico gray shadow pictures_folder" ></span><b>Branch</b></a></li>
+                      {%endif%}
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              {%endblock%}
+
+{% block form1Title %}
+                                   Edit Schemes
+                                   {% endblock %}
+                                	
+                                {% block form1Body %}
+                                
+                                <div class="widget-content">
+                                    <!-- title box -->
+                                    {% for error in errors %}
+                                    <font color="red">{{error}}<br>
+                                  
+                                    {% endfor %}
+                                    </font>
+                                    
+                                      <form id="add_user" method="post" action="/scheme/edit/{{id}}/"> 
+                                            <div class="section" >
+                                                <label> Scheme Name<sup>*</sup> </label>   
+                                                <div>
+                                                {% if name %}
+                                                <input type="text" name="name" class=" large" value="{{name}}" maxlength="50"  />
+                                                {% else %} 
+                                                <input type="text" name="name" class=" large" value="{{row.name}}" maxlength="50"  />
+                                                {% endif %}
+                                                </div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label> Scheme Description </label>   
+                                                <div>
+                                                {% if description %}
+                                                 <input type="text" name="description" class=" large" value="{{description}}" maxlength="100"  />
+                                                 {% else %}
+                                                <input type="text" name="description" class=" large" value="{{row.description}}" maxlength="100"  />
+                                                {% endif %}
+                                                </div>
+                                           </div>
+                                           
+                                            <div class="section" >
+                                                <label> Start Date </label>   
+                                                <div>
+                                                {% if startdate %}
+                                                <input type="text"  id="datepick" class="datepicker"  name="startdate1" value="{{startdate}}"   style="text-align:left" />
+                                                {% else %} 
+                                                <input type="text"  id="datepick" class="datepicker"  name="startdate1" value="{{sd}}"   style="text-align:left" />
+                                                {% endif %}
+                                                </div>
+                                           </div>
+
+                                            <div class="section" >
+                                                <label>End Date </label>   
+                                                <div>
+       {% if enddate %}
+        <input type="text"  id="datepick2" class="datepicker"  name="enddate1" value="{{enddate}}"   style="text-align:left" />
+        {% else %}                                         
+  <input type="text"  id="datepick2" class="datepicker"  name="enddate1" value="{{ed}}"   style="text-align:left" />
+  {% endif %}
+</div>
+                                           </div>
+                                  <div class="section">
+                                           <div>
+                                           <table cellpadding="3"  border="0">
+                                           	 <tr><td>Magazine</td><td>
+                                           	 
+                                           	 <input type="radio" value="m" name="g"  class="magazine" checked /></td>
+                                           	 
+                                           	 
+                                           	 
+                                           	 <td>Magazine Combo</td><td>
+                                           	 
+                                           	     
+                                           	  <input type="radio" value="c" name="g" class="combo"  /></td>
+                                           	     
+                                           	 </tr>
+                                           </table>
+                                           </div> 
+                                           </div>          
+                                           <div class="section magazine_div" >
+                                                <label>Magazine</label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="magazine" >
+                                                <option value="-1" >Select Magazine</option>
+                                               <!--
+                                                <option value="-1" >Select Magazine</option>
+                                               --> 
+                                                {% for m in magazines %}
+                                                {% if magazine %}
+                                                 {% ifequal magazine m.id %}
+                                                
+                                                <option value="{{m.id}}" selected>{{m.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{m.id}}" >{{m.name}}</option>
+                                                {%endifequal%}
+                                                {% else %}
+                                                 {% ifequal row.magazine.id m.id %}
+                                                
+                                                <option value="{{m.id}}" selected>{{m.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{m.id}}" >{{m.name}}</option>
+                                                {%endifequal%}
+                                                {% endif %}
+                                                {% endfor %}
+                                                
+                                              </select>       
+                                      </div>
+                                           </div>
+                                         
+                                           
+                                           <div class="section combo_div">
+                                                <label>MagazineCombo</label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="magazinecombo" >
+                                                <option value="-1" >Select Magazine</option>
+                                              
+                                                {% for m in magazinecombos %}
+                                                {% if magazinecombo %}
+                                                 {% ifequal magazinecombo m.id %}
+                                                
+                                                <option value="{{m.id}}" selected>{{m.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{m.id}}" >{{m.name}}</option>
+                                                {%endifequal%}
+                                                {% else %}
+                                                 {% ifequal row.magazineCombo.id m.id %}
+                                                
+                                                <option value="{{m.id}}" selected>{{m.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{m.id}}" >{{m.name}}</option>
+                                                {%endifequal%}
+                                                {% endif %}
+                                                {% endfor %}
+                                                
+                                              </select>       
+                                      </div>
+                                           </div> 
+                                           
+                                         
+                                           
+                                          
+                                            
+                                            <div class="section" >
+                                                <label>Offer Price<sup>*</sup></label>   
+                                                <div> 
+                                                {% if cost %}
+                                                <input type="text" name="cost" class=" large" value="{{cost}}" placeholder="in digit" maxlength="8" onkeypress="return isNumberKey(event)" /></div>
+                                                {% else %}
+                                                <input type="text" name="cost" class=" large" value="{{row.cost}}" placeholder="in digit"  maxlength="8" onkeypress="return isNumberKey(event)"  /></div>
+                                                {% endif %}
+                                           </div>
+                                           <div class="section" >
+                                                <label>Gift</label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="gift" >
+                                               
+                                                <option value="-1" >Select Gift</option>
+                                                
+                                                {% for g in offers %}
+                                                {% if gift %}
+                                                {% ifequal gift g.id %}
+                                                
+                                                <option value="{{g.id}}" selected>{{g.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{g.id}}" >{{g.name}}</option>
+                                                {%endifequal%}
+                                                {% else %}
+                                                 {% ifequal row.gifts.id g.id %}
+                                                
+                                                <option value="{{g.id}}" selected>{{g.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{g.id}}" >{{g.name}}</option>
+                                                {%endifequal%}
+                                                {% endif %}
+                                                {% endfor %}
+                                                
+                                              </select>       
+                                      </div>
+                                           </div>
+                                         <div class="section" >
+                                                <label>Tenure<sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="tenure" >
+                                               
+                                                {% for t in tenures %}
+                                                {% if tenure %}
+                                                 {% ifequal tenure t.id %}
+                                                
+                                                <option value="{{t.id}}" selected>{{t.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{t.id}}" >{{t.name}}</option>
+                                                {%endifequal%}
+                                                {% else %}
+                                                 {% ifequal row.tenure.id t.id %}
+                                                
+                                                <option value="{{t.id}}" selected>{{t.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{t.id}}" >{{t.name}}</option>
+                                                {%endifequal%}
+                                                {% endif %}
+                                                {% endfor %}
+                                                
+                                              </select>       
+                                      </div>
+                                           </div>
+                                          
+                                          <div class="section" >
+                                                <label>Remark<sup>*</sup></label>   
+                                                <div>
+                                                
+                                                
+                                                 <input type="text" name="remark" class=" large" value="{{remark}}" maxlength="50"  />
+                                               
+                                                 
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                </div>
+                                           </div>
+                                          
+                                          
+                                           <div class="section" >
+                                                <label>status</label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="status"  >
+                                                {% if status %}
+                                                {% ifequal status "2" %}
+                                                 <option value="1">Active</option>
+                                                <option value="2" selected>InActive</option>
+                                                {% else %}
+                                                 <option value="1" selected>Active</option>
+                                                <option value="2">InActive</option>
+                                                {% endifequal %}
+                                                {% else %}
+                                                {% if row.isActive %}
+                                                <option value="1" selected>Active</option>
+                                                <option value="2">InActive</option>
+                                                
+                                                {% else %}
+                                                <option value="1">Active</option>
+                                                <option value="2" selected>InActive</option>
+                                                {% endif %}
+                                                {% endif %}
+                                              </select>       
+                                      </div>
+                                           </div>
+                                           
+                                           
+                                            <div class="section last">
+                                                <div>
+                                                  <input type="submit" value="Save" name="editScheme" class="btn submit_form"></input>
+</div>
+                                           </div>
+                                        </form>
+                                </div><!--  end widget-content -->
+                            </div>
+                            
+           {% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'dashboard.html'%}
+
+{% block header %}{%endblock%}
+{% block leftMenu %}{%endblock%}
+{% block topNavigation %}{%endblock%}
+{% block form2 %}{%endblock%}
+{% block form3 %}{%endblock%}
+
+
+
+{% block form1Title%}
+Add Magazine:
+{%endblock%}
+
+{%block form1Body%}
+<form id="add_user" method="post" action="">
+      <div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+      </ul>
+      </div>                               
+                                                                                     
+                                          <div class="section" >
+                                                <label> Magazine Name <sup>*</sup></label>   
+                                                <div> <input type="text" name="name" class=" large"  value="{{name}}" /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+
+                                                <label> Magazine Code <sup>*</sup></label>   
+                                                <div> <input type="text" name="code" value="{{code}}" class=" large"  /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label> Price <sup>*</sup></label>   
+                                             <div> <input type="text" name="price" value="{{price}}" class="medium"  onchange="if((this.value!='')  &&  isNaN(parseInt(this.value))){alert('Invalid Price '+this.value);}" /></div>
+                                            </div>
+                                            
+                                            <div class="section" >
+                                                <label> Start Date </label>   
+                                                <div> <input type="text"  id="datepick" class="datepicker"  name="startdate"  value="{{startdate}}" style="text-align:left" /></div>
+                                           </div>
+
+                                            <div class="section" >
+                                                <label>End Date </label>   
+                                                <div> <input type="text"  id="datepick2" class="datepicker"  name="enddate" value="{{enddate}}"  style="text-align:left" />
+</div>
+                                           </div>
+                                           
+                                            
+                                            <div class="section">
+                                                <label>Active</label>   
+                                                <div class="selectWidth1">
+                                                  {%if active %}
+                                                  <input type="checkbox" name="active" value="1" checked />
+                                                  {%else%}
+                                                  <input type="checkbox" name="active" value="1" />
+                                                  {%endif%}
+                                                  
+                                                </div>
+                                           </div>
+                                            <div class="section last">
+                                             <div>
+                                                  <input type="submit" name="addMagazine" value="Add Magazine" class="btn submit_form"></input>
+<a class="btn" title="Reset Form" onclick="ResetForm()">Reset</a> </div>
+                                           </div>
+                                        </form>
+{%endblock%}
+
+
+

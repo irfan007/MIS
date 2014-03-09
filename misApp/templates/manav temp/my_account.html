@@ -1,0 +1,216 @@
+{% extends "dashboard.html" %}
+
+
+
+
+
+{% block leftMenu %}
+               
+               
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     <li class="select"><a href="/myaccount/" ><span class="ico gray shadow pictures_folder"></span><b>my account</b></a></li>
+                      
+                       
+                    </ul>
+                   
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}                             
+
+
+
+
+
+
+                                   {% block form1Title %}
+                                   
+                                   
+                                   My Account
+                                   
+                                   
+                                   {% endblock %}
+                                   
+                               {% block form1Body %}
+                                   
+
+                                 
+                                 <script>
+function getState(countryId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("statediv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/accMresponder?country="+countryId,true);
+xmlhttp.send();
+}
+
+</script>
+                                 
+
+
+                                 <script>
+function getCity(stateId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("citydiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/accMresponder?state="+stateId,true);
+xmlhttp.send();
+}
+
+</script>
+
+
+
+
+                                      <form id="add_user" method="post" action="/myaccount/" enctype="multipart/form-data">
+                                       
+                                       
+                                      
+                                       
+                                       {% for error in errors %}
+                                       <font color="red">{{error}}<br>
+                                       </font>
+                                       {% endfor %}
+                                            <div class="section" >
+                                            
+                                                <label>User name<sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                <input type="text" name="username" class="large" readonly  value="{{username}}" />       
+                                               </div>
+                                           </div>
+                                           
+                                           <!--<div class="section" >
+                                                <label>Change Password<sup>*</sup></label>   
+                                                <div> <input type="password" name="npassword" class="large" value="{{password}}" maxlength="25"  /></div>
+                                           </div>
+                                           <div class="section" >
+                                                <label>Confirm Password<sup>*</sup></label>   
+                                                <div> <input type="password" name="cpassword" class=" large" value="{{confpassword}}" maxlength="25"  /></div>
+                                           </div>
+                                           -->
+                                            <div class="section" >
+                                                <label>Email ID<sup>*</sup></label>   
+                                                <div> <input type="text" name="email" class=" large" value="{{email}}" maxlength="100"  /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>First Name</label>   
+                                                <div>
+                                                <input type="text" name="fname" class="large"   value="{{fname}}" />       
+                                      </div>
+                                           </div>
+                                           <div class="section" >
+                                                <label>Last Name</label>   
+                                                <div>
+                                                <input type="text" name="lname" class="large"   value="{{lname}}" />       
+                                      </div>
+                                           </div>
+                                           <div class="section" >
+                                                <label>Contact No</label>   
+                                                <div>
+                                                <input type="text" name="contactno" class="medium" onkeypress="return isNumberKey(Event)" maxlength="12" placeholder="in digit"  value="{{contact}}" />       
+                                      </div>
+                                      
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Address</label>   
+                                                <div>
+                                                <input type="text" name="address" class="large"   value="{{address}}" />       
+                                      </div>
+                                           </div>
+                                                   <div class="section" >
+                                                <label>Pincode</label>   
+                                                <div>
+                                                <input type="text" name="pincode" class="large" onkeypress="return isNumberKey(Event)" maxlength="10" placeholder="in digit"  value="{{pincode}}" />       
+                                      </div>
+                                           </div>
+                                   
+                                           <div class="section" >
+                                                <label>State</label>   
+                                                <div class="selectWidth1" id="statediv">
+                                                <select class="small" name="state"  onchange="getCity(this.value)" >
+                                               
+                                                
+                                                <option value="-1">select</option>
+                                                {% for s in getstates %}
+                                                 {% ifequal getstate s.id %}
+                                                
+                                                <option value="{{s.id}}" selected>{{s.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{s.id}}" >{{s.name}}</option>
+                                                {%endifequal%}
+                                                {% endfor %}
+                                                
+                                              </select>       
+                                      </div>
+                                        </div>
+                                        <div class="section" >
+                                                <label>City</label>   
+                                                <div class="selectWidth1" id="citydiv">
+                                                <select class="small" name="city" >
+                                               
+                                                <option value="-1">select</option>
+                                                
+                                                {% for c in getcities %}
+                                                 {% ifequal getcity c.id %}
+                                                
+                                                <option value="{{c.id}}" selected>{{c.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{c.id}}" >{{c.name}}</option>
+                                                {%endifequal%}
+                                                {% endfor %}
+                                                
+                                              </select>       
+                                      </div>
+                                        </div>
+                                           
+                                          <div class="section">
+                                          <label>Upload New Image </label>   
+                                          <div style="padding-bottom:5px;"> 
+                                              <input type="file"  name="image" />
+                                          </div>
+                                          </div>
+                                            <div class="section last">
+                                                <div>
+                                                  <input type="submit" class="btn submit_form" name="Save" value="Save"></input>
+</div>
+                                           </div>
+                                        </form>
+                                </div><!--  end widget-content -->
+                   
+                            {% endblock %}
+                            
+                          <!-- start right section--> 
+                            
+                   

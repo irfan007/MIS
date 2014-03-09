@@ -1,0 +1,148 @@
+{% extends 'dashboard.html' %}
+{% load staticfiles %}
+               
+              
+                    {% block leftMenu %}
+                    <div id="left_menu">
+                 
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+                            {%endblock%}   
+                                 
+                    
+                    
+                   
+                   
+
+                              
+           {% block form1Title %}
+                  Log List
+                  
+ <script>
+                 
+                 
+                 
+ function getFilteredLog()
+ {
+
+  username=document.getElementById('userNAME').value
+  modulename=document.getElementById('modNAME').value
+  location.href="/getData/"+username+'/'+modulename
+
+}
+  </script> 
+                  
+                  
+           {% endblock %} 
+                  {% block form1Header %}
+                  
+                
+                          {% endblock %}
+                                
+
+                          {% block form1Body %}
+                          <table>
+                          <tr>
+                          <td><label><pre>User   </pre></label></td>
+                          <td>
+                          <select name="getUser" onchange="getFilteredLog()" id="userNAME">
+                          {% ifequal para1 'All' %}
+                          	<option value="All" selected>All</option>
+                          	{% else %}
+                          	<option value="All">All</option>
+                          	{% endifequal %}
+                          {% for data in allEmp %}
+                          {% ifequal para1 data.username %}
+                          <option value="{{data.username}}" selected>{{data.username}}</option>
+                          {% else %}
+                          <option value="{{data.username}}" >{{data.username}}</option>
+                          {% endifequal %}
+                          {% endfor %}
+                          </select>
+                          </td>
+                          <td><pre>      </pre></td>
+                           <td><label><pre>Module   </pre></label></td>
+                           
+                          <td>
+                          <select name="getModule" onchange="getFilteredLog()" id="modNAME" >
+                          {% ifequal para2 "All" %}
+                          
+                          <option value="All" selected>All</option>
+                          {% else %}
+                          <option value="All" >All</option>
+                          {% endifequal %}
+                          {% for data in modulesList %}
+                          {% ifequal para2 data %}
+                          <option value="{{data}}" selected>{{data}}</option>
+                          {% else %}
+                          <option value="{{data}}">{{data}}</option>
+                          {% endifequal %}
+                          {% endfor %}
+                          </select>
+                          </td>
+                          </tr>
+                          
+                          
+                          
+                          
+                          
+                          
+                          </table>
+                          
+                          
+                          
+                          <div id="UITab" style="position:relative; ">
+                                         
+                               <div class="" >
+                                          <div id="tab1" class="tab_content"> 
+                                      <style type="text/css">
+.dataTables_filter {
+display: none;
+}
+</style>        
+
+<div id="tablevalues1">
+                 <table class="table table-bordered table-striped data_table3 "  id="data_table3" width="100%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr >
+                                                        <td width="7%">SrNo.</td>
+                                                        <td width="25%">Module</td>
+                                                              <td width="20%">Remark</td>
+                                                        <td width="20%">Username</td>
+                                                               <td width="20%">Date</td>
+                                                        <td width="10%">View</td>
+                                                        
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                    
+                                                    {% for item in records %}
+                                                      <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td style="text-transform:capitalize">{{item.tbl_name}}</td>
+                                                        <td>{{item.remarks}}</td>
+                                                        <td>{{item.username}}</td>
+                                                        <td>{{item.getDate}}
+                                                        
+                                                       
+                                          <td class="brdrnone"><a href="/log/fullview/{{item.id}}">
+               <img src="{% static "images/edit.png" %}" width="28" height="28" alt="View" title="Full View"></a>
+                                                          </td>
+                                                      </tr>
+                                                     
+                                                     
+                                                     {% endfor %}
+                                                      
+                                                      
+                                                      
+                                                      
+                                                    </tbody>
+                                                  </table>
+                                                  </div>
+                                      </div>
+                                              
+                                      </div>
+                                      </div>
+                                
+                     {% endblock %}
+                    

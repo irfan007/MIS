@@ -1,0 +1,136 @@
+{% extends 'dashboard.html'%}
+{% block leftMenu %}
+              <div id="left_menu">
+                     <ul id="main_menu" class="main_menu">
+                       {%if CUP.department.0 or cu.isAdmin%}
+                      <li ><a href="/departments/"><span class="ico gray shadow pictures_folder" ></span><b>Department</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.role.0 or cu.isAdmin %}
+                      <li ><a href="/role/list"><span class="ico gray shadow  pictures_folder"></span><b>Role</b> </a></li>
+                      {%endif%}
+                      
+                      {%if CUP.employee.0 or cu.isAdmin%}
+                      <li ><a href="/user/list" ><span class="ico gray shadow pictures_folder"></span><b>User</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazine.0 or cu.isAdmin%}
+                      <li class="select"><a href="/magazine/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazineC.0 or cu.isAdmin%}
+                      <li ><a href="/combo/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine Combo</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.gift.0 or cu.isAdmin%}
+                      <li ><a href="/gifts/"><span class="ico gray shadow pictures_folder" ></span><b>Gift</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.tenure.0 or cu.isAdmin%}
+                      <li ><a href="/tenures/"><span class="ico gray shadow pictures_folder" ></span><b>Tenure</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.scheme.0 or cu.isAdmin%}
+                      <li ><a href="/schemes/"><span class="ico gray shadow pictures_folder"></span><b>Scheme</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.source.0 or cu.isAdmin%}
+                      <li ><a href="/sources/"><span class="ico gray shadow pictures_folder"></span><b>Source</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.location.0 or cu.isAdmin%}
+                      <li ><a href="/locations/"><span class="ico gray shadow pictures_folder"></span><b>Location</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.courier.0 or cu.isAdmin%}
+                      <li ><a href="/couriers/"><span class="ico gray shadow pictures_folder"></span><b>Courier</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.branch.0 or cu.isAdmin%}
+                      <li ><a href="/branch/"><span class="ico gray shadow pictures_folder" ></span><b>Branch</b></a></li>
+                      {%endif%}
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              {%endblock%}
+
+{% block form1Title%}
+Edit Magazine:
+{%endblock%}
+
+{%block form1Body%}
+<form id="add_user" method="post" action="">
+      <div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+      </ul>
+      </div>                               
+                                                                                     
+                                          <div class="section" >
+                                                <label> Magazine Name <sup>*</sup></label>   
+                                                <div> <input type="text" maxlength="50" name="name" class=" large"  value="{{name}}" /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+
+                                                <label> Magazine Code <sup>*</sup></label>   
+                                                <div> <input type="text" name="code" value="{{code}}" maxlength="50" class=" large"  /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label> Price <sup>*</sup></label>   
+                                             <div> <input type="text" name="price" value="{{price}}" class="medium" onkeypress="return isNumberKey(event)" maxlength="8"  /></div>
+                                            </div>
+                                            
+                                            <div class="section" >
+                                                <label> Start Date </label>   
+                                                <div> <input type="text"  id="datepick" class="datepicker"  name="startdate"  value="{{startdate}}" style="text-align:left" /></div>
+                                           </div>
+
+                                            <div class="section" >
+                                                <label>End Date </label>   
+                                                <div> <input type="text"  id="datepick2" class="datepicker"  name="enddate" value="{{enddate}}"  style="text-align:left" />
+</div>
+                                           </div>
+                                            <div class="section" >
+                                                <label>Magazine Period </label>   
+                                                <div>
+                                                <select name="magPeriodid" class="selectWidth1">
+                                                {% for data in allMagPeriod %}
+                                                {% ifequal magPeriodid data.id %}
+                                                <option value="{{data.id}}" selected>{{data.name}}</option>
+                                                {% else %}
+                                                <option value="{{data.id}}">{{data.name}}</option>
+                                                {% endifequal %}
+                                                {% endfor %}
+                                                </select> 
+</div>
+                                           </div>
+                                           
+  										<div class="section" >
+                                                <label>Remark<sup>*</sup> </label>   
+                                                <div> <input type="text"  name="remark" value="{{remark}}" maxlength="50"  style="text-align:left" />
+</div>
+                                           </div>
+                                           
+                                            
+                                            <div class="section">
+                                                <label>Active</label>   
+                                                <div class="selectWidth1">
+                                                  {%if active %}
+                                                  <input type="checkbox" name="active" value="1" checked />
+                                                  {%else%}
+                                                  <input type="checkbox" name="active" value="1" />
+                                                  {%endif%}
+                                                  
+                                                </div>
+                                           </div>
+                                            <div class="section last">
+                                             <div>
+                                                  <input type="submit" name="editMagazine" value="Save" class="btn submit_form"></input>
+</div>
+                                           </div>
+                                        </form>
+{%endblock%}

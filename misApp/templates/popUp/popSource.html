@@ -1,0 +1,90 @@
+{% extends 'dashboard.html'%}
+
+{% block header %}{%endblock%}
+{% block leftMenu %}{%endblock%}
+{% block topNavigation %}{%endblock%}
+{% block form2 %}{%endblock%}
+{% block form3 %}{%endblock%}
+
+
+
+{% block form1Title%}
+Add Source:
+{%endblock%}
+
+{%block form1Body%}
+
+
+
+                                   {% for error in errors %}
+                                         <font color="red">{{error}}<br></font>
+                                         {% endfor %}
+                                        
+                                                                  
+                                      <form id="add_user" method="post" action=""> 
+                                            <div class="section" >
+                                                <label>Category<sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="category" >
+                                               
+                                                <option value="-1" >Select</option>
+                                                
+                                                {% for c in categories %}
+                                                 {% ifequal category c.id %}
+                                                
+                                                <option value="{{c.id}}" selected>{{c.categoryName}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{c.id}}" >{{c.categoryName}}</option>
+                                                {%endifequal%}
+                                                {% endfor %}
+                                                
+                                              </select>
+                                              <br>
+                                              <input type="text" name="addcategory" value="{{newcategoryname}}">
+                                              <input type="submit" name="addnewcategory" value="add" >       
+                                      </div>
+                                      
+                                        </div>
+                                           
+                                           <div class="section" >
+                                                <label>Name/Information<sup>*</sup></label>   
+                                                <div> <input type="text" name="name" class=" large" value="{{name}}"  /></div>
+                                           </div>
+                                           
+                                            
+                                          
+                                            <div class="section" >
+                                                <label>status</label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="status" >
+                                                
+                                                {% if status %}
+                                                {% ifequal status "1" %}
+                                                
+                                                <option value="1" selected>Active</option>
+                                                
+                                                <option value="2">InActive</option>
+                                                {% else %}
+                                                 <option value="2" selected>InActive</option>
+                                                
+                                                <option value="1">Active</option>
+                                                {% endifequal %}
+                                                {% else %}
+                                                  <option value="1" selected>Active</option>
+                                                   <option value="2">InActive</option>
+                                                   {% endif %}                                          
+                                                </select>       
+                                      </div>
+                                           </div>
+                                           
+                                            <div class="section last">
+                                                <div>
+                                                  <input type="submit" value="Save" name="addSource" class="btn submit_form"></input>
+<a class="btn" title="Reset Form" onclick="ResetForm()">Clear Form</a> </div>
+                                           </div>
+                                        </form>
+{%endblock%}
+
+
+

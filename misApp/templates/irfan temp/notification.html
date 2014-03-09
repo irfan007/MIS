@@ -1,0 +1,176 @@
+{% extends 'dashboard.html'%}
+{%load staticfiles%}
+{% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                    <li class="select"><a href="/notification/"><span class="ico gray shadow pictures_folder" ></span><b>Notification</b></a></li>
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}
+{% block form1Title%}
+Manage Notification 
+{%endblock%}
+
+
+
+{%block widgetContent%}
+
+<div class="widget-content">
+                                    <!-- title box -->
+                                    
+                                      <form id="add_user" method="post" action=""> 
+                                      <div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+      </ul>
+      </div> 
+                                            <!--<div class="section" >
+                                                <label>Date </label>   
+                                                <div> <input type="text"  id="datepick" class="datepicker small"  name="datepicker"   style="text-align:left" /> &nbsp; <strong>To</strong> &nbsp;&nbsp;<input type="text"  id="datepick2" class="datepicker small"  name="datepicker"   style="text-align:left" /></div>
+                                           </div>-->
+                                           
+                                           <div class="section">
+                                                <label>Magazine</label>   
+                                                <div class="selectWidth1">
+
+                                                <select class="small"  name="magazine">
+                                                
+                                                   <option value="-1" selected >select magazine</option>
+                                                    {%for m in magazines%}
+                                                    {%ifequal magazine m.name%}
+                                                   <option value="{{m.name}}" selected>{{m.name}}</option>
+                                                    {%else%}
+                                                   <option value="{{m.name}}">{{m.name}}</option>
+                                                    {%endifequal%}
+                                                    {%endfor%}
+                                                </select>       
+                                                </div>
+                                           </div>
+                                           
+                                           
+                                           <div class="section">
+                                                <label>Subscription end Month</label>   
+                                                <div class="selectWidth1">
+
+                                                <select class="small"  name="month">
+                                                
+                                                   <option value="-1" selected >select month</option>
+                                                    {%for id,name in months%}
+                                                    {%ifequal month id%}
+                                                   <option value="{{id}}" selected>{{name}}</option>
+                                                    {%else%}
+                                                   <option value="{{id}}">{{name}}</option>
+                                                    {%endifequal%}
+                                                    {%endfor%}
+                                                </select>       
+                                                </div>
+                                           </div>
+                                           
+
+                                            <div class="section ">
+                                                <div>
+                                                  <input type="submit" class="btn" value="View" name="whenview"/> 
+<!--
+<input type="submit" class="btn" value="Export To Excel" name="whenexport"/><input type="submit" class="btn" value="Print" name="whenprint" />
+-->
+ </div>
+                                           </div>
+                                        
+                                </div>
+                                
+                            </div>
+                    
+                    <div class="widget  clearfix" style="margin-top:20px;">
+                                <div class="widget-header">
+                                    <span>Notification</span> 
+                                </div>
+
+                                
+                                <div class="widget-content">
+                                <div id="UITab" style="position:relative; ">
+                                         
+                                        <div style="width:100%" class="" id="scroll_area" >
+                                          <div id="tab1" class="tab_content"> 
+                                          
+          									<table class="table table-bordered table-striped"  id="" width="200%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr>
+                                                        <td width="3%">S.N.</td>
+                                                        <td width="5%">Subscription Code</td>
+                                                        <td width="11%">Subscriber Name</td>
+                                                        <td width="5%">Subscription Date</td>
+                                                        <td width="5%">Subscriber Type</td>
+                                                        
+                                                        <td width="9%">City</td>
+                                                        <td width="6%">Mobile No.</td>
+                                                        <td width="2%"></td>
+                                                        <td width="1%">Action</td>
+                                                      </tr>
+                                                    </thead>
+                                                    
+                                                    <tbody align="center" class="font_wght">
+                                                      
+                                                      {%for r in rows%}
+                                                      <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{prefix}}{{r.1.id}}</td>
+                                                        <td>{{r.0.firstName}}</td>
+                                                        <td>{{r.1.date}}</td>
+                                                        
+                                                        <td>{%if r.1.type == 'i'%}Individual{%else%}Group{%endif%}</td>                                                        
+                                                        <td>{%if r.0.city%}{{r.0.city}}{%else%}----{%endif%}</td>
+                                                        <td>{%if r.0.mobileNo%}{{r.0.mobileNo}}{%else%}----{%endif%}</td>
+                                                        <td>
+                                                        	<div class="checksquared">
+                                                        		<input type="checkbox" name="{{r.1.id}}" id="check-1" value="1"   checked="checked"/>
+                                                        		<label  for="check-1" title=""></label>
+                                                            </div>
+                                                        </td>
+                                                        <td><a href="/notification/email/{{r.1.id}}"><img src="{% static 'images/email.jpeg'%}" width="33" height="33" alt="email him" title="email only to him"></a></td>
+                                                      </tr>
+                                                      {%empty%}
+                                                      <tr>
+                                                          {%if month and magazine%}
+                                                          <td colspan='8'>no subscription found </td>
+                                                          {%else%}
+                                                          <td colspan='8'>please search subscriptions first</td>
+                                                          {%endif%}
+                                                      </tr>
+                                                      {%endfor%}
+                                                    </tbody>
+                                                    
+                                          </table>
+                                     
+                                     <div class="section last" align="right">
+                                      <div >
+                                      
+                                         <input type="submit" class="btn" name="whenSend" value="Send Email to All" {%if not rows%}disabled{%endif%}/>
+									     
+									  </div>
+									 </div>
+									 </form>
+									 <br>
+                                      </div>
+                                      </div>
+                                      </div>
+                                      </div>
+                                
+                            </div></div>
+                     
+                                
+                                     
+                                
+{%endblock%}
+
+{%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}
+
+
+                                  
+                                    
+                                      
+        

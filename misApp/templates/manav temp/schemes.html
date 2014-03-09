@@ -1,0 +1,174 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+    {% block searchtop %}
+     <form name="jump1" method="POST">
+         <select maxlength="50" style="width: 200px; " id="property_type" name="select_option_to_be_search" OnChange="location.href=jump1.select_option_to_be_search.options[selectedIndex].value">
+         
+    	
+         <option value="/role/list">Role</option>
+         
+          <option value="/user/list" >User</option>
+     
+          
+          <option value="/departments">Department</option>
+          <option value="/magazine/list">Magazine</option>
+           <option value="/combo/list">MagazineCombo</option>
+            <option value="/gifts/">Gift</option>
+            <option value="/tenures/" >Tenure</option>
+            <option value="/schemes/"  selected>Scheme</option>
+            <option value="/sources/">Source</option>
+            <option value="/couriers/">Courier</option>
+            <option value="/branch/">Branch</option>
+        
+          
+         
+        </select>
+        
+        </span></div>
+     <div class="frm_2"><input type="text" value="" maxlength="50" style="width: 290px; height:25px " name="passing_parameter" id="name"></div>
+      <div class="frm_3"><input type="submit" value="Search" class="uibutton  confirm" name="submit_query"></div>
+    </form>
+    {% endblock %}
+ {% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                       {%if CUP.department.0 or cu.isAdmin%}
+                      <li ><a href="/departments/"><span class="ico gray shadow pictures_folder" ></span><b>Department</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.role.0 or cu.isAdmin %}
+                      <li ><a href="/role/list"><span class="ico gray shadow  pictures_folder"></span><b>Role</b> </a></li>
+                      {%endif%}
+                      
+                      {%if CUP.employee.0 or cu.isAdmin%}
+                      <li ><a href="/user/list" ><span class="ico gray shadow pictures_folder"></span><b>User</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazine.0 or cu.isAdmin%}
+                      <li ><a href="/magazine/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazineC.0 or cu.isAdmin%}
+                      <li ><a href="/combo/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine Combo</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.gift.0 or cu.isAdmin%}
+                      <li ><a href="/gifts/"><span class="ico gray shadow pictures_folder" ></span><b>Gift</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.tenure.0 or cu.isAdmin%}
+                      <li ><a href="/tenures/"><span class="ico gray shadow pictures_folder" ></span><b>Tenure</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.scheme.0 or cu.isAdmin%}
+                      <li class="select"><a href="/schemes/"><span class="ico gray shadow pictures_folder"></span><b>Scheme</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.source.0 or cu.isAdmin%}
+                      <li ><a href="/sources/"><span class="ico gray shadow pictures_folder"></span><b>Source</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.location.0 or cu.isAdmin%}
+                      <li ><a href="/locations/"><span class="ico gray shadow pictures_folder"></span><b>Location</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.courier.0 or cu.isAdmin%}
+                      <li ><a href="/couriers/"><span class="ico gray shadow pictures_folder"></span><b>Courier</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.branch.0 or cu.isAdmin%}
+                      <li ><a href="/branch/"><span class="ico gray shadow pictures_folder" ></span><b>Branch</b></a></li>
+                      {%endif%}
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              {%endblock%} 
+
+
+                                 {% block form1Title %}
+                                 
+                                 Schemes List
+                                 
+                                 {% endblock %}
+                     {% block form1Header %}
+ <div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+ 
+                          <a class="btn  btn-large" href="/scheme/add/"><strong>Add Scheme</strong></a></div>
+                          {% endblock %}
+                                
+                            
+
+                      {% block form1Body %}
+                               
+                                <div id="UITab" style="position:relative; ">
+                                         
+                                          <div class="" >
+                                          <div id="tab1" class="tab_content"> 
+                                           
+                                <table class="table table-bordered table-striped data_table3 "  id="data_table3" width="100%">
+                                              <thead align="center"  class="tr_bg_list">
+                                                      <tr >
+                                                        <td width="7%">S.No</td>
+                                                        <td width="10%">Name</td>
+                                                       
+                                                        
+                                                        <td width="12%">Magazine/Combo</td>
+                                                        <td width="5%">Gift</td>
+                                                        
+                                                        
+                                                        <td width="10%">Tenure</td>
+                                                       
+                                                         <td width="10%">Offer Price</td>
+                                                        <td width="8%">Status</td>
+                                                        <td width="8%">Action</td>
+                                                        
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                      
+                                                      {% for item in rows %}
+                                                      <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{item.name}}</td>
+                                                       
+                                                        {% if item.magazine.name %}
+                                                        
+                                                        <td>{{item.magazine.name}}</td>
+                                                        {% else %}
+                                                        <td>{{item.magazineCombo.name}}</td>
+                                                        {% endif %}
+                                                        <td>{{item.gifts.name}}</td>
+                                                        <td>{{item.tenure.timePeriod}}</td>
+                                                     
+                                                     
+                                                        <td>{{item.cost}}</td>
+                                                          
+                                                        <td>
+                                                        
+                                                        {% if item.isActive%}
+                                                    <img src="{% static 'images/icon_success.gif'%}">
+                                                    {%else%}
+                                                         <img src="{% static 'images/inactive.gif'%}" width="13" height="15">
+                                                        {% endif %}
+                                                        </td>
+         <td class="brdrnone"><a href="/scheme/edit/{{item.id}}/"><img src="{% static "images/edit.png" %}" width="28" height="28" alt="Edit Scheme" title="Edit Scheme"></a>
+</td>
+</tr>
+                                  {% endfor %}
+                                                      
+                                                     
+                                                     
+                                                     
+                                                      
+                                                      
+                                                    </tbody>
+                                                  </table>
+                                      </div>
+                                              
+                                      </div>
+                                      </div>
+                    
+                                
+                    
+                     {% endblock %}
+                    

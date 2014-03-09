@@ -1,0 +1,89 @@
+{% extends 'dashboard.html' %}
+{% load staticfiles %}
+               
+              
+                    {% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                      
+                      <li class="select"><a href="/giftstock/"><span class="ico gray shadow pictures_folder" ></span><b>Gift Stock</b></a></li>
+                      
+                      
+                      
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              {%endblock%}   
+                                 
+                    
+                    
+                   
+                   
+
+                              
+           {% block form1Title %}
+                  Gifts Stock
+           {% endblock %} 
+                  {% block form1Header %}
+                  
+                  <div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+               </div>
+                          {% endblock %}
+                                
+
+                          {% block form1Body %}
+                          <div id="UITab" style="position:relative; ">
+                                         
+                               <div class="" >
+                                          <div id="tab1" class="tab_content"> 
+                                           
+                                                  <table class="table table-bordered table-striped data_table3 "  id="data_table3" width="100%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr >
+                                                        <td width="20%">Code</td>
+                                                        <td width="20%">Gifts Name</td>
+                                                        <td width="20%">CurrentStock</td>
+                                                        
+                                                        <td width="20%">Status</td>
+                                                        <td width="10%">Action</td>
+                                                        <td width="10%">History</td>
+                                                        
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                    
+                                                    {% for item in gifts %}
+                                                      <tr>
+                                                        <td>{{item.code}}</td>
+                                                        <td>{{item.name}}</td>
+                                                        <td>{{item.updated}}</td>
+                                                       
+                                                       <td>
+                                                        
+                                                        {% if item.isActive%}
+                                                    <img src="{% static 'images/icon_success.gif'%}">
+                                                    {%else%}
+                                                         <img src="{% static 'images/inactive.gif'%}" width="13" height="15">
+                                                        {% endif %}
+                                                        </td>
+                                                        <td class="brdrnone"><a href="/giftstock/edit/{{item.id}}"><img src="{% static "images/edit.png" %}" width="28" height="28" alt="Edit Customer" title="Edit Gift Stock"></a>
+                                                          </td>
+                                                          <td class="brdrnone"><a href="/gifthistory/{{item.id}}"><img src="{% static "images/edit.png" %}" width="28" height="28" alt="Edit Customer" title="View Stock History"></a>
+                                                          </td>
+                                                      </tr>
+                                                     
+                                                     
+                                                     {% endfor %}
+                                                      
+                                                      
+                                                      
+                                                      
+                                                    </tbody>
+                                                  </table>
+                                      </div>
+                                              
+                                      </div>
+                                      </div>
+                                
+                     {% endblock %}
+                    

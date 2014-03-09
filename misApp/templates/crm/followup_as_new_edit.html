@@ -1,0 +1,596 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}            
+              
+{% block leftMenu %}
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     
+                      <li ><a href="/CRM/" ><span class="ico gray shadow pictures_folder"></span><b>Complaints</b></a></li>
+                      <li class="select"><a href="/sales/" ><span class="ico gray shadow pictures_folder"></span><b>Contacts</b></a></li>
+                      
+              </ul>
+              <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              
+              
+{% endblock %}
+
+
+
+              
+ {% block form1Title %} 
+   <label>  Manage Contact </label> 
+ {% endblock %}  
+                             
+ {% block form1Header%}
+	<div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+	
+	</div>
+ {%endblock%}
+                             
+                             
+ 
+                             
+                             
+{% block form1Body %}
+
+<script>
+function redirectBy(value)
+{
+
+if(value=='e')
+{
+location.href = '/sales/followup_as_sub/';
+}
+}
+
+
+
+function calcAge(dobString) {
+  dobString=dobString.split("-")
+  dobString=dobString[1]+'/'+dobString[0]+'/'+dobString[2];
+  
+  var birthday = new Date(dobString);
+  var age=~~((Date.now() - birthday) / (31557600000));
+  if(age<2)
+  {alert("please enter valid birth date!");}
+  else{
+  document.getElementById('age').value=age;}
+}
+
+
+function getState(countryId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("statediv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?country="+countryId,true);
+xmlhttp.send();
+}
+
+
+
+function getCity(stateId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("citydiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?state="+stateId,true);
+xmlhttp.send();
+}
+
+
+
+
+
+
+
+
+
+
+
+</script>
+
+
+
+<div style="background:lightyellow;{%if errors%}border:1px solid yellow;{%endif%}">
+  <ul style="color:red;style:disk;font-size:13px;">
+            	{% for e in errors %}
+            	  <li>&nbsp;{{e}}</li>
+            	{%endfor%}
+            	
+  </ul>
+  </div>
+  
+  
+  <div style="background:lightyellow;{%if cuMessages%}border:1px solid yellow;{%endif%}">
+  <ul style="color:green;style:disk;font-size:13px;">
+            	{% for m in cuMessages %}
+            	  <li>&nbsp;{{m}}</li>
+            	{%endfor%}
+            	
+  </ul>
+  </div>
+  
+  <div style="background:lightyellow;{%if cuWarnings%}border:1px solid yellow;{%endif%}">
+  <ul style="font-size:13px;">
+            	{% for w in cuWarnings %}
+            	  <li>&nbsp;{{w}}</li>
+            	{%endfor%}
+  </ul>
+  </div>
+  
+  
+  <br/>
+            <div id="UITab" style="position:relative;">
+            	<div>
+            		<div id="tab1" class="tab_content">
+            			
+            			<form action="" method="post">
+            			<table border="0" cellpadding="" width="40%" style="background:">
+            				<tbody align="center" class="font_wght">
+                                  
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>CREATED BY</label></td>
+                                  <td>
+                                  	 <input type="text"  value="{{ps.empCodePrefix}}{{contact.createdBy}}" readonly/>
+                                  </td>
+                                  </tr>
+                                  
+                                  {%if contact.subId%}
+                                  <tr>
+                                  <td width="" align="left"><label>SUBSCRIPTION NO.</label></td>
+                                  <td>
+                                  	 <input type="text"  value="{{ps.getSubPrefix}}{{contact.subId}}" readonly/>
+                                  </td>
+                                  </tr>
+                                  
+                                  {%endif%}
+                                   
+                                  <tr>
+                                  <td width="" align="left"><label>TITLE <sup>*</sup></label></td>
+                                  <td >
+                                  	<table>
+                                        	<tr>
+                                        		<td>
+                                        		 	<select class="small"  name="title">
+                                        		 		   <option value="-1" selected >Select Title</option>
+		                                                   {%if title == 'm'%}
+		                                                   <option value="m"  selected>Mr.</option>
+		                                                   {%else%}
+		                                                   <option value="m" >Mr.</option>
+		                                                   {%endif%}
+		                                                   
+		                                                   {%if title == 'f'%}
+		                                                   <option value="f"  selected>Mrs.</option>
+		                                                   {%else%}
+		                                                   <option value="f" >Mrs.</option>
+		                                                   {%endif%}
+		                                                   
+		                                                   
+		                                                   {%if title == 'mis'%}
+		                                                   <option value="mis"  selected>Miss</option>
+		                                                   {%else%}
+		                                                   <option value="mis" >Miss</option>
+		                                                   {%endif%}
+		                                                   
+		                                                   {%if title == 'd'%}
+		                                                   <option value="d"  selected>Dr.</option>
+		                                                   {%else%}
+		                                                   <option value="d" >Dr.</option>
+		                                                   {%endif%}
+		                                                   
+		                                                   {%if title == 'o'%}
+		                                                   <option value="o"  selected>Other</option>
+		                                                   {%else%}
+		                                                   <option value="o" >Other</option>
+		                                                   {%endif%}
+                                              		</select>
+                                        		</td>
+                                        		
+                                        		<td>
+                                        		
+                                        		</td>
+                                        	</tr>
+                                    	
+                                    </table>
+                                    </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>FIRST NAME <sup>*</sup></label></td>
+                                  <td>
+                                  	<input type="text" name="firstname" value="{{firstname}}"   />
+                                  </td>
+                                  </tr>
+                                  
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>LAST NAME <sup>*</sup></label></td>
+                                  <td>
+                                  	<input type="text" name="lastname" value="{{lastname}}"  />
+                                  </td>
+                                  </tr>
+                                  
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>DOB </label></td>
+                                  <td>
+                                  	<input type="text" name="dob" class="datepicker" style="text-align:left" value="{{dob}}"  onchange="calcAge(this.value);" />
+                                  </td>
+                                  </tr>
+                                  
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>AGE </td>
+                                  <td>
+                                  	<input type="text" name="age" id="age" value="{{age}}"   />
+                                  </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>SEX </label></td>
+                                  <td >
+                                  	<table>
+                                        	<tr>
+                                        		<td>
+                                        		 	<select   name="sex">
+                                                
+                                                <option value="-1" selected >Select Sex</option>
+                                                   {%if sex == 'm'%}
+                                                   <option value="m"  selected>Male</option>
+                                                   {%else%}
+                                                   <option value="m" >Male</option>
+                                                   {%endif%}
+                                                   {%if sex == 'f'%}
+                                                   <option value="f"  selected>Female.</option>
+                                                   {%else%}
+                                                   <option value="f" >Female</option>
+                                                   {%endif%}
+                                                   
+
+                                              </select>
+                                        		</td>
+                                        		
+                                        		<td>
+                                        		
+                                        		</td>
+                                        	</tr>
+                                    	
+                                    </table>
+                                    </td>
+                                  </tr>
+                                  
+                                  
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>DESIGNATION</label></td>
+                                  <td>
+                                  	 <input type="text" name="designation" value="{{designation}}" />
+                                  </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>COMPANY</label></td>
+                                  <td>
+                                  	 <input type="text" name="company"  value="{{company}}" />
+                                  </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>ADDRESS LINE 1 </label></td>
+                                  <td>
+                                  	<input type="text" name="address1" value="{{address1}}" />
+                                  </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>ADDRESS LINE 2</label></td>
+                                  <td>
+                                  	<input type="text" name="address2" value="{{address2}}" />
+                                  </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>ADDRESS LINE 3</label></td>
+                                  <td>
+                                  	<input type="text" name="address3" value="{{address3}}" />
+                                  </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>COUNTRY <sup>*</sup></label></td>
+                                  <td >
+                                  	<table>
+                                        	<tr>
+                                        		<td>
+                                        		 	<select  name="country" onchange="getState(this.value)">
+                                                		<option value="-1"  selected>Select Country</option>
+                                                	  {%for c in countries%}
+                                                	    {%ifequal country c.id%}
+                                                		<option value="{{c.id}}" selected>{{c.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{c.id}}" >{{c.name|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" > no countries found ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                        		</td>
+                                        		
+                                        		<td>
+                                        		
+                                        		</td>
+                                        	</tr>
+                                    	
+                                    </table>
+                                    </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>STATE <sup>*</sup></label></td>
+                                  <td >
+                                  	<table>
+                                        	<tr>
+                                        		<td>
+                                        		 	 <div  id="statediv">
+                                                	<select   name="state" onchange="getCity(this.value)">
+                                                		<option value="-1"  selected>Select Country First</option>
+                                                	  {%for s in states%}
+                                                	    {%ifequal state s.id%}
+                                                		<option value="{{s.id}}" selected>{{s.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{s.id}}" >{{s.name|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" > no states found ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	
+                                                	        
+                                                </div>
+                                        		</td>
+                                        		
+                                        		<td>
+                                        		
+                                        		</td>
+                                        	</tr>
+                                    	
+                                    </table>
+                                    </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>CITY <sup>*</sup></label></td>
+                                  <td >
+                                  	<table>
+                                        	<tr>
+                                        		<td>
+                                        		 	 <div  id="citydiv">
+                                                	<select  name="city" >
+                                                	<option value="-1" selected>Select State First</option>
+                                                	    {%for c in cities%}
+                                                	    {%ifequal city c.id%}
+                                                	    <option value="{{c.id}}" selected  >{{c.name}}</option>
+                                                	    {%else%}
+                                                	    <option value="{{c.id}}"  >{{c.name}}</option>
+                                                	    {%endifequal%}
+                                                	    {%empty%}
+                                                		<option value="-1" >no cities found !</option>
+                                                		{%endfor%}
+                                                	</select>       
+                                                    </div>
+                                        		</td>
+                                        		
+                                        		<td>
+                                        		
+                                        		</td>
+                                        	</tr>
+                                    	
+                                    </table>
+                                    </td>
+                                  </tr>         
+                                  
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>PINCODE </label></td>
+                                  <td>
+                                  	<input type="text" name="pincode" value="{{pincode}}"   />
+                                  </td>
+                                  </tr>
+                                   
+                                   
+                                  <tr>
+                                  <td width="" align="left"><label>TELEPHONE (O)</label></td>
+                                  <td>
+                                  	<input type="text" name="teleo" value="{{teleo}}"   />
+                                  </td>
+                                  </tr>   
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>TELEPHONE (R)</label></td>
+                                  <td>
+                                  	<input type="text" name="teler" value="{{teler}}"   />
+                                  </td>
+                                  </tr>    
+                                           
+                                  <tr>
+                                  <td width="" align="left"><label>MOBILE NO.</label></td>
+                                  <td>
+                                  	<input type="text" name="mobileno" value="{{mobileno}}"  />
+                                  </td>
+                                  </tr>    
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>EMAIL ID </label></td>
+                                  <td>
+                                  	<input type="text" name="email" value="{{email}}"   />
+                                  </td>
+                                  </tr>             
+                                  
+                                  
+                                  <tr><td colspan="2"><hr/></td></tr>
+                                  
+                                   <tr><td align="left"><label> ( FOLLOW UPS ) </label></td></tr>
+                                   <tr>
+                                    <td colspan="2" align="left">
+                                  		    <br>
+											{%for f in contact.followUps.all%}
+												<table border="0" width="100%" style="color:green">
+													<tr>
+														<td><label>On : {{f.createdOn}}</label></td>
+													</tr>
+													
+													<tr>
+														<td><label>By : {{ps.empCodePrefix}}{{f.by}}  </label></td>
+													</tr>
+													
+													
+													
+													<tr>
+														<td><label>{%if ticket.transferedBy%}transferred By : {{ps.empCodePrefix}}{{ticket.transferedBy}}{%endif%}</label></td>
+													</tr>
+													
+													<tr>
+														<td colspan="3"><pre>{{f.reply}}</pre></textArea></td>
+													</tr>
+												</table>
+												<hr/>
+											{%empty%}
+											    <table>
+											    	<tr>
+											    		<td>
+											    		<td colspan="3"  ><pre>Not Exist</pre><br></td>
+											    		
+											    		</td>
+											    	</tr>
+											    </table>
+											     
+                                            {%endfor%}
+                                            
+                                  		
+                                  	</td>
+                                  </tr>
+                                  
+                                  
+                                  
+                                  <tr>
+                                  <td width="" align="left"><label>STATUS <sup>*</sup></label></td>
+                                  <td >
+                                  	<table>
+                                        	<tr>
+                                        		<td>
+                                        		 	 <select name="status">
+                                                            			    follow up status can be
+																		    new               =n
+																		    in follow up      =i
+																		    close             =c
+																		    become lead       =l
+                                                            			    
+                                                            			     
+					                                        		 		{%ifequal 'n' status%}
+								                                    		<option value="n" selected>NEW</option>
+								                                    		{%else%}
+								                                    		<option value="n">NEW</option>
+								                                    		{%endifequal%}
+								                                    		
+								                                    		{%ifequal 'i' status%}
+								                                    		<option value="i" selected>IN FOLLOW-UP</option>
+								                                    		{%else%}
+								                                    		<option value="i">IN FOLLOW-UP</option>
+								                                    		{%endifequal%}
+								                                    		
+								                                    		{%ifequal 'c' status%}
+								                                    		<option value="c" selected>CLOSED</option>
+								                                    		{%else%}
+								                                    		<option value="c">CLOSED</option>
+								                                    		{%endifequal%}
+								                                    		
+								                                    		{%ifequal 'l' status%}
+								                                    		<option value="l" selected>BECOME LEAD</option>
+								                                    		{%else%}
+								                                    		<option value="l">BECOME LEAD</option>
+								                                    		{%endifequal%}
+								                                    		
+								                       </select>
+                                        		</td>
+                                        		
+                                        		<td>
+                                        		
+                                        		</td>
+                                        	</tr>
+                                    	
+                                    </table>
+                                    </td>
+                                  </tr>         
+                                  
+                                  
+                                  
+                                           
+                                  <tr><td align="left"><label>REPLY / MEMORY </label></td></tr>
+                                  <tr>
+                                    <td colspan="2" align="left">
+                                  		<textArea name="reply" style="width:420px;font-size:15px" rows="10" {%if not contact.email %}readonly{%endif%}></textArea>
+                                  	</td>
+                                  </tr>
+                                  
+                                  
+                                  
+                                                        
+                                                                    
+                                  <tr>
+                                    <br/> 
+                                    <td width=""  colspan="2" align="left">
+                                    	<input type="submit" class="btn" style="border:1px solid black;" value="Save" name="crm_save"/>
+                                    	<input type="submit" class="btn" style="border:1px solid black;" value="Save & Mail" name="crm_save_and_mail" {%if not contact.email %}disabled{%endif%}/>
+                                    </td>
+                                    
+                                  </tr>
+                                  
+                            </tbody>
+                      	
+                      	</table>
+                      	</form>
+                      	
+                   </div>
+                  </div>
+                  </div>
+                  
+            
+ 
+{% endblock %}       
+                                   
+                                   
+                                   
+{%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}       

@@ -1,0 +1,120 @@
+{% extends 'dashboard.html' %}
+{% load staticfiles %}                    
+            
+                                    
+                     {% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                       {%if CUP.department.0 or cu.isAdmin%}
+                      <li ><a href="/departments/"><span class="ico gray shadow pictures_folder" ></span><b>Department</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.role.0 or cu.isAdmin %}
+                      <li ><a href="/role/list"><span class="ico gray shadow  pictures_folder"></span><b>Role</b> </a></li>
+                      {%endif%}
+                      
+                      {%if CUP.employee.0 or cu.isAdmin%}
+                      <li ><a href="/user/list" ><span class="ico gray shadow pictures_folder"></span><b>User</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazine.0 or cu.isAdmin%}
+                      <li ><a href="/magazine/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazineC.0 or cu.isAdmin%}
+                      <li ><a href="/combo/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine Combo</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.gift.0 or cu.isAdmin%}
+                      <li ><a href="/gifts/"><span class="ico gray shadow pictures_folder" ></span><b>Gift</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.tenure.0 or cu.isAdmin%}
+                      <li ><a href="/tenures/"><span class="ico gray shadow pictures_folder" ></span><b>Tenure</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.scheme.0 or cu.isAdmin%}
+                      <li ><a href="/schemes/"><span class="ico gray shadow pictures_folder"></span><b>Scheme</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.source.0 or cu.isAdmin%}
+                      <li ><a href="/sources/"><span class="ico gray shadow pictures_folder"></span><b>Source</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.location.0 or cu.isAdmin%}
+                      <li class="select"><a href="/locations/"><span class="ico gray shadow pictures_folder"></span><b>Location</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.courier.0 or cu.isAdmin%}
+                      <li ><a href="/couriers/"><span class="ico gray shadow pictures_folder"></span><b>Courier</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.branch.0 or cu.isAdmin%}
+                      <li ><a href="/branch/"><span class="ico gray shadow pictures_folder" ></span><b>Branch</b></a></li>
+                      {%endif%}
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              {%endblock%} 
+                    
+                  {% block form1Title %}
+
+                  
+                   Locations List
+                   
+                   
+                  {% endblock %} 
+                   
+                   {% block form1Header %}
+ <div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+ 
+                          <a class="btn  btn-large" href="/location/add/"><strong>Add Location</strong></a></div>
+                          {% endblock %}
+              
+                            {% block form1Body %}
+
+                                
+                                <div id="UITab" style="position:relative; ">
+                                         
+                                          <div class="" >
+                                          <div id="tab1" class="tab_content"> 
+                                           
+                                                  <table class="table table-bordered table-striped data_table3 "  id="data_table3" width="100%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr >
+                                                        <td width="5%">S.No</td>
+                                                        <td width="15%">Country</td>
+                                                        <td width="15%">State</td>
+                                                        <td width="15%">City</td>
+                                                        <td width="15%">Area</td>
+                                                        <td width="10%">Pincode</td>
+                                                        
+                                                        <td width="5%">Action</td>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                    {% for item in list %}
+                                                      <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{item.forcountry}}</td>
+                                                        <td>{{item.forstate}}</td>
+                                                        <td>{{item.forcity}}</td>
+                                                        <td>{{item.name}}</td>
+                                                        <td>{{item.pincode}}</td>
+                                                        
+                                                        <td class="brdrnone"><a href="/location/edit/{{item.iD}}/">
+                                                        <img src="{% static "images/edit.png" %}" width="28" height="28" alt="Edit Location" title="Edit Location"></a>
+											</td>
+                                                      </tr>
+     
+                                                      {% endfor %}
+                                                    </tbody>
+                                                  </table>
+                                      </div>
+                                              
+                                      </div>
+                                      </div>
+                                </div>
+                                
+                     
+                     {% endblock %}	

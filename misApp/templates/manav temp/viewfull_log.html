@@ -1,0 +1,69 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+               
+                {% block leftMenu %}
+              <div id="left_menu">
+                 
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              {%endblock%}   
+               
+                    
+                 
+                 
+                                    {% block form1Title %}
+                                    
+                                    
+                                    
+                                      
+                                  View Log
+                                    
+                                    
+                                    {% endblock %}
+                                	
+                                {% block form1Body %}
+                                
+                                   
+                                    
+                                    
+                                      <form id="add_user" method="post" action="/gift/add/">
+                                      <div class="section" >
+                                                <label>Module Name</label>   
+                                                <div> <input type="text" name="tblname" value="{{uniquerow.tbl_name}}" readonly  /></div>
+                                           </div> 
+                                            <div class="section" >
+                                                <label>Old Value </label>   
+                                                <div> <textarea name="name" value="{{name}}" class=" large" readonly  >{{uniquerow.olddata}}</textarea></div>
+                                           </div>
+                                           
+                                         
+                                           
+                                           
+                                           <div class="section" >
+                                                <label>New Value</label>   
+                                                <div> <textarea name="name" value="{{name}}" class=" large" readonly  >{{uniquerow.newdata}}</textarea></div>
+                                           </div>
+                                             <div class="section" >
+                                                <label>Action</label>   
+                                                <div> <input type="text" name="action" value="{{uniquerow.action}}"class=" large" readonly  /></div>
+                                           </div>
+                                             <div class="section" >
+                                                <label>Remarks</label>   
+                                                <div> <input type="text" name="description" value="{{uniquerow.remarks}}"class=" large" readonly  /></div>
+                                           </div>
+                                             <div class="section" >
+                                                <label>Date</label>
+                                                   
+                                                <div> <input type="text" name="d" value="{{uniquerow.getDate}}"class=" large" readonly  /></div>
+                                           </div>
+                                            <div class="section" >
+                                                <label>Username</label>   
+                                                <div> <input type="text" name="description" value="{{uniquerow.username}}"class=" large" readonly  /></div>
+                                           </div>  
+                                        </form>
+                                </div><!--  end widget-content -->
+                            
+                            
+                          <!-- start right section--> 
+                            
+{% endblock %}

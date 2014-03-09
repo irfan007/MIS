@@ -1,0 +1,178 @@
+{% extends 'dashboard.html'%}
+{%load staticfiles%}
+{% block leftMenu %}
+              
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                     
+                   
+                      <li><a href="/report/gift/"><span class="ico gray shadow pictures_folder"></span><b>Gift Tracker Report</b></a></li>
+                      <li><a href="/report/offer/"><span class="ico gray shadow pictures_folder"></span><b>Offers Report</b></a></li>
+                       <li><a href="/report/srcsub/"><span class="ico gray shadow pictures_folder"></span><b>Source SubsReport</b></a></li>
+                       <li><a href="/report/cheque/"><span class="ico gray shadow pictures_folder"></span><b>PaymentReport</b></a></li>
+                      
+                       <li><a href="/report/monthlySubscriptions/"><span class="ico gray shadow pictures_folder"></span><b>Monthly SubsReport</b></a></li>
+                       <li class="select"><a href="/report/MIS/"><span class="ico gray shadow pictures_folder"></span><b>MIS Report</b></a></li>
+                       <li><a href="/report/PO/"><span class="ico gray shadow pictures_folder"></span><b>PO Report</b></a></li>
+                        <li><a href="/competitors/"><span class="ico gray shadow pictures_folder"></span><b>Competitors</b></a></li>
+                   
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}                  
+
+{% block form1Title%}
+View Report 
+{%endblock%}
+
+
+
+{%block widgetContent%}
+
+<div class="widget-content">
+{% for error in errors %} 
+                                           <font color="red">{{error}}<br></font>
+                                           {% endfor %}
+                                    <!-- title box -->
+                                    
+                                      <form method="POST" action="/report/MIS/"> 
+              
+                                            
+                                           
+                                            
+                                           
+                                                                                     
+
+                                          
+                                           <font face="verdana" size="3"><b>From:</b></font> 
+                                           <input type="text"  id="datepick" class="datepicker"  name="startdate"  value="{{startdate}}" style="text-align:left" />
+                                            
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<font face="verdana" size="3"><b>To:</b></font>
+											<input type="text"  id="datepick2" class="datepicker"  name="enddate" value="{{enddate}}"  style="text-align:left" />			
+                                                                                     
+
+                                            <div class="section ">
+                                                <div>
+                                                  <input type="submit" class="btn" value="View" name="whenview"/> <input type="submit" class="btn" value="Export To Excel" name="whenexport"/>
+		 </form>
+ </div>
+                                           </div>
+                                        
+                                </div>
+                                
+                            </div>
+                    
+                    <div class="widget  clearfix" style="margin-top:20px;">
+                                <div class="widget-header">
+                                    <span>Active Subscriptions Report</span> 
+                                </div>
+
+                                
+                                <div class="widget-content">
+                                <div id="UITab" style="position:relative; ">
+                                         
+                                        <div style="width:100%" class="" id="scroll_area" >
+                                          <div id="tab1" class="tab_content"> 
+                                          
+          														<table class="table table-bordered table-striped "  id="data_table3" width="200%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                        <tr>
+                                                        <td width="15%">Subscriptions/Magazine</td>
+                                                        {% for item in magrows %}
+                                                        
+                                                        <td width="5%">{{item.name}}</td>
+                                                        {% endfor %}
+                      
+                                                        
+                                                      </tr>
+                                                                                                    
+                                                      
+                                                      
+                                                      
+                                                    </thead>
+                                                  
+                                                    <tbody align="center" class="font_wght">
+                                                      
+                                                      <tr>
+                                                      <!--
+                                                      {% for item in temp.0 %}
+                                                      <td>{{item}}</td>
+                                                      {% endfor %}
+                                                      </tr>
+                                                      -->
+                                                      <tr>
+                                                      
+                                                      {% for item in temp.1 %}
+                                                      <td>{{item}}</td>
+                                                      {% endfor %}
+                                                      </tr>
+													<tr>
+													
+													{% for item in temp.2 %}
+													<td>
+													{{item}}
+													</td>
+													{% endfor %}
+													</tr>
+													<tr>
+													
+													{% for item in temp.3 %}
+													<td>{{item}}</td>
+													{% endfor %}
+													</tr>		
+													<tr>
+													
+													{% for item in temp.4 %}
+													<td>{{item}}</td>
+													{% endfor %}
+													</tr>
+													<tr>
+													
+													{% for item in temp.5 %}
+													<td>{{item}}</td>
+													{% endfor %}
+													</tr>
+													<tr>
+													{% for item in temp.6 %}
+													<td>{{item}}</td>
+													{% endfor %}
+													</tr> 
+													</tr>
+													
+													
+														     
+                                                    </tbody>
+                                                    
+                                          </table>                                 
+                                     <div class="section last" align="right">
+                                      <div >
+                                      
+     
+									     
+									  </div>
+									 </div>
+									
+									 <br>
+                                      </div>
+                                      </div>
+                                      </div>
+                                      </div>
+                                
+                            </div></div>
+                     <div style="float:left; width:18%; float:left; margin-left:65%; position:fixed"><div class="widget  clearfix">
+
+                               <!-- End widget-header -->	
+                                
+                                
+                                
+                                     
+                                
+{%endblock%}
+
+
+
+
+                                  
+                                    
+                                      
+        

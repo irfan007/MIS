@@ -1,0 +1,214 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+    
+      
+                                 
+
+                       
+              <!-- left_menu -->
+              {% block leftMenu %}
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     
+                      <li class="select"><a href="/CRM/" >
+                      <span class="ico gray shadow pictures_folder"></span><b>CRM</b></a></li>
+                       
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+               </div>
+               {% endblock %}
+              {% block form1Title %} 
+              Edit Complaint
+              {% endblock %}
+                                {% block form1Body %}
+                                	  <script>
+
+function getInfo(subid)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("infodiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/CRMresponder?subid="+subid,true);
+xmlhttp.send();
+}
+
+</script>
+                              
+                                <div class="widget-content">
+                                    <!-- title box -->
+                                   
+                                   
+                                      <form id="add_user" method="post">
+                                    
+                                          <table class="table table-bordered table-striped"  id="" width="200%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr>
+                                                        
+                                                        <td width="5%">SubscriberName</td>
+                                                        <td width="11%">CustomerId</td>
+                                                        <td width="11%">ContactNo</td>
+                                                        <td width="11%">SubscriptionDate</td>
+                                                        <td width="11%">MagazineName</td>
+                                                        <td width="11%">SubsID</td>
+                                                        <td width="11%">Status</td>
+                                                        
+                                                    
+                                                       
+                                                      </tr>
+                                                    </thead>
+                                                    
+                                                    <tbody align="center" class="font_wght">
+                                          
+                                                    <tr>
+                                                    <td>{{customer.firstName}}</td>
+                                                    <td>{{customer.getcusID}}</td>
+                                                    <td>{{customer.mobileNo}}</td>
+                                                    <td>{{subscription.date}}</td>
+                                                    <td>{{subscription.magazine.name}}</td>
+                                                    <td>{{subscription.getsubID}}</td>
+                                                          <td>
+                                                        
+                                                        {% if subscription.isActive %}
+                                                    <img src="{% static 'images/icon_success.gif'%}">
+                                                    {%else%}
+                                                         <img src="{% static 'images/inactive.gif'%}" width="13" height="15">
+                                                        {% endif %}
+                                                        </td>
+                                                    
+                                                  	                                                        
+                                                    
+                                                    </tr>
+                                           
+                                                      
+                                                      
+                                                    </tbody>
+                                                    
+                                          </table>                                      
+                                                                                                        
+           
+
+											 
+                                           
+                                            
+      
+                                         
+                                           
+                                           
+                                           
+                                           
+                                          
+                                           
+                                          
+                                          
+                                        <div class="section" >
+                                                <label>Date</label>   
+                                                <div> <input type="text"  class="small" name="date"  readonly value="{{uniquerow.date}}"  /></div>
+                                           </div>
+                                             <div class="section" >
+                                                <label>Complaint Id</label>   
+                                                <div> <input type="text"  class="small" name="date"  readonly value="{{uniquerow.getComplaintNo}}"  /></div>
+                                           </div>
+                                    
+                                     
+                                      
+                                           
+                        <div class="section">
+                                                 <label> Complaint Description </label>   
+                                                <div>
+                                                <textarea name="description"  cols="" rows="" readonly>{{uniquerow.description}}</textarea>
+                                           
+     </div></div>                                      
+                               <BR><b><h3><font color="red">Responses</h3></b>            
+                                           </font>
+                                           
+                            
+                                                      
+                             {% for r in responses %}
+                                      <h5>{{r.date.date}}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp{{r.getuser}}({{r.getEmpId}})<br>{{r.description}}
+                                      </h5>
+                                      <hr width="100%">
+                                      {% endfor %}
+                                   {% for error in error %}
+                                    <font color="red">
+                                    {{error}}<br></font>
+                                    {% endfor %}
+                                    <div class="section">
+                                                 <label> Add Response<sup>*</sup> </label>   
+                                                <div>
+                                                <textarea name="response"  cols="" rows=""></textarea>
+                                           
+     </div></div>     
+                                         <div class="section" >
+                                                <label>Employee Id<sup>*</sup></label>   
+                                                <div> <input type="text"  class="small" name="empId"  value="{{uniqueemp.getEmpId}}" readonly  /></div>
+                                           </div>  
+                                           
+                                           <div class="section" >
+                                                <label>Status</label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="status" >
+                                               {% if getstatus %}
+                                               
+                                                {% ifequal getstatus "u" %}
+                                                <option value="u" selected>Under Process</option>
+                                                {% else %}
+                                                <option value="u">Under Process</option>
+                                                {% endifequal %}
+                                                {% ifequal getstatus "n" %}
+                                                <option value="n" selected>New</option>
+                                                {% else %}
+                                                <option value="n">New</option>
+                                                {% endifequal %}
+                                                
+                                                {% ifequal getstatus "r" %}
+                                                <option value="r" selected>Resolved</option>
+                                                {% else %}
+                                                <option value="r">Resolved</option>
+                                                {% endifequal %}
+                                               {% else %} 
+                                                {% ifequal uniquerow.status "u" %}
+                                                <option value="u" selected>Under Process</option>
+                                                {% else %}
+                                                <option value="u">Under Process</option>
+                                                {% endifequal %}
+                                                {% ifequal uniquerow.status "n" %}
+                                                <option value="n" selected>New</option>
+                                                {% else %}
+                                                <option value="n">New</option>
+                                                {% endifequal %}
+                                                {% ifequal uniquerow.status "r" %}
+                                                <option value="r" selected>Resolved</option>
+                                                {% else %}
+                                                <option value="r">Resolved</option>
+                                                {% endifequal %}
+                                                {% endif %}
+                                              </select>       
+                                      </div>
+                                        </div>
+                                          
+                                            <div class="section last">
+                                                <div>
+                                                <input type="submit" name="save" class="btn"  value="Save" />
+                                                <input type="submit" name="savemail" class="btn"  value="Save & sendmail" />
+                                                
+ </div>
+                                           </div>
+                                        </form>
+                                </div><!--  end widget-content -->
+                            </div>
+                            
+                     {% endblock %}       
+                  

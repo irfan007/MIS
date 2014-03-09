@@ -1,0 +1,72 @@
+{% extends 'dashboard.html'%}
+
+{% block header %}{%endblock%}
+{% block leftMenu %}{%endblock%}
+{% block topNavigation %}{%endblock%}
+{% block form2 %}{%endblock%}
+{% block form3 %}{%endblock%}
+
+
+
+{% block form1Title%}
+Add Branch:
+{%endblock%}
+
+{%block form1Body%}
+<script>
+function getCity(stateId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("citydiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/accMresponder?state="+stateId,true);
+xmlhttp.send();
+}
+
+</script>
+
+                                  {% for error in errors %}
+                                    <font color="red">
+                                    {{error}}<br>
+                                    </font>
+                                    {% endfor %}
+                                    
+                                    
+                                      <form id="add_user" method="post" action="">
+                                       
+                                            <div class="section" >
+                                                <label>Company Name<sup>*</sup> </label>   
+                                                <div> <input type="text" name="name" value="{{name}}"class=" large"  /></div>
+                                           </div>
+                                           
+                                         
+                                           
+                                           
+                                           <div class="section" >
+                                                <label>Description</label>   
+                                                <div> <input type="text" name="description" value="{{description}}"class=" large"  /></div>
+                                           </div>
+
+<div class="section last">
+                                                <div>
+                                                   <input type="submit" name="addCompetitor" value="Save" class="btn submit_form"></input>
+<a class="btn" title="Reset Form" onclick="ResetForm()">Clear Form</a> </div>
+                                           </div>
+                                        </form>
+{%endblock%}
+
+
+

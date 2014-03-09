@@ -1,0 +1,174 @@
+{% extends 'dashboard.html'%}
+{% load staticfiles %}
+
+
+{% block leftMenu %}
+<div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                       {%if CUP.department.0 or cu.isAdmin%}
+                      <li ><a href="/departments/"><span class="ico gray shadow pictures_folder" ></span><b>Department</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.role.0 or cu.isAdmin %}
+                      <li class="select"><a href="/role/list"><span class="ico gray shadow  pictures_folder"></span><b>Role</b> </a></li>
+                      {%endif%}
+                      
+                      {%if CUP.employee.0 or cu.isAdmin%}
+                      <li ><a href="/user/list" ><span class="ico gray shadow pictures_folder"></span><b>User</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazine.0 or cu.isAdmin%}
+                      <li ><a href="/magazine/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazineC.0 or cu.isAdmin%}
+                      <li ><a href="/combo/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine Combo</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.gift.0 or cu.isAdmin%}
+                      <li ><a href="/gifts/"><span class="ico gray shadow pictures_folder" ></span><b>Gift</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.tenure.0 or cu.isAdmin%}
+                      <li ><a href="/tenures/"><span class="ico gray shadow pictures_folder" ></span><b>Tenure</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.scheme.0 or cu.isAdmin%}
+                      <li ><a href="/schemes/"><span class="ico gray shadow pictures_folder"></span><b>Scheme</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.source.0 or cu.isAdmin%}
+                      <li ><a href="/sources/"><span class="ico gray shadow pictures_folder"></span><b>Source</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.location.0 or cu.isAdmin%}
+                      <li ><a href="/locations/"><span class="ico gray shadow pictures_folder"></span><b>Location</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.courier.0 or cu.isAdmin%}
+                      <li ><a href="/couriers/"><span class="ico gray shadow pictures_folder"></span><b>Courier</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.branch.0 or cu.isAdmin%}
+                      <li ><a href="/branch/"><span class="ico gray shadow pictures_folder" ></span><b>Branch</b></a></li>
+                      {%endif%}
+                    </ul>              
+              	  <div id="footer"> &copy; Copyright 2013  </div>
+</div>
+{%endblock%}
+
+{% block form1Title%}
+Edit Role:
+{%endblock%}
+
+{%block form1Body%}
+<form id="add_user" method="post" action="" enctype="multipart/form-data">
+      <div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+      </ul>
+      </div>
+                                          
+    <table  width="100%"  border="0" cellspacing="0" cellpadding="3">
+  <tr>
+    <td class="form_txt" width="15%" valign="top">Role Name</div>  </td>
+    <td><input type="text" name="name" class="medium"  value="{{name}}"   /></td>
+  </tr>
+  <tr>
+    <td class="form_txt" style="vertical-align:top" >Description</div></td>
+    <td><textArea name="desc"  class="medium"   />{{desc}}</textArea></td>
+  </tr>
+  <tr>
+  
+    <td class="form_txt" >Active</div></td>
+    <td>{%if active %}
+                                                  <input type="checkbox" name="active" value="1" checked />
+                                                  {%else%}
+                                                  <input type="checkbox" name="active" value="1" />
+                                                  {%endif%}</td>
+  </tr>
+  
+</table>
+            
+          		  <table class="table table-bordered table-striped  "  id="" width="100%">
+                                                    <thead align="center" >
+                                                     
+                                                      <tr class="tr_bg_list" >
+                                                        <td width="32%">Modules</td>
+                                                        <td width="32%">Sub modules</td>
+                                                        <td width="36%">Permissions</td>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                      
+                                                     {% for c,m,v,a,u,d in MAP%}
+                                                      <tr class="font_wght">
+                                                        <td>{{c|title}}</td>
+                                                        <td>{{m|title}}</td>
+                                                        <td><table border="0" cellspacing="0" cellpadding="0" style="border:none">
+                                                          <tr>
+                                                             <td style="border:none">
+                                                             {%if  v%}
+                                                  				<input type="checkbox" name="{{m}}_v" value="1" id="checkbox" checked />
+                                                  			 {%else%}
+                                                  				<input type="checkbox" name="{{m}}_v" value="1" id="checkbox" />
+                                                  			 {%endif%}
+                                                  		    </td>
+                                                            <td style="border:none">View</td>
+                                                            
+                                                            <td style="border:none"> 
+                                                             {%if  a%}
+                                                  				<input type="checkbox" name="{{m}}_a" value="1" id="checkbox" checked />
+                                                  			 {%else%}
+                                                  				<input type="checkbox" name="{{m}}_a" value="1" id="checkbox" />
+                                                  			 {%endif%}
+                                                  		    </td>
+                                                            <td style="border:none">Add</td>
+                                                            
+                                                            <td style="border:none">
+                                                             {%if  u%}
+                                                  				<input type="checkbox" name="{{m}}_u" value="1" id="checkbox" checked />
+                                                  			 {%else%}
+                                                  				<input type="checkbox" name="{{m}}_u" value="1" id="checkbox" />
+                                                  			 {%endif%}
+                                                  		    </td>
+                                                            <td style="border:none">Update</td>
+                                                            
+                                                            <!--
+                                                            <td style="border:none">
+                                                             {%if  d%}
+                                                  				<input type="checkbox" name="{{m}}_d" value="1" id="checkbox" checked />
+                                                  			 {%else%}
+                                                  				<input type="checkbox" name="{{m}}_d" value="1" id="checkbox" />
+                                                  			 {%endif%}
+                                                  		    </td>
+                                                            <td style="border:none">Delete</td>
+                                                            -->
+                                                            
+                                                          </tr>
+                                                          
+                                                        </table></td>
+                                                      </tr>
+                                                      {% endfor %}
+                                                                                     
+                                          </table>                                           
+                                         <div class="section last">
+                                             <div>
+                                                  <input type="submit" name="editRole" value="Save" class="btn submit_form"></input>
+ 											 </div>
+                                           </div>
+                                        </form>
+{%endblock%}
+
+
+{%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}
+
+
+
+
+
+

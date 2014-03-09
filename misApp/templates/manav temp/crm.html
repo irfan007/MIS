@@ -1,0 +1,87 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}            
+              <!-- left_menu -->
+             {% block leftMenu %}
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     
+                      <li class="select"><a href="/CRM/" ><span class="ico gray shadow pictures_folder"></span><b>CRM</b></a></li>
+                       
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+               </div>
+               {% endblock %}
+              
+                    {% block form1Title %} 
+                                View Complaint
+                                
+                              {% endblock %}  
+                                {% block form1Header %}
+                                <!--
+                                 <div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+                                            <a class="btn  btn-large " href="/CRM/add/"><strong>Add New Complaint</strong></a>
+                                </div>
+                                -->
+                           {% endblock %}     
+                               {% block form1Body %}
+                               <form action="/CRM/add/" method="POST">
+                               <h3>Search Subscription</h3>
+                               <h5>SubscriptionId:
+                               &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                               <input type="text" name="subid" value="{{subid}}" size="30" />
+                               &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+                               Name:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                               <input type="text" name="subName" value="{{subName}}" size="30"  /></h5>
+                               <h5>Email:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                               <input type="text" name="emailid" value="{{emailid}}" size="30" />
+                               &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp MobileNo:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                               <input type="text" name="mobno" value="{{mobno}}" size="30"  />&nbsp&nbsp<input type="submit" name="srchSubscription" value="Search" /></h5>
+                               </form>
+                                <div id="UITab" style="position:relative; ">
+                                         
+                                          <div class="" >
+                                          <div id="tab1" class="tab_content"> 
+          <table class="table table-bordered table-striped data_table3 "  id="data_table3" width="100%">
+          
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr >
+                                                        <td width="6%">Sr. no.</td>
+                                                        <td width="16%">Subscription id</td>
+                                                        <td width="13%">Subscriber Name</td>
+                                                        <td width="12%">Magazine</td>
+                                                        <td width="16%">Subscriber Email ID</td>
+                                                        <!--<td width="2%">Subs. Type</td>-->
+                                                        
+                                                        <td width="10%">Complaint ID</td>
+                                                        <td width="10%">EmpId</td>
+                                                        <td width="7%">Status</td>
+                                                        <td width="8%">Action</td>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                    {% for item in rows %}
+                                                      <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{item.2.getSubId}}</td>
+                                                        <td>{{item.0.firstName}}</td>
+                                                        <td>{{item.1.magazine.name}}</td>
+                                                        <td>{{item.0.email}}</td>
+                                                        <!--<td>{{item.1.type}}</td>-->
+                                                        <td>{{item.2.getComplaintNo}}</td>
+                                                        <td>{{item.2.getEmployeeId}}</td>
+                                                        <td>{{item.2.getStatus}}</td>
+                                                        
+                                                        <td><a href="/CRM/edit/{{item.2.id}}/" class="btn submit_form">View/Edit</a></td>
+                                                      </tr>
+                                                      
+                                                  {% endfor %}   
+                                                    </tbody>
+                                                  </table>
+                                     
+                                      </div>
+                                      </div>
+                                      </div>
+                                      </div>
+                                
+                     
+                                   {% endblock %}              

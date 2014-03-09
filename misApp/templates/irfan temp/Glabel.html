@@ -1,0 +1,270 @@
+{% extends 'dashboard.html'%}
+
+{% block form1Title%}
+Print Gift Label:
+{%endblock%}
+{% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                      <li ><a href="/Mlabel/"><span class="ico gray shadow pictures_folder" ></span><b>Magazine Label</b></a></li>
+                    </ul>
+                    <ul id="main_menu" class="main_menu">
+                      <li class="select"><a href="/Glabel"><span class="ico gray shadow pictures_folder" ></span><b>Gift Label</b></a></li>
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}
+{%block form1Body%}
+<script>
+function getState(countryId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("statediv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?country="+countryId,true);
+xmlhttp.send();
+}
+
+
+
+function getCity(stateId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("citydiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?state="+stateId,true);
+xmlhttp.send();
+}
+
+function getArea(cityId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("areadiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?city="+cityId,true);
+xmlhttp.send();
+}
+
+</script>
+<form id="add_user" method="post"> 
+      <div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+      </ul>
+      </div>
+                                            
+                                            
+                                            <div class="section" >
+                                                <label>gift Status <sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                	<select class="medium" name="status" >
+                                                	  	<option value="-1" selected>Select Status</option>
+                                                	  {% ifequal status "i" %}
+                                                	  	<option value="i" selected>IN PROCESS</option>
+                                                      {% else %}
+                                                        <option value="i">IN PROCESS</option>
+                                                	  {% endifequal %}
+                                                      	
+                                                      {% ifequal status "h" %}
+                                                	  	<option value="h" selected>ON HOLD</option>
+                                                      {% else %}
+                                                        <option value="h" >ON HOLD</option>
+                                                	  {% endifequal %}
+                                                      	
+                                                      {% ifequal status "d" %}
+                                                	  	<option value="d" selected>DISPATCHED</option>
+                                                      {% else %}
+                                                        <option value="d">DISPATCHED</option>
+                                                	  {% endifequal %}
+                                                	  
+                                                	  {% ifequal status "ih" %}
+                                                	  	<option value="ih" selected>IN PROCESS / HOLD</option>
+                                                      {% else %}
+                                                        <option value="ih">IN PROCESS / HOLD</option>
+                                                	  {% endifequal %}
+                                                	  
+                                                	  
+                                                      
+                                                  
+                                                   </select>       
+                                               </div>
+                                           </div> 
+                                                                           
+                                           <div class="section" >
+                                                <label>Courier Name <sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                	<select class="medium" name="courier" >
+                                                	<option value="-1" selected>Select Courier</option>
+                                                	  {%for c in couriers%}
+                                                	  {% ifequal courier c.id %}
+                                                	  <option value="{{c.id}}" selected>{{c.name}}</option>
+                                                	  {% else %}
+                                                        <option value="{{c.id}}">{{c.name}}</option>
+                                                	  {% endifequal %}
+                                                	  {%empty%}
+                                                	  <option value="-1" selected> not found !</option>
+                                                	  {%endfor%}
+                                                	  
+                                                	  		
+                                                      	
+                                                      
+                                                  
+                                                   </select>       
+                                               </div>
+                                           </div>
+                                           
+                                           
+                                            <div class="section" >
+
+                                                <label>SUBSCRIPTION MONTH </label>   
+                                                
+                                                <div class="selectWidth1">
+
+                                                <select class="small"  name="month">
+                                                
+                                                   <option value="-1" selected >select month</option>
+                                                    {%for id,name in months%}
+                                                    {%ifequal month id%}
+                                                   <option value="{{id}}" selected>{{name}}</option>
+                                                    {%else%}
+                                                   <option value="{{id}}">{{name}}</option>
+                                                    {%endifequal%}
+                                                    {%endfor%}
+                                                </select>       
+                                                </div>
+                                           </div>
+                                           
+                                           
+                                            <div class="section" >
+                                                <label>Belongs to Branch </label>   
+                                                <div class="selectWidth1" >
+                                                	<select class="small"  name="branch" >
+                                                		<option value="-1"  selected>Select Branch</option>
+                                                	  {%for b in branches %}
+                                                	    {%ifequal branch b.id%}
+                                                		<option value="{{b.id}}" selected>{{b.name|title}} / {{b.code}}</option>
+                                                		{%else%}
+                                                		<option value="{{b.id}}" >{{b.name|title}} / {{b.code}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" > no branches found ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	
+                                                	        
+                                                </div>
+                                           </div>
+                                           
+                                                                          
+                                           <div class="section" >
+                                                <label>State</label>   
+                                                <div class="selectWidth1" >
+                                                	<select class="small"  name="state" onchange="getCity(this.value)">
+                                                		<option value="-1"  selected>Select State</option>
+                                                	  {%for s in states%}
+                                                	    {%ifequal state s.id%}
+                                                		<option value="{{s.id}}" selected>{{s.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{s.id}}" >{{s.name|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" > no states found ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	
+                                                	        
+                                                </div>
+                                           </div>
+                                           <div class="section" >
+                                                <label>City </label>   
+                                                <div class="selectWidth1" id="citydiv">
+                                                	<select class="small"  name="city" >
+                                                	   <option value="-1" selected>Select City</option>
+                                                	    {%for c in cities%}
+                                                	    {%ifequal city c.id%}
+                                                	    <option value="{{c.id}}" selected  >{{c.name}}</option>
+                                                	    {%else%}
+                                                	    <option value="{{c.id}}"  >{{c.name}}</option>
+                                                	    {%endifequal%}
+                                                	    {%empty%}
+                                                		<option value="-1" selected  >Select State First</option>
+                                                		{%endfor%}
+                                                	</select>       
+                                                </div>
+                                           </div>
+                                                                                      
+                                           <div class="section">
+                                                <label>PINCODE</label>   
+                                                <div class="selectWidth1" >
+                                                	<input type="text" class="full" value="{{pincode}}" name="pincode">       
+                                                </div>
+                                           </div>
+                                           
+                                            
+                                           
+                                           
+                                           
+                                           
+                                          
+
+<div class="section last">
+                                                <div>
+                                                <input type="submit" value="Print" name="gprint" class="btn"/>
+                                                
+
+ </div>
+                                           </div>
+                                        </form>
+                                           
+{%endblock%}
+
+
+
+
+
+
+
+

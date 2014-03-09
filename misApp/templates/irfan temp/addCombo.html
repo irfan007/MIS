@@ -1,0 +1,144 @@
+{% extends 'dashboard.html'%}
+ {% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                       {%if CUP.department.0 or cu.isAdmin%}
+                      <li ><a href="/departments/"><span class="ico gray shadow pictures_folder" ></span><b>Department</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.role.0 or cu.isAdmin %}
+                      <li ><a href="/role/list"><span class="ico gray shadow  pictures_folder"></span><b>Role</b> </a></li>
+                      {%endif%}
+                      
+                      {%if CUP.employee.0 or cu.isAdmin%}
+                      <li ><a href="/user/list" ><span class="ico gray shadow pictures_folder"></span><b>User</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazine.0 or cu.isAdmin%}
+                      <li ><a href="/magazine/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazineC.0 or cu.isAdmin%}
+                      <li class="select"><a href="/combo/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine Combo</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.gift.0 or cu.isAdmin%}
+                      <li ><a href="/gifts/"><span class="ico gray shadow pictures_folder" ></span><b>Gift</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.tenure.0 or cu.isAdmin%}
+                      <li ><a href="/tenures/"><span class="ico gray shadow pictures_folder" ></span><b>Tenure</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.scheme.0 or cu.isAdmin%}
+                      <li ><a href="/schemes/"><span class="ico gray shadow pictures_folder"></span><b>Scheme</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.source.0 or cu.isAdmin%}
+                      <li ><a href="/sources/"><span class="ico gray shadow pictures_folder"></span><b>Source</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.location.0 or cu.isAdmin%}
+                      <li ><a href="/locations/"><span class="ico gray shadow pictures_folder"></span><b>Location</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.courier.0 or cu.isAdmin%}
+                      <li ><a href="/couriers/"><span class="ico gray shadow pictures_folder"></span><b>Courier</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.branch.0 or cu.isAdmin%}
+                      <li ><a href="/branch/"><span class="ico gray shadow pictures_folder" ></span><b>Branch</b></a></li>
+                      {%endif%}
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              {%endblock%}   
+{% block form1Title%}
+Create Magazine Combo:
+{%endblock%}
+
+{%block form1Body%}
+<form id="add_user" method="post" action="">
+      <div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+      </ul>
+      </div>                               
+                                                                                     
+                                          <div class="section" >
+                                                <label> Combo Name <sup>*</sup></label>   
+                                                <div> <input type="text" name="name" class="large"  value="{{name}}" maxlength="50"  /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+
+                                                <label> Combo Code <sup>*</sup></label>   
+                                                <div> <input type="text" name="code" value="{{code}}" maxlength="50" class="large"  /></div>
+                                           </div>
+
+                                           <div class="section" >
+
+                                                <label> Combo description </label>   
+                                                <div> <input type="text" name="description" value="{{description}}" class="large"  /></div>
+                                           </div>
+                                           
+                                           <!--
+                                           <div class="section" >
+                                                <label> combo Price <sup>*</sup></label>   
+                                             <div> <input type="text" name="price" value="{{price}}" class="medium"  onchange="if((this.value!='')  &&  isNaN(parseInt(this.value))){alert('Invalid Price '+this.value);}" /></div>
+                                            </div>
+                                            -->
+                                            
+                                            <div class="section">
+                                                   
+                                                <div >
+                                                  <table cellpadding="5">
+                                                  	{%for id,name,isChecked in MagStatus%}
+                                                  	<tr>
+                                                  		<td>
+                                                  	    <label>{{name|title}}</label> 
+                                                  	    </td>
+                                                  	    
+                                                  	    <td>  
+                                             			<div class="selectWidth1">
+                                             			    {%if isChecked%}
+                                             		    	<input type="checkbox" name="{{id}}" value="1" checked/>
+                                             		    	{%else%}
+                                             		    	<input type="checkbox" name="{{id}}" value="1" />
+                                             		    	{%endif%}	
+                                             			</div>
+                                            		    </td>
+                                            		    
+                                            		    	
+                                                  	</tr>
+                                                  	{%empty%}
+                                                  	 <div style="color:red;">NO MAGAZINES FOUND TO MAKE COMBO !</div>
+                                                  	{%endfor%}
+                                                  	
+                                                  </table>
+                                                  
+                                                </div>
+                                                
+                                                
+                                           	</div>                                      
+                                            
+                                            <div class="section">
+                                                <label>Active</label>   
+                                                <div class="selectWidth1">
+                                                  {%if active %}
+                                                  <input type="checkbox" name="active" value="1" checked />
+                                                  {%else%}
+                                                  <input type="checkbox" name="active" value="1" />
+                                                  {%endif%}
+                                                  
+                                                </div>
+                                           </div>
+                                            <div class="section last">
+                                             <div>
+                                                  <input type="submit" name="addCombo" value="save" class="btn submit_form"></input>
+<a class="btn" title="Reset Form" onclick="ResetForm1()">Reset</a> </div>
+                                           </div>
+                                        </form>
+{%endblock%}

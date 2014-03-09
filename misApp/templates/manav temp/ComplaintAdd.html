@@ -1,0 +1,122 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+    
+      
+                                 
+
+                       
+              <!-- left_menu -->
+             {% block leftMenu %}
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     
+                      <li class="select"><a href="/CRM/" >
+                      <span class="ico gray shadow pictures_folder"></span><b>CRM</b></a></li>
+                       
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+               </div>
+               {% endblock %}
+              {% block form1Title %} 
+              Add Complaint
+              {% endblock %}
+                                {% block form1Body %}
+                                	  <script>
+
+function getInfo(subid)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("infodiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/CRMresponder?subid="+subid,true);
+xmlhttp.send();
+}
+
+</script>
+                              
+                                <div class="widget-content">
+                                    <!-- title box -->
+                                    {% for error in errors %}
+                                    <font color="red">
+                                    {{error}}<br></font>
+                                    {% endfor %}
+                                   
+                                      <form id="add_user" method="post" >
+                                      
+                                        
+                                            <div class="section" >
+                                                <label>Subscription ID<sup>*</sup></label>   
+                                                <div>
+                                                <input type="text" name="subID" class="small" value="{{subID}}" readonly  />       
+                                      </div>
+                                           </div>
+                                               <div class="section" >
+                                                <label>Emp ID<sup>*</sup></label>   
+                                                <div>
+                                                <input type="text" name="empID" class="small" value="{{uniemp.getEmpId}}" readonly  />       
+                                      </div>
+                                           </div>
+                                           
+                                           
+                                          <div class="section" >
+                                                <label>Date<sup>*</sup></label>   
+                                                <div> <input type="text"  name="startdate"   style="text-align:left" value="{{defdate.date}}" readonly  /></div>
+                                           </div>
+      
+       
+                                                                            
+                                <div class="section">
+                                                 <label> Description<sup>*</sup> </label>   
+                                                <div>
+                                                <textarea name="description" cols="" rows="">{{description}}</textarea>
+                                                
+                                                </div>   
+                                          </div>
+                                           
+                                           <div class="section" >
+                                                <label>Status<sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="status" >
+                                               
+                                                <option value="n">New</option>
+                                                {% ifequal getstatus "u" %}
+                                                <option value="u" selected>Under Process</option>
+                                                {% else %}
+                                                <option value="u">Under Process</option>
+                                                {% endifequal %}
+                                                
+                                                {% ifequal getstatus "r" %}
+                                                <option value="r" selected>Resolved</option>
+                                                {% else %}
+                                                <option value="r">Resolved</option>
+                                                {% endifequal %}
+                                              </select>       
+                                      </div>
+                                        </div>
+                                          
+                                            <div class="section last">
+                                                <div>
+                                                <input type="submit" name="save" class="btn"  value="Save" />
+                                                 <input type="submit" name="savemail" class="btn"  value="Save & sendmail" />
+                                                <input type="Reset" name="button" class="btn"  value="Reset" />
+ </div>
+                                           </div>
+                                        </form>
+                                </div><!--  end widget-content -->
+                            </div>
+                            
+                     {% endblock %}       
+                  

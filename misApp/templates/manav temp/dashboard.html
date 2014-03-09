@@ -1,0 +1,1006 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8">
+        <title>Subscription Management : :  Dashboard</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ 
+        <!-- Link shortcut icon-->
+        <link rel="shortcut icon" type="image/ico" href="images/favicon.html"/> 
+ 
+        <!-- CSS Stylesheet-->
+        <link type="text/css" rel="stylesheet" href="{% static "components/bootstrap/bootstrap.css" %}" />
+        <link type="text/css" rel="stylesheet" href="{% static "components/bootstrap/bootstrap-responsive.css" %}" />
+        <link type="text/css" rel="stylesheet" href="{% static "css/style.css" %}"/>
+<!--[if lte IE 8]><script language="javascript" type="text/javascript" src="{% static "components/flot/excanvas.min.js" %}"></script><![endif]-->  
+        
+<link rel="stylesheet" href="{% static "combo_input/css/style.css" %}" type="text/css" media="screen"/>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js" type="text/javascript"></script>
+
+{%block htmlHead%}
+{%endblock%}
+ 
+<script>
+$(document).ready(function(){
+ 
+ 
+    $(".magazine_div").show();
+    $(".combo_div").hide();
+     
+    $('.magazine').click(function(){
+    $(".magazine_div").slideToggle();
+    $(".combo_div").hide();
+    });
+     
+    $('.combo').click(function(){
+    $(".combo_div").slideToggle();
+     $(".magazine_div").hide();
+    });
+ 
+});
+
+
+
+
+
+function openURLInCenterOfScreen(URL)
+{
+wp=window.screen.width /10;
+hp=window.screen.height/10;
+w=wp*8;
+h=hp*8; 
+var win = window.open(URL,'anyName', 'left='+wp+',top='+hp/2+',height='+h+',width='+w+',resizable=yes,scrollbars=yes');
+win.focus();
+return false;
+}
+ 
+ 
+function setPaymentDetails(value) {
+  
+  if (value=='out')
+  {
+  $(".division").hide();
+  }
+  else
+  {$(".division").show();}
+  
+  if (value=='d')
+  { 
+  $(".when_cash").show();
+  document.getElementById('pt_date').innerHTML="DD Date";
+  document.getElementById('pt_no').innerHTML="DD No.";
+  document.getElementById('pt_ddate').innerHTML="DD Deposite Date";
+  document.getElementById('pt_cdate').innerHTML="DD Clearance Date";
+  }
+  else if(value=='chq')
+  { 
+  $(".when_cash").show();
+  document.getElementById('pt_date').innerHTML="cheque Date";
+  document.getElementById('pt_no').innerHTML="cheque No.";
+  document.getElementById('pt_ddate').innerHTML="cheque Deposite Date";
+  document.getElementById('pt_cdate').innerHTML="cheque Clearance Date";
+  }
+  else if(value=='a')
+  { 
+  $(".when_cash").show();
+  document.getElementById('pt_date').innerHTML="NEFT Date";
+  document.getElementById('pt_no').innerHTML="NEFT No.";
+  document.getElementById('pt_ddate').innerHTML="NEFT Deposite Date";
+  document.getElementById('pt_cdate').innerHTML="NEFT Clearance Date";
+  }
+  else if(value=='o')
+  {
+  $(".when_cash").show();
+  document.getElementById('pt_date').innerHTML="Transaction Date";
+  document.getElementById('pt_no').innerHTML="Transaction No.";
+  $(".when_online").hide();
+  document.getElementById('pt_cdate').innerHTML="Transaction Transferred Date";
+  }
+  else if(value=='c')
+  {
+  $(".when_cash").hide(); 
+  document.getElementById('pt_date').innerHTML="Receipt Date";
+  document.getElementById('pt_no').innerHTML="Receipt No.";
+  }
+   
+ 
+}
+ 
+ function isNumberKey(evt)
+          {
+             var charCode = (evt.which) ? evt.which : event.keyCode
+             if (charCode > 31 && (charCode < 48 || charCode > 57))
+                return false;
+ 
+             return true;
+          }
+
+
+
+
+
+ 
+function ResetForm1()
+
+{
+var o=document.getElementById("add_user")
+
+for(i=0;i<=o.length;i++)
+{
+
+if (o.elements[i].type=="text")
+o.elements[i].value=""
+if (o.elements[i].type=="checkbox")
+o.elements[i].checked=false
+
+}
+
+
+}        
+          
+          
+function setChoice(value)
+{
+ 
+if(value=='c')
+{
+$(".magazine").hide();
+$(".combo").slideToggle();
+ 
+}
+else
+{
+ 
+$(".combo").hide();
+$(".magazine").slideToggle();
+}
+} 
+ 
+ 
+$(function() {
+$( "#datepicker" ).datepicker();
+});
+ 
+</script>
+ 
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js" type="text/javascript"></script>
+ 
+ 
+<script type="text/javascript">
+$(document).ready(function(){	
+
+	var clickDate = "";
+	var clickAgendaItem = "";
+	
+	/**
+	 * Initializes calendar with current year & month
+	 * specifies the callbacks for day click & agenda item click events
+	 * then returns instance of plugin object
+	 */
+	var jfcalplugin = $("#mycal").jFrontierCal({
+		date: new Date(),
+		dayClickCallback: myDayClickHandler,
+		agendaClickCallback: myAgendaClickHandler,
+		agendaDropCallback: myAgendaDropHandler,
+		agendaMouseoverCallback: myAgendaMouseoverHandler,
+		applyAgendaTooltipCallback: myApplyTooltip,
+		agendaDragStartCallback : myAgendaDragStart,
+		agendaDragStopCallback : myAgendaDragStop,
+		dragAndDropEnabled: true
+	}).data("plugin");
+	
+	/**
+	 * Do something when dragging starts on agenda div
+	 */
+	function myAgendaDragStart(eventObj,divElm,agendaItem){
+		// destroy our qtip tooltip
+		if(divElm.data("qtip")){
+			divElm.qtip("destroy");
+		}	
+	};
+	
+	/**
+	 * Do something when dragging stops on agenda div
+	 */
+	function myAgendaDragStop(eventObj,divElm,agendaItem){
+		//alert("drag stop");
+	};
+	
+	/**
+	 * Custom tooltip - use any tooltip library you want to display the agenda data.
+	 * for this example we use qTip - http://craigsworks.com/projects/qtip/
+	 *
+	 * @param divElm - jquery object for agenda div element
+	 * @param agendaItem - javascript object containing agenda data.
+	 */
+	function myApplyTooltip(divElm,agendaItem){
+
+		// Destroy currrent tooltip if present
+		if(divElm.data("qtip")){
+			divElm.qtip("destroy");
+		}
+		
+		var displayData = "";
+		
+		var title = agendaItem.title;
+		var startDate = agendaItem.startDate;
+		var endDate = agendaItem.endDate;
+		var allDay = agendaItem.allDay;
+		var data = agendaItem.data;
+		displayData += "<br><b>" + title+ "</b><br><br>";
+		if(allDay){
+			displayData += "(All day event)<br><br>";
+		}else{
+			displayData += "<b>Starts:</b> " + startDate + "<br>" + "<b>Ends:</b> " + endDate + "<br><br>";
+		}
+		for (var propertyName in data) {
+			displayData += "<b>" + propertyName + ":</b> " + data[propertyName] + "<br>"
+		}
+		// use the user specified colors from the agenda item.
+		var backgroundColor = agendaItem.displayProp.backgroundColor;
+		var foregroundColor = agendaItem.displayProp.foregroundColor;
+		var myStyle = {
+			border: {
+				width: 5,
+				radius: 10
+			},
+			padding: 10, 
+			textAlign: "left",
+			tip: true,
+			name: "dark" // other style properties are inherited from dark theme		
+		};
+		if(backgroundColor != null && backgroundColor != ""){
+			myStyle["backgroundColor"] = backgroundColor;
+		}
+		if(foregroundColor != null && foregroundColor != ""){
+			myStyle["color"] = foregroundColor;
+		}
+		// apply tooltip
+		divElm.qtip({
+			content: displayData,
+			position: {
+				corner: {
+					tooltip: "bottomMiddle",
+					target: "topMiddle"			
+				},
+				adjust: { 
+					mouse: true,
+					x: 0,
+					y: -15
+				},
+				target: "mouse"
+			},
+			show: { 
+				when: { 
+					event: 'mouseover'
+				}
+			},
+			style: myStyle
+		});
+
+	};
+
+	/**
+	 * Make the day cells roughly 3/4th as tall as they are wide. this makes our calendar wider than it is tall. 
+	 */
+	jfcalplugin.setAspectRatio("#mycal",0.75);
+
+	/**
+	 * Called when user clicks day cell
+	 * use reference to plugin object to add agenda item
+	 */
+	function myDayClickHandler(eventObj){
+		// Get the Date of the day that was clicked from the event object
+		var date = eventObj.data.calDayDate;
+		// store date in our global js variable for access later
+		clickDate = date.getFullYear() + "-" + (date.getMonth()+1) + "-" + date.getDate();
+		// open our add event dialog
+		$('#add-event-form').dialog('open');
+	};
+	
+	/**
+	 * Called when user clicks and agenda item
+	 * use reference to plugin object to edit agenda item
+	 */
+	function myAgendaClickHandler(eventObj){
+		// Get ID of the agenda item from the event object
+		var agendaId = eventObj.data.agendaId;		
+		// pull agenda item from calendar
+		var agendaItem = jfcalplugin.getAgendaItemById("#mycal",agendaId);
+		clickAgendaItem = agendaItem;
+		$("#display-event-form").dialog('open');
+	};
+	
+	/**
+	 * Called when user drops an agenda item into a day cell.
+	 */
+	function myAgendaDropHandler(eventObj){
+		// Get ID of the agenda item from the event object
+		var agendaId = eventObj.data.agendaId;
+		// date agenda item was dropped onto
+		var date = eventObj.data.calDayDate;
+		// Pull agenda item from calendar
+		var agendaItem = jfcalplugin.getAgendaItemById("#mycal",agendaId);		
+		alert("You dropped agenda item " + agendaItem.title + 
+			" onto " + date.toString() + ". Here is where you can make an AJAX call to update your database.");
+	};
+	
+	/**
+	 * Called when a user mouses over an agenda item	
+	 */
+	function myAgendaMouseoverHandler(eventObj){
+		var agendaId = eventObj.data.agendaId;
+		var agendaItem = jfcalplugin.getAgendaItemById("#mycal",agendaId);
+		//alert("You moused over agenda item " + agendaItem.title + " at location (X=" + eventObj.pageX + ", Y=" + eventObj.pageY + ")");
+	};
+	/**
+	 * Initialize jquery ui datepicker. set date format to yyyy-mm-dd for easy parsing
+	 */
+	$("#dateSelect").datepicker({
+		showOtherMonths: true,
+		selectOtherMonths: true,
+		changeMonth: true,
+		changeYear: true,
+		showButtonPanel: true,
+		dateFormat: 'yy-mm-dd'
+	});
+	
+	/**
+	 * Set datepicker to current date
+	 */
+	$("#dateSelect").datepicker('setDate', new Date());
+	/**
+	 * Use reference to plugin object to a specific year/month
+	 */
+	$("#dateSelect").bind('change', function() {
+		var selectedDate = $("#dateSelect").val();
+		var dtArray = selectedDate.split("-");
+		var year = dtArray[0];
+		// jquery datepicker months start at 1 (1=January)		
+		var month = dtArray[1];
+		// strip any preceeding 0's		
+		month = month.replace(/^[0]+/g,"")		
+		var day = dtArray[2];
+		// plugin uses 0-based months so we subtrac 1
+		jfcalplugin.showMonth("#mycal",year,parseInt(month-1).toString());
+	});	
+	/**
+	 * Initialize previous month button
+	 */
+	$("#BtnPreviousMonth").button();
+	$("#BtnPreviousMonth").click(function() {
+		jfcalplugin.showPreviousMonth("#mycal");
+		// update the jqeury datepicker value
+		var calDate = jfcalplugin.getCurrentDate("#mycal"); // returns Date object
+		var cyear = calDate.getFullYear();
+		// Date month 0-based (0=January)
+		var cmonth = calDate.getMonth();
+		var cday = calDate.getDate();
+		// jquery datepicker month starts at 1 (1=January) so we add 1
+		$("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);
+		return false;
+	});
+	/**
+	 * Initialize next month button
+	 */
+	$("#BtnNextMonth").button();
+	$("#BtnNextMonth").click(function() {
+		jfcalplugin.showNextMonth("#mycal");
+		// update the jqeury datepicker value
+		var calDate = jfcalplugin.getCurrentDate("#mycal"); // returns Date object
+		var cyear = calDate.getFullYear();
+		// Date month 0-based (0=January)
+		var cmonth = calDate.getMonth();
+		var cday = calDate.getDate();
+		// jquery datepicker month starts at 1 (1=January) so we add 1
+		$("#dateSelect").datepicker("setDate",cyear+"-"+(cmonth+1)+"-"+cday);		
+		return false;
+	});
+	
+	/**
+	 * Initialize delete all agenda items button
+	 */
+	$("#BtnDeleteAll").button();
+	$("#BtnDeleteAll").click(function() {	
+		jfcalplugin.deleteAllAgendaItems("#mycal");	
+		return false;
+	});		
+	
+	/**
+	 * Initialize iCal test button
+	 */
+	$("#BtnICalTest").button();
+	$("#BtnICalTest").click(function() {
+		// Please note that in Google Chrome this will not work with a local file. Chrome prevents AJAX calls
+		// from reading local files on disk.		
+		jfcalplugin.loadICalSource("#mycal",$("#iCalSource").val(),"html");	
+		return false;
+	});	
+
+	/**
+	 * Initialize add event modal form
+	 */
+	$("#add-event-form").dialog({
+		autoOpen: false,
+		height: 400,
+		width: 400,
+		modal: true,
+		buttons: {
+			'Add Event': function() {
+
+				var what = jQuery.trim($("#what").val());
+			
+				if(what == ""){
+					alert("Please enter a short event description into the \"what\" field.");
+				}else{
+				
+					var startDate = $("#startDate").val();
+					var startDtArray = startDate.split("-");
+					var startYear = startDtArray[0];
+					// jquery datepicker months start at 1 (1=January)		
+					var startMonth = startDtArray[1];		
+					var startDay = startDtArray[2];
+					// strip any preceeding 0's		
+					startMonth = startMonth.replace(/^[0]+/g,"");
+					startDay = startDay.replace(/^[0]+/g,"");
+					var startHour = jQuery.trim($("#startHour").val());
+					var startMin = jQuery.trim($("#startMin").val());
+					var startMeridiem = jQuery.trim($("#startMeridiem").val());
+					startHour = parseInt(startHour.replace(/^[0]+/g,""));
+					if(startMin == "0" || startMin == "00"){
+						startMin = 0;
+					}else{
+						startMin = parseInt(startMin.replace(/^[0]+/g,""));
+					}
+					if(startMeridiem == "AM" && startHour == 12){
+						startHour = 0;
+					}else if(startMeridiem == "PM" && startHour < 12){
+						startHour = parseInt(startHour) + 12;
+					}
+
+					var endDate = $("#endDate").val();
+					var endDtArray = endDate.split("-");
+					var endYear = endDtArray[0];
+					// jquery datepicker months start at 1 (1=January)		
+					var endMonth = endDtArray[1];		
+					var endDay = endDtArray[2];
+					// strip any preceeding 0's		
+					endMonth = endMonth.replace(/^[0]+/g,"");
+
+					endDay = endDay.replace(/^[0]+/g,"");
+					var endHour = jQuery.trim($("#endHour").val());
+					var endMin = jQuery.trim($("#endMin").val());
+					var endMeridiem = jQuery.trim($("#endMeridiem").val());
+					endHour = parseInt(endHour.replace(/^[0]+/g,""));
+					if(endMin == "0" || endMin == "00"){
+						endMin = 0;
+					}else{
+						endMin = parseInt(endMin.replace(/^[0]+/g,""));
+					}
+					if(endMeridiem == "AM" && endHour == 12){
+						endHour = 0;
+					}else if(endMeridiem == "PM" && endHour < 12){
+						endHour = parseInt(endHour) + 12;
+					}
+					
+					//alert("Start time: " + startHour + ":" + startMin + " " + startMeridiem + ", End time: " + endHour + ":" + endMin + " " + endMeridiem);
+
+					// Dates use integers
+					var startDateObj = new Date(parseInt(startYear),parseInt(startMonth)-1,parseInt(startDay),startHour,startMin,0,0);
+					var endDateObj = new Date(parseInt(endYear),parseInt(endMonth)-1,parseInt(endDay),endHour,endMin,0,0);
+
+					// add new event to the calendar
+					jfcalplugin.addAgendaItem(
+						"#mycal",
+						what,
+						startDateObj,
+						endDateObj,
+						false,
+						{
+							fname: "Santa",
+							lname: "Claus",
+							leadReindeer: "Rudolph",
+							myDate: new Date(),
+							myNum: 42
+						},
+						{
+							backgroundColor: $("#colorBackground").val(),
+							foregroundColor: $("#colorForeground").val()
+						}
+					);
+
+					$(this).dialog('close');
+
+				}
+				
+			},
+			Cancel: function() {
+				$(this).dialog('close');
+			}
+		},
+		open: function(event, ui){
+			// initialize start date picker
+			$("#startDate").datepicker({
+				showOtherMonths: true,
+				selectOtherMonths: true,
+				changeMonth: true,
+				changeYear: true,
+				showButtonPanel: true,
+				dateFormat: 'yy-mm-dd'
+			});
+			// initialize end date picker
+			$("#endDate").datepicker({
+				showOtherMonths: true,
+				selectOtherMonths: true,
+				changeMonth: true,
+				changeYear: true,
+				showButtonPanel: true,
+				dateFormat: 'yy-mm-dd'
+			});
+			// initialize with the date that was clicked
+			$("#startDate").val(clickDate);
+			$("#endDate").val(clickDate);
+			// initialize color pickers
+			$("#colorSelectorBackground").ColorPicker({
+				color: "#333333",
+				onShow: function (colpkr) {
+					$(colpkr).css("z-index","10000");
+					$(colpkr).fadeIn(500);
+					return false;
+				},
+				onHide: function (colpkr) {
+					$(colpkr).fadeOut(500);
+					return false;
+				},
+				onChange: function (hsb, hex, rgb) {
+					$("#colorSelectorBackground div").css("backgroundColor", "#" + hex);
+					$("#colorBackground").val("#" + hex);
+				}
+			});
+			//$("#colorBackground").val("#1040b0");		
+			$("#colorSelectorForeground").ColorPicker({
+				color: "#ffffff",
+				onShow: function (colpkr) {
+					$(colpkr).css("z-index","10000");
+					$(colpkr).fadeIn(500);
+					return false;
+				},
+				onHide: function (colpkr) {
+					$(colpkr).fadeOut(500);
+					return false;
+				},
+				onChange: function (hsb, hex, rgb) {
+					$("#colorSelectorForeground div").css("backgroundColor", "#" + hex);
+					$("#colorForeground").val("#" + hex);
+				}
+			});
+			//$("#colorForeground").val("#ffffff");				
+			// put focus on first form input element
+			$("#what").focus();
+		},
+		close: function() {
+			// reset form elements when we close so they are fresh when the dialog is opened again.
+			$("#startDate").datepicker("destroy");
+			$("#endDate").datepicker("destroy");
+			$("#startDate").val("");
+			$("#endDate").val("");
+			$("#startHour option:eq(0)").attr("selected", "selected");
+			$("#startMin option:eq(0)").attr("selected", "selected");
+			$("#startMeridiem option:eq(0)").attr("selected", "selected");
+			$("#endHour option:eq(0)").attr("selected", "selected");
+			$("#endMin option:eq(0)").attr("selected", "selected");
+			$("#endMeridiem option:eq(0)").attr("selected", "selected");			
+			$("#what").val("");
+			//$("#colorBackground").val("#1040b0");
+			//$("#colorForeground").val("#ffffff");
+		}
+	});
+	
+	/**
+	 * Initialize display event form.
+	 */
+	$("#display-event-form").dialog({
+		autoOpen: false,
+		height: 400,
+		width: 400,
+		modal: true,
+		buttons: {		
+			Cancel: function() {
+				$(this).dialog('close');
+			},
+			'Edit': function() {
+				alert("Make your own edit screen or dialog!");
+			},
+			'Delete': function() {
+				if(confirm("Are you sure you want to delete this agenda item?")){
+					if(clickAgendaItem != null){
+						jfcalplugin.deleteAgendaItemById("#mycal",clickAgendaItem.agendaId);
+						//jfcalplugin.deleteAgendaItemByDataAttr("#mycal","myNum",42);
+					}
+					$(this).dialog('close');
+				}
+			}			
+		},
+		open: function(event, ui){
+			if(clickAgendaItem != null){
+				var title = clickAgendaItem.title;
+				var startDate = clickAgendaItem.startDate;
+				var endDate = clickAgendaItem.endDate;
+				var allDay = clickAgendaItem.allDay;
+				var data = clickAgendaItem.data;
+				// in our example add agenda modal form we put some fake data in the agenda data. we can retrieve it here.
+				$("#display-event-form").append(
+					"<br><b>" + title+ "</b><br><br>"		
+				);				
+				if(allDay){
+					$("#display-event-form").append(
+						"(All day event)<br><br>"				
+					);				
+				}else{
+					$("#display-event-form").append(
+						"<b>Starts:</b> " + startDate + "<br>" +
+						"<b>Ends:</b> " + endDate + "<br><br>"				
+					);				
+				}
+				for (var propertyName in data) {
+					$("#display-event-form").append("<b>" + propertyName + ":</b> " + data[propertyName] + "<br>");
+				}			
+			}		
+		},
+		close: function() {
+			// clear agenda data
+			$("#display-event-form").html("");
+		}
+	});	 
+
+	/**
+	 * Initialize our tabs
+	 */
+	$("#tabs").tabs({
+		/*
+		 * Our calendar is initialized in a closed tab so we need to resize it when the example tab opens.
+		 */
+		show: function(event, ui){
+			if(ui.index == 1){
+				jfcalplugin.doResize("#mycal");
+			}
+		}	
+	});
+	
+});
+</script>
+ 
+ 
+<script type="text/javascript" src="{% static "combo_input/jquery11111.js" %}"></script>
+        <script type="text/javascript">
+            $(function() {
+                /**
+                * the element
+                */
+                var $ui         = $('#ui_element');
+                 
+                /**
+                * on focus and on click display the dropdown, 
+                * and change the arrow image
+                */
+                $ui.find('.sb_input').bind('focus click',function(){
+                    $ui.find('.sb_down')
+                       .addClass('sb_up')
+                       .removeClass('sb_down')
+                       .andSelf()
+                       .find('.sb_dropdown')
+                       .show();
+                });
+                 
+                /**
+                * on mouse leave hide the dropdown, 
+                * and change the arrow image
+                */
+                $ui.bind('mouseleave',function(){
+                    $ui.find('.sb_up')
+                       .addClass('sb_down')
+                       .removeClass('sb_up')
+                       .andSelf()
+                       .find('.sb_dropdown')
+                       .hide();
+                });
+                 
+                /**
+                * selecting all checkboxes
+                */
+                $ui.find('.sb_dropdown').find('label[for="all"]').prev().bind('click',function(){
+                    $(this).parent().siblings().find(':checkbox').attr('checked',this.checked).attr('disabled',this.checked);
+                });
+            });
+        </script>     
+         
+         
+         
+         
+         
+         
+         
+        <script type="text/javascript" src="{% static "js/jquery.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/ui/jquery.ui.min.js" %}"></script> 
+        <script type="text/javascript" src="{% static "components/bootstrap/bootstrap.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/ui/timepicker.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/colorpicker/js/colorpicker.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/form/form.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/elfinder/js/elfinder.full.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/datatables/dataTables.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/fancybox/jquery.fancybox.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/jscrollpane/jscrollpane.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/editor/jquery.cleditor.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/chosen/chosen.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/validationEngine/jquery.validationEngine.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/validationEngine/jquery.validationEngine-en.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/fullcalendar/fullcalendar.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/flot/flot.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/uploadify/uploadify.js" %}"></script>       
+        <script type="text/javascript" src="{% static "components/Jcrop/jquery.Jcrop.js" %}"></script>
+        <script type="text/javascript" src="{% static "components/smartWizard/jquery.smartWizard.min.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/jquery.cookie.js" %}"></script>
+        <script type="text/javascript" src="{% static "js/zice.custom.js" %}"></script>
+        
+        
+<link rel="stylesheet" type="text/css" href="{% static "menu2/ddsmoothmenu.css" %}" />
+<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>-->
+<script type="text/javascript" src="{% static "menu2/ddsmoothmenu.js" %}"></script>
+<script type="text/javascript">
+ddsmoothmenu.init({
+    mainmenuid: "smoothmenu1", //menu DIV id
+    orientation: 'h', //Horizontal or vertical menu: Set to "h" or "v"
+    classname: 'ddsmoothmenu', //class added to menu's outer DIV
+    //customtheme: ["#1c5a80", "#18374a"],
+    contentsource: "markup" //"markup" or ["container_id", "path_to_menu_file"]
+})
+ 
+ddsmoothmenu.init({
+    mainmenuid: "smoothmenu2", //Menu DIV id
+    orientation: 'v', //Horizontal or vertical menu: Set to "h" or "v"
+    classname: 'ddsmoothmenu-v', //class added to menu's outer DIV
+    //customtheme: ["#804000", "#482400"],
+    contentsource: "markup" //"markup" or ["container_id", "path_to_menu_file"]
+})
+</script>
+        
+        </head>        
+        <body onload="setPaymentDetails(document.getElementById('paymode').value);">        
+ 
+            <!-- Header -->
+            {%block header%}
+             <div id="header" style="padding:10px 0 10px 10px">
+            
+            <div style="width:5%; float:left;" class="logo_custom"><a href="/">{%block logoImage%}<img src="{% static "images/logo.png" %}" alt="logo" />{%endblock%}</a></div>
+            <div style="width:55%; float:left;"><div class="main_form_area">
+    <div class="frm_1"><span class="clsFormFieldInTable">
+    
+    
+    
+    
+    
+    
+    
+     {% block searchtop %}
+     <form name="jump1" method="POST">
+         <select maxlength="50" style="width: 200px; " id="property_type" name="select_option_to_be_search" OnChange="location.href=jump1.select_option_to_be_search.options[selectedIndex].value">
+         
+    	<option value="1">select</option>
+         <option value="/role/list">Role</option>
+         
+          <option value="/user/list">User</option>
+     
+          
+          <option value="/departments">Department</option>
+          <option value="/magazine/list">Magazine</option>
+           <option value="/combo/list">MagazineCombo</option>
+            <option value="/gifts/">Gift</option>
+            <option value="/tenures/">Tenure</option>
+            <option value="/schemes/">Scheme</option>
+            <option value="/sources/">Source</option>
+            <option value="/couriers/">Courier</option>
+            <option value="/branch/">Branch</option>
+        
+          
+         
+        </select>
+        
+        </span></div>
+     <div class="frm_2"><input type="text" value="" maxlength="50" style="width: 290px; height:25px " name="passing_parameter" id="name"></div>
+      <div class="frm_3"><input type="submit" value="Search" class="uibutton  confirm" name="submit_query"></div>
+    </form>
+    {% endblock %}
+    
+    
+    
+         
+    </div></div>
+    <div style="width:35%; float:right;"><div id="account_info" > 
+                    <img src="{% static cu.getImageURL %}" alt="NO IMAGE" width="50" height="50" class="avatar" style="margin-top:-15px"/><b>Welcome,</b> <span class="red">{{cu.username}}</span>
+                    <div class="setting"><img src="{% static "images/gear.png" %}" class="gear"  alt="Profile Setting" style="margin-top:-14px" >
+                        <ul class="subnav ">
+                            <li><a href="/user/list">Dashboard</a></li>
+                            <li><a href="/myaccount/">Profile</a></li>
+                            <li><a href="/resetPassword/">Reset password</a></li>
+                            <br class="clear"/>
+                        </ul>
+                  </div>
+                    <a href="/logout"><div class="logout" title="Disconnect"><b >Logout</b> </div></a> 
+                </div>
+                
+                
+                </div>
+ 
+</div>
+           {%endblock%}
+           <!-- End Header -->
+           
+           <!--start top navigation-->
+           {% block topNavigation %}
+    <div class="row-fluid fixed_element" >
+    <div id="smoothmenu1" class="ddsmoothmenu" >
+    <ul>
+    
+    {%if cu.isAdmin or CUP.config.0%}
+    <li><a href="{{CUP.config.1}}">Configuration</a></li>
+    <li class="menu_gap">|</li>
+    {%endif%}
+    
+    {%if cu.isAdmin or CUP.sub.0%}
+    <li><a href="/subscription/list">Subscription</a></li>
+    <li class="menu_gap">|</li>
+    {%endif%}
+    
+    {%if cu.isAdmin or CUP.report.0%}
+    <li><a href="/report/gift/">Report</a></li>
+    <li class="menu_gap">|</li>
+    {%endif%}
+    
+    
+    {%if cu.isAdmin or CUP.print.0%}
+    <li><a href="/Mlabel" >Label Printing</a></li>
+    <li class="menu_gap">|</li>
+    {%endif%}
+    
+    
+    {%if cu.isAdmin or CUP.notification.0%}
+    <li><a href="/notification" >Notification</a></li>
+    <li class="menu_gap" >|</li>
+    {%endif%}
+    
+    
+    {%if cu.isAdmin or CUP.crm.0%}
+    <li><a href="/CRM/" >CRM</a></li>
+    <li class="menu_gap" >|</li>
+    {%endif%}
+    
+    
+    <li><a href="/myaccount/" >My Account</a></li>
+    <li class="menu_gap" >|</li>
+    
+    {%if cu.isAdmin or CUP.stock.0%}
+    <li><a href="/giftstock/" >Gift Stock</a></li>
+    <li class="menu_gap" >|</li>
+    {%endif%}
+    
+    
+    
+    <li><a href="/MoreList/" >TaskList</a></li>
+     
+    </ul>
+        <br style="clear: left" />
+    </div>
+                    </div>
+           {% endblock %}         
+            <!--start top navigation-->
+            
+              <!-- left_menu -->
+              {% block leftMenu %}
+              {%endblock%}
+              
+              
+              {%block content%}
+              <div id="content" >
+                <div class="inner">
+                                    
+                    
+                    
+                    <div class="row-fluid element_pad">
+                    
+                            <!-- Dashboard  widget -->
+                             
+                            <div style="float:left; margin-top:20px; width:100%">
+                    <div style="float:left; width:{%block form1Width%}76%{%endblock%}; float:left; "><div class="widget  span12 clearfix">
+                            
+                                <div class="widget-header">
+                                    <span>{% block form1Title%}title{%endblock%}</span>
+                                    {% block form1Header%}{%endblock%}
+                                </div><!-- End widget-header -->     
+                                
+                                {%block widgetContent%}
+                                <div class="widget-content">
+                                    
+                                    <!-- title box -->
+                                      {% block form1Body %}
+                                      <form id="demo">
+                                            
+                                        </form>
+                                </div><!--  end widget-content -->
+                                {% endblock%}
+                                {%endblock%}
+                            </div></div>
+                     
+                     
+                     {%block form2%}
+                     <div style="float:left; width:18%; float:left; margin-left:65%; position:fixed"><div class="widget  clearfix">
+                            <div id="datepicker" style="float:left; width:18%;" ></div>
+                     </div>       
+                    {%endblock%}  
+                        
+                    {%block form3%}
+                            <div class="widget  clearfix">
+ <div class="widget-header">
+     <span><img src="{% static "images/new_icon/app_icon.png" %}" width="20" height="20">
+     {% block form3Title %}Task List &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+     &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+            <a href="/MoreList/">More</a>
+     {%endblock%}</span>
+                             </div>
+                                
+                                
+                                <div class="widget-content">
+                                {%block form3Body %}
+                                      <div id="tabbed_box_1" class="tabbed_box">
+                                              <div class="tabbed_area">
+                                                      <div id="content_1" class="content_new">
+                                                              {%block form3Items%}
+                                                             
+                                                              <form action="" method="post">
+                                                             
+                                                              {% for item in alltask %} 
+                                                              <div id="response_add">
+                                                                  <input name="xxx{{item.id}}" id="done" type="checkbox" value="{{item.id}}" />&nbsp;{{item.description}}  
+                                                              </div>
+                                                              {% endfor %}  
+                              
+                                                              {%endblock%}
+                                                              <br/>
+                                                                 
+                                                            <input name="tododescription" id="description" type="text" placeholder="Add Task" style="width:130px;"/>
+                                                            <input type="submit" name="Submitlist" value="Save" class="uibutton  confirm"  />
+                                                    </div>
+                         
+                           </form>
+                       
+                                                    <div id="response"></div>
+ 
+                                                    <div id="content_2" class="content_new"></div>
+                                            </div>
+                                      </div>
+                               </div>
+                                
+                            </div>
+                            </div>
+                            
+ 
+                            
+                            </div>
+                            {%endblock%}
+                            <!-- widget  span12 clearfix-->
+                            {%endblock%}
+ 
+                    </div><!-- row-fluid -->
+                    <!-- row-fluid -->
+                    <!-- row-fluid -->
+                    
+                    
+                    
+                </div> <!--// End inner -->
+              </div> <!--// End ID content -->
+              {%endblock%}<!-- //end block content-->
+ 
+        
+        </body>
+ 
+</html>

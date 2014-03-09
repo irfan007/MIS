@@ -1,0 +1,318 @@
+
+{% extends 'dashboard.html'%}
+{%load static%}
+
+{% block form1Title%}
+Extend Subscription:
+{%endblock%}
+
+{% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                      <li class="select"><a href="/subscription/list"><span class="ico gray shadow pictures_folder" ></span><b>Subscription</b></a></li>
+                      <li><a href="/customer/"><span class="ico gray shadow pictures_folder" ></span><b>Subscriber</b></a></li>
+                      <li ><a href="/subscription/renew"><span class="ico gray shadow pictures_folder" ></span><b>Lapse Subscription</b></a></li>
+                      <li><a href="/compliment/"><span class="ico gray shadow pictures_folder" ></span><b>Complimentary</b></a></li>
+                      <li ><a href="/suspended/"><span class="ico gray shadow pictures_folder" ></span><b>Suspended</b></a></li>
+                    </ul>
+                    
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}
+
+
+{%block widgetContent%}
+
+<div class="content" style="margin:0 10px 0 10px; width:100%" >
+  
+		<!-- Smart Wizard -->
+  		<div id="wizard" class="swMain" style="width:100%;" >
+  			<ul>
+             <li><a href="#step-1"><span class="stepDesc">Subscription Detail</span></a></li>
+             <li><a href="#step-2"><span class="stepDesc">Payment Detail</span></a></li>
+            </ul>
+            
+            <form id="" method="post" action="">
+               <div style="background:lightyellow;">
+                 <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+                 </ul>
+              </div>
+            
+  			<div style="background:lightyellow;">
+  			   <ul style="color:green;style:disk;">
+  			   {% for w in warns %}
+                 <li style="font-size:110%;">{{w}}</li>
+               {%endfor%}
+              </ul>
+           </div>
+           
+   
+  			<div id="step-1"  style="padding-right:20px;">
+             	<div class="widget-content">
+
+                                           
+                                          <div class="section" >
+                                                <label>Subscription id </label>   
+                                                <div> <input type="text" name="subid"  value="{{subid}}"  readonly /></div>
+                                           </div>
+	                            			
+	                            			
+	                            			
+	                            			<div class="section" >
+                                                <label> Subscription Date </label>   
+                                                <div> <input type="text" name="date" value="{{date}}"  style="text-align:left" readonly/></div>
+
+                                            </div>
+                                            <div class="section">
+                                                <label> start Issue </label>   
+                                                <div> <input type="text" name="start_issue" value="{{start_issue}}"  style="text-align:left" readonly/></div>
+
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label> end Issue </label>   
+                                                <div> <input type="text" name="end_issue" value="{{end_issue}}"  style="text-align:left" readonly/></div>
+
+                                           </div>
+                                            
+                                            <div class="section" >
+                                                <label>Magazine <sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                	<select class="small"  name="submag">
+                                                		<option value="-1"  selected>Select Magazine</option>
+                                                	  {%for m in magazines%}
+                                                	    {%ifequal submag m.id%}
+                                                		<option value="{{m.id}}" selected>{{m.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{m.id}}" >{{m.name|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" > no magazines found ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	
+                                                	        
+                                                </div>
+                                           </div>
+                                           
+                                                                                      
+                                           <div class="section" > 
+                                                <label> extend period <sup>*</sup></label>   
+                                                <div> <input type="text" name="experiod" value="{{experiod}}"  style="text-align:left" placeholder="In Month"/></div>
+
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Extend Subscription Amount <sup>*</sup></label> 
+                                                <div> <input style="color:red;" type="text" name="exsubamnt"  value="{{exsubamnt}}" /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Extend Received Amount <sup>*</sup></label>   
+                                                <div> <input style="color:green;" type="text" name="exrecamnt"  value="{{exrecamnt}}"/></div>
+                                           </div>
+                                           
+                                           
+                                           <div class="section">
+                                                <td colspan="3" align="right"><label>Discount</label></td>
+	                                            <td align="left"><input  name="dis" value="{{dis}}" type="text" /></td>
+	                                       </div>
+	                                       
+	                                       <div class="section" >
+                                                 <td colspan="3" align="right"><label>Comission Discount</label></td>
+	                                             <td align="left"><input  name="comdis" type="text" value="{{comdis}}"/></td>
+	                                       </div>
+                                           
+                                           <div class="section" >
+                                                  <td colspan="3" align="right"><label>Additional Discount</label></td>
+	                                              <td align="left"><input name="addis" type="text" value="{{addis}}" /></td>
+	                                       </div>
+	                                                 
+	                                       <div class="section" >
+                                                <label>Add Scheme</label>   
+                                                <div class="selectWidth1">
+                                                    <div id="schemeselect">
+                                                	<select class="small" id="selectOfschemes" name="sschemes" multiple>
+                                                	   
+                                                	  
+                                                	  {%for s in schemes%}
+                                                	    {%if s.id in sschemes%}
+                                                		<option value="{{s.id}}" selected>{{s.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{s.id}}" >{{s.name|title}}</option>
+                                                		{%endif%}
+                                                      
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	</div>       
+                                                </div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Add gift</label>   
+                                                <div class="selectWidth1" id="giftdiv">
+                                                	<select class="small"  id="selectofgifts" name="sgifts" multiple>
+                                                		
+                                                	  {%for g in gifts%}
+                                                	    {%if g.id in sgifts%}
+                                                		<option value="{{g.id}}" selected>{{g.name|title}}/{{g.code|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{g.id}}" >{{g.name|title}}/{{g.code|title}}</option>
+                                                		{%endif%}
+                                                      
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	
+                                                	        
+                                                </div>
+                                                
+                                           </div>
+                                           
+                                           <input type="hidden" name="warn"  value="{{warn}}"  />
+                                          
+                                          
+                                                  
+                                           <div class="section last">
+                                               <div>
+                                                <input type="submit" name="extendSub" class="btn" value="save"  />
+                                               </div>
+                                            </div> 
+                                           
+                                            
+                                          
+                                                  
+                                            
+				</div>          
+            </div>
+            
+            
+           <div id="step-2">
+
+			            <div class="widget-content">
+                                    <!-- title box -->
+                                          
+                                          <div class="section" >
+                                                <label> Subscription Date </label>   
+                                                <div> <input type="text" name="date"  value="{{date}}" readonly class="medium"  /></div>
+                                          </div>
+                                           
+                                          <div class="section">
+                                                <label>Payment Mode</label>   
+                                                <div class="selectWidth1">
+                                                <select class="small"  name="paymode" id="paymode" onchange="setPaymentDetails(this.value);">
+                                                
+                                                <option value="-1" selected >Select Payment Mode</option>
+                                                   {%if paymode == 'c'%}
+                                                   <option value="c" selected>Cash</option>
+                                                   {%else%}
+                                                   <option value="c" >Cash</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if paymode == 'd'%}
+                                                   <option value="d"  selected>Draft</option>
+                                                   {%else%}
+                                                   <option value="d" >Draft</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if paymode == 'chq'%}
+                                                   <option value="chq"  selected>Cheque</option>
+                                                   {%else%}
+                                                   <option value="chq" >Cheque</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if paymode == 'a'%}
+                                                   <option value="a"  selected>NEFT</option>
+                                                   {%else%}
+                                                   <option value="a" >NEFT</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if paymode == 'o'%}
+                                                   <option value="o"  selected>Online</option>
+                                                   {%else%}
+                                                   <option value="o" >Online</option>
+                                                   {%endif%}
+                                                   
+                                                   {%if paymode == 'out'%}
+                                                   <option value="out"  selected>Outstanding</option>
+                                                   {%else%}
+                                                   <option value="out" >Outstanding</option>
+                                                   {%endif%}
+
+
+
+                                              </select>       
+                                      </div>
+                                           </div>
+                                           
+                                            
+                                        
+                                        <div class="division">
+                                        
+                                        <div class="section when_cash" >
+                                                <label >Bank Name</label>   
+                                                <div> <input type="text" name="bank" value="{{bank}}" class="medium"  /></div>
+
+                                        </div>
+                                        <div class="section" >
+                                                <label id="pt_no">Cheque DD No.</label>   
+                                                <div> <input type="text" name="chequeno" value="{{chequeno}}" class="medium"  /></div>
+                                           </div>   
+                                        
+                                           <div class="section" >
+                                                <label id="pt_date">Cheque DD date</label>   
+                                                <div> <input type="text" name="chequedate" class="datepicker" style="text-align:left" value="{{chequedate}}" class="medium"  /></div>
+
+                                           </div>
+                                           
+                                           
+                                           
+                                                                                      
+                                           <div class="section when_online when_cash" >
+                                                <label id="pt_ddate">Cheque/DD Deposite Date </label>   
+                                                <div> <input type="text" name="depositedate" class="datepicker" style="text-align:left" value="{{depositedate}}" class="medium"  /></div>
+                                           </div>
+                                           
+                                           <div class="section when_cash" >
+                                                <label id="pt_cdate">Cheque/DD Clearance Date </label>   
+                                                <div> <input type="text" name="cleardate" class="datepicker" style="text-align:left" value="{{cleardate}}" class="medium"  /></div>
+
+                                           </div>
+                                       </div>
+                                       
+                                           <div class="section last">
+                                               <div>
+                                                <input type="submit" name="extendSub" class="btn" value="save"  />
+                                               </div>
+                                            </div>
+                                </div>
+            
+
+			</div>
+           
+			
+                        
+            
+            
+            
+           
+           
+            </form>
+  			
+  		</div><!-- End SmartWizard Content -->  		
+				
+{%endblock%}                            
+{%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}
+                                        
+                                        
+
+
+
+

@@ -1,0 +1,278 @@
+{% extends 'dashboard.html' %}
+
+{% load staticfiles %}
+               
+              
+       {% block leftMenu %}
+               
+               
+                    <script>
+function getCompMagazine(companyId)
+{
+
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("compMagdiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+
+xmlhttp.open("GET","/Mresponder?company="+companyId,true);
+xmlhttp.send();
+}
+
+</script>
+               
+               
+               
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     
+                     <li><a href="/report/gift/"><span class="ico gray shadow pictures_folder"></span><b>Gift Tracker Report</b></a></li>
+                      <li><a href="/report/offer/"><span class="ico gray shadow pictures_folder"></span><b>Offers Report</b></a></li>
+                       <li><a href="/report/srcsub/"><span class="ico gray shadow pictures_folder"></span><b>Source SubsReport</b></a></li>
+                       <li><a href="/report/cheque/"><span class="ico gray shadow pictures_folder"></span><b>PaymentReport</b></a></li>
+                      
+                       <li><a href="/report/monthlySubscriptions/"><span class="ico gray shadow pictures_folder"></span><b>Monthly SubsReport</b></a></li>
+                       <li><a href="/report/MIS/"><span class="ico gray shadow pictures_folder"></span><b>MIS Report</b></a></li>
+                       <li><a href="/report/PO/"><span class="ico gray shadow pictures_folder"></span><b>PO Report</b></a></li>
+                        <li class="select"><a href="/competitors/"><span class="ico gray shadow pictures_folder"></span><b>Competitors</b></a></li>
+                     
+                     
+                      
+                       
+                    </ul>
+                   
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}                 
+                                         
+                    
+                    
+                   
+                   
+
+                              
+                        {% block form1Title %}
+                          Competitors List{% endblock %} {% block form1Header %}
+                          <div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+                          <form action="/competitor/add/" method="POST">
+                          <input type="submit" class="btn  btn-large" name="add" value="Add"><strong></strong></a>
+                         </form> 
+                          </div>
+                          {% endblock %}
+                                
+
+                          {% block form1Body %}
+                          <div>
+                          {% for error in errors %}
+                          <font color="red">{{error}}</font>
+                          {% endfor %}
+                         <form action="/competitors/" method="POST"> 
+                          
+                          <table>
+                          <tr>
+                          <td><font face="verdana"><b>Enter Year:</b></font></td> 
+                          <td><input type="text" name="curyear" value="{{curyear}}" style="width:130px;" />
+                          </td>
+                          <td>
+                          <font face="verdana"><b>Select Month:</b></font></td> 
+                          <td width="40px"><select name="getmonth" >
+                          {% for mon in months %} 
+                          {% ifequal forloop.counter month %} 
+                          <option value="{{forloop.counter}}" selected>{{mon}}</option>
+                          {% else %}
+                          <option value="{{forloop.counter}}" >{{mon}}</option>
+                          {% endifequal %}
+                          {% endfor %}
+                          </select></td>
+                          <td></td>
+                          </tr>
+                          <tr>
+                          <td><font face="verdana"><b>Company:</b></font></td>
+                         <td> <select class="selectWidth2" name="getcompany" onchange="getCompMagazine(this.value)" >
+                         
+                          <option value="0">Select</option>
+                          {% for item in companies %}
+                          {% ifequal item.id companyid %}
+                          <option value="{{item.id}}" selected>{{item.companyName}}</option>
+                          {% else %}
+                          <option value="{{item.id}}">{{item.companyName}}</option>
+                          {% endifequal %}
+                          
+                          
+                          {% endfor %}
+                          
+                          </select>
+                          </td>
+                          <td>
+                          
+                         <font face="verdana"><b> Magazine:</b></font></td>
+                          
+                          <td>
+                          <div id="compMagdiv">
+                          <select name="magazineid">
+                          
+                          <option value="0">select</option>
+                          {% for item in selectmags %}
+                          
+                          {% ifequal item.id magazineid %}
+                          <option value="{{item.id}}" selected>{{item.magName}}</option>
+                          {% else %}
+                          <option value="{{item.id}}">{{item.magName}}</option>
+                          {% endifequal %}
+                          
+                          
+                          {% endfor %}
+                          
+                          </select>
+                          
+                          </div>
+                          
+                          </td>
+                                         
+                          </tr>
+                          </table>
+                         
+                         
+                         
+                         </div>
+                         <p align="center">
+                          <input type="submit" name="getcompetitor" value="Search" class="btn"  />
+                          
+                         
+                         &nbsp<input type="submit" name="whenexport" value="Export To Excel" class="btn"  />
+                         </p>  
+                         </form>
+                          
+                      
+                         
+                         
+          
+                          
+                          
+                          <div id="UITab" style="position:relative; ">
+                                         
+                               <div class="" >
+                                          <div id="tab1" class="tab_content"> 
+                                           
+               <table class="table table-bordered table-striped"  id="" width="200%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr>
+                                                        
+                                                      <td width="5%">SrNo</td>
+                                                        <td width="10%">Company</td>
+                                                        <td width="10%">Magazine</td>
+                                                        
+                                                        <td width="10%">CoverPrice</td>
+                                                        <td width="10%">issuetype</td>
+                                                        <td width="10%">Duration</td>
+                                                        <td width="10%">Mrp</td>
+                                                        <td width="5%">Issues</td>
+                                                        <td width="5%">Subs.Price</td>
+                                                        <td width="20%">Offers</td>
+                                                       
+                                                       
+                                                        
+                                                        
+                                                    
+                                                       
+                                                      </tr>
+                                                    </thead>
+                                                    
+                                                    <tbody align="center" class="font_wght">
+                                                  
+                                                      {% for r in overall %}
+                                                      <tr>
+                                                       
+                                                       
+                                                        <td rowspan="{{r.0}}" style="vertical-align:top;">{{forloop.counter}}</td>
+                                                        <td rowspan="{{r.0}}" style="vertical-align:top;">{{r.1}}</td>
+                                                        <td rowspan="{{r.0}}" style="vertical-align:top;">{{r.2}}</td>
+                                                        
+                                                         <td rowspan="{{r.0}}" style="vertical-align:top;">{{r.3}}</td>
+                                                          <td rowspan="{{r.0}}" style="vertical-align:top;">{{r.4}}</td>
+                                                          
+                                                          {% for data in r.5 %}
+                                                          <td>
+                                                          
+                                                          
+                                                          {{data.duration}}
+                                                          
+                                                          
+                                                           
+                                                          
+                                                          </td>
+                                                          <td>{{data.mrp}}</td>
+                                                          <td>{{data.noofIssues}}</td>
+                                                          <td>{{data.subsPrice}}</td>
+                                                          <td>{{data.offers}}</td>
+                                                          </tr>
+                                                          
+                                                          <tr>
+														 {% endfor %}
+                                        			
+                                                     	                                                        
+                                                       
+                                                      </tr>
+                                                     
+                                                      
+                                                  {% endfor %}
+                                                  
+                                                    </tbody>
+                                                    <!--
+                                                  <tr>
+                                                  <td>new</td>
+                                                  <form action="/competitors/" method="POST">
+                                                  <td><input name="company" value="{{company}}" type="text" style="width:160px;" /></td>
+                                                  <td><input type="text" name="magazinename" style="width:160px;" value="{{magazinename}}" /></td>
+                                                  <td><input type="text" style="width:30px;" name="coverPrice" value="{{coverPrice}}" /></td>
+                                                  <td><select name="issuetype" style="width:30px;">
+                                                  <option value="monthly">monthly</option>
+                                                  <option value="Bi-monthly">Bi-monthly</option>
+                                                  <option value="Tri-monthly">Tri-monthly</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  </select> </td>
+                                                  <td><select name="duration" style="width:30px;" >
+                                                  <option value="1 year">1 year</option>
+                                                  <option value="2 year">2 year</option>
+                                                  <option value="3 year">3 year</option>
+                                                  <option value="other">other</option>
+                                                  
+                                                  
+                                                  </select></td>
+                                                  
+                                                  
+                                                  <td><input type="text" name="mrp" value="{{mrp}}" style="width:40px;" /></td>
+                                                  <td><input type="text" style="width:30px;" name="issues" value="{{issues}}" /></td>
+                                                  <td><input type="text" style="width:40px;" name="subprice" value="{{subprice}}" /></td>
+                                                  <td><input type="text" style="width:180px;" name="offers" value="{{offers}}" /></td>
+                                                  <td><input type="submit" value="Add" name="addComp" class="btn" /></td>
+                                                  
+                                                  
+                                                  
+                                                  </tr>
+                                                  -->
+                                                  </form>  
+                                          </table>
+                                      </div>
+                                              
+                                      </div>
+                                      </div>
+                                
+                     {% endblock %}
+  {%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}
+                    

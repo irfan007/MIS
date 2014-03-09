@@ -1,0 +1,72 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}            
+              <!-- left_menu -->
+             {% block leftMenu %}
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     
+                      <li class="select"><a href="/CRM/" ><span class="ico gray shadow pictures_folder"></span><b>CRM</b></a></li>
+                       
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+               </div>
+               {% endblock %}
+              
+                    {% block form1Title %} 
+                                View Complaint
+                                
+                              {% endblock %}  
+                                {% block form1Header %}
+                                 <div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+                                            <a class="btn  btn-large " href="/CRM/add/"><strong>Add New Complaint</strong></a>
+                                </div>
+                           {% endblock %}     
+                               {% block form1Body %}
+                                <div id="UITab" style="position:relative; ">
+                                         
+                                          <div class="" >
+                                          <div id="tab1" class="tab_content"> 
+          <table class="table table-bordered table-striped data_table3 "  id="data_table3" width="100%">
+          
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr >
+                                                       
+                                                        <td width="16%">Subscription id</td>
+                                                        <td width="13%">Subscriber Name</td>
+                                                        <td width="12%">Magazine</td>
+                                                        <td width="16%">Subscriber Email ID</td>
+                                                        <!--<td width="2%">Subs. Type</td>-->
+                                                        
+                                                        <td width="10%">Complaint ID</td>
+                                                        <td width="10%">EmpId</td>
+                                                        <td width="7%">Status</td>
+                                                        <td width="8%">Action</td>
+                                                      </tr>
+                                                    </thead>
+                                                    <tbody align="center" class="font_wght">
+                                                    
+                                                      <tr>
+                                                        
+                                                        <td>{{row.getSubId}}</td>
+                                                        <td>{{custom.firstName}}</td>
+                                                        <td>{{subscrip.magazine.name}}</td>
+                                                        <td>{{custom.email}}</td>
+                                                     
+                                                        <td>{{row.getComplaintNo}}</td>
+                                                        <td>{{row.getEmployeeId}}</td>
+                                                        <td>{{row.getStatus}}</td>
+                                                        
+                                                        <td><a href="/CRM/edit/{{item.2.id}}/" class="btn submit_form">View/Edit</a></td>
+                                                      </tr>
+                                                      
+                                                   
+                                                    </tbody>
+                                                  </table>
+                                     
+                                      </div>
+                                      </div>
+                                      </div>
+                                      </div>
+                                
+                     
+                                   {% endblock %}              

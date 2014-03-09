@@ -1,0 +1,79 @@
+{% extends 'dashboard.html'%}
+{% block leftMenu %}
+               <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                      <li class="select"><a href="/subscription/list"><span class="ico gray shadow pictures_folder" ></span><b>Subscription</b></a></li>
+                      <li ><a href="/customer/"><span class="ico gray shadow pictures_folder" ></span><b>Subscriber</b></a></li>
+                      <li><a href="/subscription/renew"><span class="ico gray shadow pictures_folder" ></span><b>Lapse Subscription</b></a></li>
+                      <li><a href="/compliment/"><span class="ico gray shadow pictures_folder" ></span><b>Complimentary</b></a></li>
+                      <li ><a href="/suspended/"><span class="ico gray shadow pictures_folder" ></span><b>Suspended</b></a></li>
+                    </ul>
+                    
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}
+{% block form1Title%}
+View Transaction Details:
+{%endblock%}
+
+{%block form1Body%}
+<form id="add_user" method="post" action="">
+                                         <div class="section" >
+                                                <label>Date</label>   
+                                                <div> <input type="text" name="date" value="{{date}}" class="medium"  readonly/></div>
+
+                                         </div>
+                                                                                     
+                                         <div class="section" >
+                                                <label>Payment Mode</label>   
+                                                <div> <input type="text" name="mode" value="{{mode}}" class="medium"  readonly/></div>
+                                         </div>
+                                           
+                                         <div class="section" >
+                                                <label>Received Amount</label>   
+                                                <div> <input type="text" name="recAmount" value="{{amount}}" class="medium"  readonly/></div>
+                                         </div>
+                                         
+                                         {%if chequeDate%}
+                                         <div class="section" >
+                                                <label>{{t.CDL}}</label>   
+                                                <div> <input type="text" name="chequedate" class="medium" value="{{chequeDate}}"   readonly/></div>
+
+                                           </div>
+                                         {%endif%}
+                                         
+                                         
+                                         {%if chequeNo%}
+                                          <div class="section" >
+                                                <label>{{t.CNL}}</label>   
+                                                <div> <input type="text" name="chequeno" value="{{chequeNo}}" class="medium"  readonly/></div>
+                                           </div>
+                                         {%endif%}
+                                         
+                                         
+                                         {%if bankName%}
+                                           <div class="section" >
+                                                <label>Bank Name</label>   
+                                                <div> <input type="text" name="bank" value="{{bankName}}" class="medium"  readonly/></div>
+
+                                           </div>
+                                         {%endif%}
+                                         
+                                         
+                                         {%if depositeDate%}
+                                           <div class="section" >
+                                                <label>{{t.DDL}}</label>   
+                                                <div> <input type="text" name="depositedate"  value="{{depositeDate}}" class="medium"  readonly/></div>
+                                           </div>
+                                         {%endif%}
+                                         
+                                         
+                                         {%if clearDate%}
+                                           <div class="section" >
+                                                <label>{{t.CLDL}}</label>   
+                                                <div> <input type="text" name="cleardate"  value="{{clearDate}}" class="medium"  readonly/></div>
+
+                                           </div>
+                                         {%endif%}
+                                       </form>
+{%endblock%}

@@ -1,0 +1,85 @@
+-------------------------------------------INT--------------------------------
+if :
+                try:
+                    =int()
+                except ValueError:
+                    errors.append("Invalid value found for  !")
+            else:
+                errors.append("please enter !")
+                
+                
+---------------------------------------------Dummy------------------------------------------
+if req.method=="POST":
+            errors=[]
+            date=req.POST.get('date','')
+            title=int(req.POST.get('title',''))
+            age=req.POST.get('age','').strip()
+            sex=int(req.POST.get('sex',''))
+            designation=req.POST.get('designation','').strip()
+            company=req.POST.get('company','').strip()
+            address1=req.POST.get('address1','').strip()
+            address2=req.POST.get('address2','').strip()
+            address3=req.POST.get('address3','').strip()
+            city=req.POST.get('city','').strip()
+            state=req.POST.get('state','').strip()
+            pincode=req.POST.get('pincode','').strip()
+            teleo=req.POST.get('teleo','').strip()
+            teler=req.POST.get('teler','').strip()
+            mobileno=req.POST.get('mobileno','').strip()
+            email=req.POST.get('email','').strip()
+            
+            
+            if title==-1:
+                errors.append("please select atleast one title !")
+            elif not age:
+                errors.append("please enter age !")
+            elif sex==-1:
+                errors.append("please select atleast one sex !")
+            elif not designation:
+                errors.append("please enter designation !")
+            elif not company:
+                errors.append("please enter company name !")
+            elif not address1:
+                errors.append("please enter address line 1 !")
+            elif not city:
+                errors.append("please enter city !")
+            elif not state:
+                errors.append("please enter state !")
+            elif not pincode:
+                errors.append("please enter pincode !")
+            elif not teleo:
+                errors.append("please enter office telephone no. !")
+            elif not teler:
+                errors.append("please enter residential telephone no. !")
+            elif not mobileno:
+                errors.append("please enter mobile no. !")
+            elif not email:
+                errors.append("please enter email Id !")
+            else:
+                if '@' not in email:
+                    errors.append("please enter valid email Id !")
+                
+                elif len(mobileno)!=10:
+                    errors.append("Mobile no. must be of 10 digits !")
+                else:
+                    if title=='1':
+                        title='m'
+                    else:
+                        title='f'
+            
+                    if sex=='1':
+                        sex='m'
+                    else:
+                        sex='f'
+                    
+            
+                    temp=None    
+                    try:
+                        temp='age';age=int(age)
+                        temp='mobile';mobileno=int(mobileno)
+                    except ValueError:
+                        if temp:
+                            errors.append("Invalid value found for field "+temp+" !")
+                        temp=None
+                      
+---------------------------------------------------------------------------------------

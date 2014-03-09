@@ -1,0 +1,380 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}            
+              
+{% block leftMenu %}
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     
+                      <li class="select"><a href="/CRM/" ><span class="ico gray shadow pictures_folder"></span><b>Complaints</b></a></li>
+                      <li ><a href="/sales/" ><span class="ico gray shadow pictures_folder"></span><b>Contacts</b></a></li>
+                      
+              </ul>
+              <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              
+              
+{% endblock %}
+
+
+
+              
+ {% block form1Title %} 
+   <label>  Transferring Ticket </label> 
+ {% endblock %}  
+                             
+ {% block form1Header%}
+	<div class="btn-group btn-square" style="float:right; margin:3px 2px 0 0" >
+	
+	</div>
+ {%endblock%}
+                             
+                             
+ 
+                             
+                             
+{% block form1Body %}
+
+
+<script>
+function getEmployees(department)
+{
+
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  
+  
+  xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    
+    //alert(xmlhttp.responseText);
+    document.getElementById("id_to_employee").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?employeesOfDepartment="+department,true);
+xmlhttp.send();
+}
+</script>
+
+
+
+<div style="background:lightyellow;{%if errors%}border:1px solid yellow;{%endif%}">
+  <ul style="color:red;style:disk;font-size:13px;">
+            	{% for e in errors %}
+            	  <li>&nbsp;{{e}}</li>
+            	{%endfor%}
+  </ul>
+  </div>
+  
+  
+  <div style="background:lightyellow;{%if cuMessages%}border:1px solid yellow;{%endif%}">
+  <ul style="color:green;style:disk;font-size:13px;">
+            	{% for m in cuMessages %}
+            	  <li>&nbsp;{{m}}</li>
+            	{%endfor%}
+            	
+  </ul>
+  </div>
+  
+  <div style="background:lightyellow;{%if cuWarnings%}border:1px solid yellow;{%endif%}">
+  <ul style="font-size:13px;">
+            	{% for w in cuWarnings %}
+            	  <li>&nbsp;{{w}}</li>
+            	{%endfor%}
+  </ul>
+  </div>
+  
+  
+  <br/>
+            
+            
+            
+            <div id="UITab" style="position:relative;">
+            	<div>
+            		<div id="tab1" class="tab_content">
+            			
+            			<form action="" method="post">
+            			<table border="0" cellpadding="" width="40%" style="background:">
+            				<tbody align="center" class="font_wght">
+                                
+                                
+                                  <tr>
+                                    <td width="" align="left"><label>DATE</label></td>
+                                    <td width="" ><input type="text" style="border:1px solid black;"  value="{{ps.dDate}}" readonly/></td>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td width="" align="left"><label>TICKET NO.</label></td>
+                                    <td width="" ><input type="text" style="border:1px solid black;" name="ticket_no" value="{{ps.TICKET_PREFIX}}{{ticket_no}}" readonly/></td>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td width="" align="left"><label>SUBSCRIPTION NO.</label></td>
+                                    <td width="" ><input type="text" style="border:1px solid black;" name="sub_no" value="{{ps.getSubPrefix}}{{s.id}}" readonly/></td>
+                                  </tr>
+                                  
+                                  <tr><td colspan="2"><hr/></td></tr>  
+                                  
+                                  
+                                   <tr>
+                                    <td width="" align="left"><label>NAME</label></td>
+                                    <td width="" ><input type="text" style="border:1px solid black;" value="{{c.firstName}} {{c.lastName}}" readonly/></td>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td width="" align="left"><label>MOBILE NO.</label></td>
+                                    <td width="" ><input type="text" style="border:1px solid black;" value="{{c.mobileNo}}" readonly/></td>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td width="" align="left"><label>EMAIL ID</label></td>
+                                    <td width="" ><input type="text" style="border:1px solid black;" value="{{c.email}}" readonly/></td>
+                                  </tr>
+                                  
+                                   <tr>
+                                    <td width="" align="left"><label>UNDER DEPARTMENT</label></td>
+                                    <td width="" ><input type="text" style="border:1px solid black;" value="{%if ticket.currentDepartment%}{{ticket.currentDepartment.name}}{%else%}{%endif%}" readonly/></td>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td width="" align="left"><label>UNDER FOLLOWER</label></td>
+                                    <td width="" ><input type="text" style="border:1px solid black;" value="{%if ticket.currentFollower%}{{ps.empCodePrefix}}{{ticket.currentFollower}}{%else%}{%endif%}" readonly/></td>
+                                  </tr>
+                                  
+                                  <tr><td colspan="2"><hr/></td></tr>
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  <tr><td align="left"><label>REPLY / MEMORY </label></td></tr>
+                                  <tr>
+                                    <td colspan="2" align="left">
+                                  		<textArea name="reply" style="width:500px;font-size:15px" rows="5" >{{reply}}</textArea>
+                                  	</td>
+                                  </tr>
+                                  
+                                  
+                                   <tr>
+                                    <td width="" align="left" ><label>COMPLAINT DOMAIN</label></td>
+                                    <td align="left">
+                                        <table>
+                                        	<tr>
+                                        		<td>
+                                        		    
+                                        		    <div id="idOf_popComplain">
+                                        		 	<select class="small"  name="complaint_domain">
+                                                	  	
+                                                	  {%for t in types%}
+                                                	    {%ifequal t.id complaint_domain%}
+                                                		<option value="{{t.id}}" selected>{{t.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{t.id}}">{{t.name|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                        <option value="-1" selected  > NOT FOUND ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>  
+                                        		 	</div>
+                                        		</td>
+                                        		
+                                        		<td align="right">
+                                        			&nbsp;&nbsp;&nbsp;<a href="" onclick="return openURLInCenterOfScreen('/add/complaintype');"><img src="{% static 'images/icon_addlink.gif' %}"></a>
+                                        		</td>
+                                        	</tr>
+                                    	
+                                    	</table>
+                                    </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td width="" align="left"><label>COMPLAINT RESOURCE</label></td>
+                                    <td align="left">
+                                    <table>
+                                        	<tr>
+                                        		<td >
+                                        		 	<select name="complaint_resource">
+                                        		 	    {%ifequal 'p' complaint_resource%}
+			                                    		<option value="p" selected>PHONE</option>
+			                                    		{%else%}
+			                                    		<option value="p">PHONE</option>
+			                                    		{%endifequal%}
+			                                    		
+			                                    		{%ifequal 'e' complaint_resource%}
+			                                    		<option value="e" selected>EMAIL</option>
+			                                    		{%else%}
+			                                    		<option value="e">EMAIL</option>
+			                                    		{%endifequal%}
+			                                    		
+			                                    		
+			                                    		{%ifequal 'l' complaint_resource%}
+			                                    		<option value="l" selected>LETTER</option>
+			                                    		{%else%}
+			                                    		<option value="l">LETTER</option>
+			                                    		{%endifequal%}
+			                                    		
+			                                    		
+			                                    		{%ifequal 'o' complaint_resource%}
+			                                    		<option value="o" selected>OTHER</option>
+			                                    		{%else%}
+			                                    		<option value="o">OTHER</option>
+			                                    		{%endifequal%}
+			                                    		
+                                    				</select>
+                                        		</td>
+                                        		
+                                        		<td>
+                                        		
+                                        		</td>
+                                        	</tr>
+                                    	
+                                    	</table>
+                                    	
+                                    </td>
+                                  </tr>
+                                  
+                                  
+                                  <tr>
+                                    <td width="" align="left"><label>STATUS</label></td>
+                                    <td align="left">
+                                    <table>
+                                        	<tr>
+                                        		<td >
+                                        		 	<select name="status">
+                                        		 		{%ifequal 'n' status%}
+			                                    		<option value="n" selected>NEW</option>
+			                                    		{%else%}
+			                                    		<option value="n">NEW</option>
+			                                    		{%endifequal%}
+			                                    		
+			                                    		{%ifequal 'u' status%}
+			                                    		<option value="u" selected>IN PROCESS</option>
+			                                    		{%else%}
+			                                    		<option value="u">IN PROCESS</option>
+			                                    		{%endifequal%}
+			                                    		
+			                                    		
+			                                    		{%ifequal 'r' status%}
+			                                    		<option value="r" selected>RESOLVED</option>
+			                                    		{%else%}
+			                                    		<option value="r">RESOLVED</option>
+			                                    		{%endifequal%}
+			                                    		
+                                    				</select>
+                                        		</td>
+                                        		
+                                        		<td>
+                                        		
+                                        		</td>
+                                        	</tr>
+                                    	
+                                    	</table>
+                                    	
+                                    </td>
+                                  </tr>
+                                  
+                                  <tr><td colspan="2"><hr/></td></tr>
+                                  
+                                  <tr><td align="left"><label style="color:red;">TRANSFER</label></td></tr>
+                                  
+                                  <tr>
+                                    <td width="" align="left" ><label>TO DEPARTMENT <sup>*</sup></label></td>
+                                    <td align="left">
+                                    	<table>
+                                        	<tr>
+                                        		<td>
+			                                        <select class="small"  name="to_department" onchange="getEmployees(this.value);">
+			                                                	   	<option value="-1" selected>----</option>
+			                                                	  {%for d in departments%}
+			                                                	    {%ifequal d.id to_department%}
+			                                                		<option value="{{d.id}}" selected>{{d.name|title}}</option>
+			                                                		{%else%}
+			                                                		<option value="{{d.id}}">{{d.name|title}}</option>
+			                                                		{%endifequal%}
+			                                                      {%empty%}
+			                                                        <option value="-1" selected  > NOT FOUND ! </option>
+			                                                      {%endfor%}
+			                                                       	
+			                                        </select>
+			                                    </td>
+			                                </tr>
+			                            </table>  
+                                    </td>
+                                  </tr>
+                                  
+                                  <tr>
+                                    <td width="" align="left" ><label>TO EMPLOYEE </label></td>
+                                    <td align="left">
+                                        <div id="id_to_employee">
+                                        <table>
+                                        	<tr>
+                                        		<td>
+                                        		 
+		                                        	<select class="small"  name="to_employee">
+		                                                	 
+		                                                	        <option value='-1' selected>----</option>"
+		                                                	 		{%for e in employees%}
+			                                                	    {%ifequal e.id to_employee%}
+			                                                	    <option value="{{e.id}}" selected>{{ps.empCodePrefix}}{{e.id}} / {{e.firstName|title}} {{e.lastName|title}}</option>
+			                                                		{%else%}
+			                                                		<option value="{{e.id}}" >{{ps.empCodePrefix}}{{e.id}} / {{e.firstName|title}} {{e.lastName|title}}</option>
+			                                                		{%endifequal%}
+			                                                      	{%empty%}
+			                                                        		<option value="-1" selected  > Select Department First  </option>
+			                                                        {%endfor%}
+			                                                 
+		                                            </select>
+		                                        </td>
+		                                   </tr>
+		                                </table>
+                                        </div>  
+                                    </td>
+                                  </tr>
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  
+                                  <tr><td colspan="2"><hr/></td></tr>
+                                  
+                                  <tr>
+                                    <br/> 
+                                    <td width=""  colspan="2" align="left">
+                                    	<input type="submit" class="btn" style="border:1px solid black;" value="Transfer " name="crm_transfer" />
+                                    	
+                                    	<input type="submit" class="btn" style="border:1px solid black;" value="Transfer & Mail" name="crm_transfer_and_mail" {%if not c.email%}disabled{%endif%} />
+                                    	
+                                    </td>
+                                    
+                                  </tr>
+                                  
+                            </tbody>
+                      	
+                      	</table>
+                      	</form>
+                      	
+                   </div>
+                  </div>
+                  </div>
+                  
+            
+ 
+{% endblock %}       
+                                   
+                                   
+                                   
+{%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}       

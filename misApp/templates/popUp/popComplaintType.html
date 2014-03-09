@@ -1,0 +1,38 @@
+{% extends 'dashboard.html'%}
+
+{% block header %}{%endblock%}
+{% block leftMenu %}{%endblock%}
+{% block topNavigation %}{%endblock%}
+{% block form2 %}{%endblock%}
+{% block form3 %}{%endblock%}
+
+
+
+{% block form1Title%}
+Add Complaint Type:
+{%endblock%}
+
+{%block form1Body%}
+
+                                  {% for error in errors %}
+                                    <font color="red">{{error}}<br>
+                                    {% endfor %}
+                                    </font>
+                                    
+                                     
+                                      <form id="add_user" method="post" action=""> 
+                                            <div class="section" >
+                                                <label>Name<sup>*</sup> </label>   
+                                                <div> <input type="text" name="name" class=" large" value="{{name}}"  /></div>
+                                           </div>
+                                           
+                                            <class="section last">
+                                                <div>
+                                                  <input type="submit" value="Save" name="addComplaintType" class="btn submit_form"></input>
+												</div>
+                                           </div>
+                                        </form>
+{%endblock%}
+
+
+

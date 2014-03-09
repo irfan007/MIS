@@ -1,0 +1,67 @@
+{% extends 'dashboard.html'%}
+{% load staticfiles %}
+
+
+
+
+{%block htmlHead%}
+
+<link rel="stylesheet" type="text/css" href="{% static "css/frontierCalendar/jquery-frontier-cal-1.3.2.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "css/colorpicker/colorpicker.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui/smoothness/jquery-ui-1.8.1.custom.css" %}" />
+<script type="text/javascript" src="{% static "js/jquery-core/jquery-1.4.2-ie-fix.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery-ui/smoothness/jquery-ui-1.8.1.custom.min.js" %}"></script>
+<script type="text/javascript" src="{% static "js/colorpicker/colorpicker.js" %}"></script>
+<script type="text/javascript" src="{% static "js/jquery-qtip-1.0.0-rc3140944/jquery.qtip-1.0.js" %}"></script>
+<script type="text/javascript" src="{% static "js/lib/jshashtable-2.1.js" %}"></script> 
+<script type="text/javascript" src="{% static "js/frontierCalendar/jquery-frontier-cal-1.3.2.min.js" %}"></script>
+
+{%endblock%}
+ 
+
+{% block leftMenu %}
+<div id="left_menu">
+    <ul id="main_menu" class="main_menu">
+      <li ><a href="/CRM/" ><span class="ico gray shadow pictures_folder"></span><b>Complaints</b></a></li>
+      <li ><a href="/sales/" ><span class="ico gray shadow pictures_folder"></span><b>Contacts</b></a></li>
+      <li class="select"><a href="/CRM/events/" ><span class="ico gray shadow pictures_folder"></span><b>Manage Events</b></a></li>
+    </ul>              
+    <div id="footer"> &copy; Copyright 2013  </div>
+</div>
+{%endblock%}
+
+
+{% block form1Title%}
+Manage Events
+{%endblock%}
+
+{%block form1Body%}
+
+
+
+<form id="add_user" method="post" action="" enctype="multipart/form-data">
+      <div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+      </ul>
+      </div>
+      
+      <div id="mycal" style="border:1px solid black;height:250px;">
+      
+      </div>
+ 
+</form> 
+{%endblock%}
+
+{%block form1Width%}100%{%endblock%}
+{%block form2%}{%endblock%}
+{%block form3%}{%endblock%}
+
+
+
+
+
+
+

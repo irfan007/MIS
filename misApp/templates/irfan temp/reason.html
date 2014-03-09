@@ -1,0 +1,38 @@
+{% extends 'dashboard.html'%}
+
+{% block header %}{%endblock%}
+{% block leftMenu %}{%endblock%}
+{% block topNavigation %}{%endblock%}
+{% block form2 %}{%endblock%}
+{% block form3 %}{%endblock%}
+
+
+
+{% block form1Title%}
+Suspending Reason:
+{%endblock%}
+
+{%block form1Body%}
+<form id="add_user" method="post" action="">
+      <div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+      </ul>
+      </div>                               
+                                                                                     
+                                          <div class="section" >
+                                                <textArea style="width:97%;height:200px;" placeholder=" Enter Here !  " name="reason">{{reason}}</textArea>
+                                           </div>
+                                     
+                                     
+                                        {%if not reason%}
+                                        <div class="section last">
+                                             <div>
+                                                  <input type="submit" name="addMagazine" value="Submit" class="btn submit_form"></input>
+<a class="btn" title="Reset Form" onclick="ResetForm()">Reset</a> </div>
+                                           </div>
+                                        {%endif%}
+                                        </form>
+{%endblock%}

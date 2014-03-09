@@ -1,0 +1,201 @@
+{% extends "dashboard.html" %}
+{% load staticfiles %}
+    
+      
+                                 
+
+                       
+              <!-- left_menu -->
+             {% block leftMenu %}
+              <div id="left_menu">
+              <ul id="main_menu" class="main_menu">
+                     
+                      <li class="select"><a href="/CRM/" >
+                      <span class="ico gray shadow pictures_folder"></span><b>CRM</b></a></li>
+                       
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+               </div>
+               {% endblock %}
+              {% block form1Title %} 
+              Add Complaint
+              {% endblock %}
+                                {% block form1Body %}
+                                	  <script>
+
+function getInfo(subid)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("infodiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/CRMresponder?subid="+subid,true);
+xmlhttp.send();
+}
+
+</script>
+                              
+                                <div class="widget-content">
+                                    <!-- title box -->
+                                    {% for error in errors %}
+                                    <font color="red">
+                                    {{error}}<br></font>
+                                    {% endfor %}
+                               <form action="/CRM/add/" method="POST">
+                               <h3>Search Subscription</h3>
+                               <h5>SubscriptionId:
+                               &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                               <input type="text" name="subid" value="{{subid}}" size="30" />
+                               &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp 
+                               Name:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                               <input type="text" name="subName" value="{{subName}}" size="30"  /></h5>
+                               <h5>Email:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                               <input type="text" name="emailid" value="{{emailid}}" size="30" />
+                               &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp MobileNo:&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                               <input type="text" name="mobno" value="{{mobno}}" size="30"  />&nbsp&nbsp<input type="submit" name="srchSubscription" value="Search" /></h5>
+                               </form>    
+                                      
+                                   {% if x %}  
+                                    
+                                    <table class="table table-bordered table-striped"  id="" width="200%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr>
+                                                        
+                                                        <td width="5%">SubscriberName</td>
+                                                        <td width="11%">CustomerId</td>
+                                                        <td width="11%">ContactNo</td>
+                                                        <td width="11%">SubscriptionDate</td>
+                                                        <td width="11%">SubsID</td>
+                                                        <td width="11%">Add Complaint</td>
+                                                        
+                                                    
+                                                       
+                                                      </tr>
+                                                    </thead>
+                                                    
+                                                    <tbody align="center" class="font_wght">
+                                                    {% if anysub %}
+                                                    <tr>
+                                                    <td>{{anysub.0}}</td>
+                                                    <td>{{anysub.1}}</td>
+                                                    <td>{{anysub.2}}</td>
+                                                    <td>{{anysub.3}}</td>
+                                                    <td>{{anysub.4}}</td>
+                                                    
+                                                    
+                                                        <td class="brdrnone"><a href="/Complaint/add/{{anysub.5}}">
+                              <img src="{% static "images/edit.png" %}" width="28" height="28" alt="Edit Department" title="Edit Department">
+                                                        </a>
+                                                    </td>	                                                        
+                                                    
+                                                    </tr>
+                                                 {% else %}    
+                                                      
+                                                      {%for r in customers%}
+                                                      <tr>
+                                                       
+                                                        {% for item in r.subscriptions.all %}
+                                                        <td>{{r.firstName}}</td>
+                                                        <td>{{r.getcusID}}</td>
+                                                        <td>{{r.mobileNo}}</td>
+                                                         <td>{{item.date}}</td>
+                                                          <td>{{item.getsubID}}</td>
+														 
+                                        
+                                                        <td class="brdrnone"><a href="/Complaint/add/{{item.id}}/">
+                              <img src="{% static "images/edit.png" %}" width="28" height="28" alt="Add Complaint" title="Add Complaint">
+                                                        </a>
+                                                    </td>	                                                        
+                                                       
+                                                      </tr>
+                                                      {% endfor %}
+                                                      
+                                                      {%endfor%}
+                                                      {% endif %}
+                                                    </tbody>
+                                                    
+                                          </table>       
+         {% endif %}
+         
+                                                 <div id="infodiv">
+                                                 
+                                                 
+       <!--                                          
+                                                 
+       <div class='section'>
+        <label>Name</label>
+        <div> <input type='text' name='name' value="{{customer.firstName}}" class='large' readonly /></div>
+        </div>
+        
+        <div class="section" >
+                                                <label>Email ID</label>   
+               <div> <input type="text" name="email" value="{{customer.email}}" class="large" readonly  /></div>
+        </div>                                   
+        
+          <div class="section" >
+                                                <label>Magazine</label>   
+                                                <div>
+                                                 <input type="text" name="magazine" value="{{subscription.magazine.name}}" class=" large" readonly  />
+                                                </div>
+                                           </div>
+                                           -->
+                                           <!--
+          <div class="section" >
+                                                <label>Scheme</label>   
+                                                <div> <input type="text" name="scheme" value="{{subscription.scheme.name}}" class=" medium" readonly  /></div>
+                                           </div>
+                                           <div class="section" >
+                                                <label>Gift</label>   
+                                                <div> <input type="text" name="gift" value="{{subscription.gift.name}}" class="medium" readonly  /></div>
+                                           </div> 
+        -->
+        
+       </div>
+                            <!--                                                
+                                <div class="section">
+                                                 <label> Description<sup>*</sup> </label>   
+                                                <div>
+                                                <textarea name="description" style="width:500px; height:189px;">{{description}}</textarea>
+                                                
+                                                </div>   
+                                          </div>
+                                           
+                                           <div class="section" >
+                                                <label>Status<sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="status" >
+                                               
+                                                <option value="n">New</option>
+                                                {% ifequal getstatus "u" %}
+                                                <option value="u" selected>Under Process</option>
+                                                {% else %}
+                                                <option value="u">Under Process</option>
+                                                {% endifequal %}
+                                                
+                                                {% ifequal getstatus "r" %}
+                                                <option value="r" selected>Resolved</option>
+                                                {% else %}
+                                                <option value="r">Resolved</option>
+                                                {% endifequal %}
+                                              </select>       
+                                      </div>
+                                        </div>
+                                       -->   
+                                        
+                                </div><!--  end widget-content -->
+                            </div>
+                            
+                     {% endblock %}       
+                  

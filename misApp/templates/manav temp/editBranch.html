@@ -1,0 +1,323 @@
+{% extends 'dashboard.html' %}
+{% load staticfiles %}
+                    
+                   {% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+                       {%if CUP.department.0 or cu.isAdmin%}
+                      <li ><a href="/departments/"><span class="ico gray shadow pictures_folder" ></span><b>Department</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.role.0 or cu.isAdmin %}
+                      <li ><a href="/role/list"><span class="ico gray shadow  pictures_folder"></span><b>Role</b> </a></li>
+                      {%endif%}
+                      
+                      {%if CUP.employee.0 or cu.isAdmin%}
+                      <li ><a href="/user/list" ><span class="ico gray shadow pictures_folder"></span><b>User</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazine.0 or cu.isAdmin%}
+                      <li ><a href="/magazine/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazineC.0 or cu.isAdmin%}
+                      <li ><a href="/combo/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine Combo</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.gift.0 or cu.isAdmin%}
+                      <li ><a href="/gifts/"><span class="ico gray shadow pictures_folder" ></span><b>Gift</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.tenure.0 or cu.isAdmin%}
+                      <li ><a href="/tenures/"><span class="ico gray shadow pictures_folder" ></span><b>Tenure</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.scheme.0 or cu.isAdmin%}
+                      <li ><a href="/schemes/"><span class="ico gray shadow pictures_folder"></span><b>Scheme</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.source.0 or cu.isAdmin%}
+                      <li ><a href="/sources/"><span class="ico gray shadow pictures_folder"></span><b>Source</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.location.0 or cu.isAdmin%}
+                      <li ><a href="/locations/"><span class="ico gray shadow pictures_folder"></span><b>Location</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.courier.0 or cu.isAdmin%}
+                      <li ><a href="/couriers/"><span class="ico gray shadow pictures_folder"></span><b>Courier</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.branch.0 or cu.isAdmin%}
+                      <li class="select" ><a href="/branch/"><span class="ico gray shadow pictures_folder" ></span><b>Branch</b></a></li>
+                      {%endif%}
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              {%endblock%}   
+                   
+                                    {% block form1Title %}Edit Branch{% endblock %}
+                                	
+                                
+                                {% block form1Body %}
+                                                                            <script>
+function getCity(stateId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("citydiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/accMresponder?state="+stateId,true);
+xmlhttp.send();
+}
+
+</script>
+                                
+                                
+                                
+                                
+                                
+                                
+                                    {% for error in errors %}
+                                       <font color="red">{{error}}<br></font>
+                                       {% endfor %}
+                                    
+                                    
+                                       
+                                      <form id="add_user" method="post" action="/branch/edit/{{iD}}/">
+                                       <div class="section" >
+                                                <label>Branch Code<sup>*</sup> </label>
+                                                <div>   
+                                                {% if code %}
+                                                
+                                    <input type="text" name="code" class=" large" value="{{code}}" maxlength="50"  />
+                                            {% else %}
+                                 <input type="text" name="code" class=" large" value="{{row.code}}" maxlength="50"  />
+                                                 {% endif %}
+                                                 
+                                                 
+                                                 </div>
+                                           </div> 
+                                            <div class="section" >
+                                                <label>Branch Name<sup>*</sup> </label>
+                                                <div>   
+                                                {% if name %}
+                                                
+                                                 <input type="text" name="name" class=" large" value="{{name}}" maxlength="50"  />
+                                                 {% else %}
+                                                 <input type="text" name="name" class=" large" value="{{row.name}}" maxlength="50"  />
+                                                 {% endif %}
+                                                 
+                                                 
+                                                 </div>
+                                           </div>
+                                           
+                                           
+                                           
+                                           
+                                           <div class="section" >
+                                                <label>Description</label>   
+                                                <div>
+                                                
+                                                {% if description %}
+                                                 <input type="text" name="description" class=" large" value="{{description}}" maxlength="150"  />
+                                                 {% else %}
+                                                 
+                                                <input type="text" name="description" class=" large" value="{{row.description}}" maxlength="150"  />
+                                                
+                                                
+                                                {% endif %}
+                                                
+                                                
+                                                </div>
+                                           </div>
+                                             <div class="section" >
+                                                <label>Contactno.</label>   
+                                                <div>
+                                                
+                                                {% if contactno %}
+                                                 <input type="text" placeholder="in digit" onkeypress="return isNumberKey(event)" name="contactno" class=" large" value="{{contactno}}" maxlength="12"  />
+                                                 {% else %}
+                                                 
+                                                <input type="text" name="contactno" class=" large" value="{{row.contactno}}" maxlength="12" placeholder="in digit" onkeypress="return isNumberKey(event)"  />
+                                                
+                                                
+                                                {% endif %}
+                                                
+                                                
+                                                </div>
+                                           </div>
+                                         
+                                           <div class="section" >
+                                                <label>State<sup>*</sup></label>   
+                                                <div class="selectWidth1" id="statediv">
+                                                <select class="small" name="state"  onchange="getCity(this.value)" >
+                                               
+                                             {% if branchstate %}
+                                                
+                                                
+                                                {% for s in getstates %}
+                                                
+                                                 {% ifequal branchstate s.id %}
+                                                
+                                                <option value="{{s.id}}" selected>{{s.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{s.id}}" >{{s.name}}</option>
+                                                {%endifequal%}
+                                                {% endfor %}
+                                                {% else %}
+                                                
+                                                
+                                                {% for s in getstates %}
+                                                
+                                                 {% ifequal row.state s.name %}
+                                                
+                                                <option value="{{s.id}}" selected>{{s.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{s.id}}" >{{s.name}}</option>
+                                                {%endifequal%}
+                                                {% endfor %}
+                                              {% endif %}  
+                                              </select>
+                                                
+                                      </div>
+                                        </div>
+                                        
+                                    <div class="section" >
+                                                <label>City<sup>*</sup></label>   
+                                                <div class="selectWidth1" id="citydiv">
+                                                <select class="small" name="city">
+                                               
+                                             {% if branchcity %}
+                                             {% ifequal branchcity -1 %}
+                                              <option value="-1" selected>----</option>
+ 												{% for c in getcities %}
+                                                
+                                                 
+                                                
+                                                <option value="{{c.id}}">{{c.name}}</option>
+                                                
+                                                
+                                                {% endfor %}
+                                            {% else %} 
+                                                
+                                                {% for c in getcities %}
+                                                
+                                                 {% ifequal branchcity c.id %}
+                                                
+                                                <option value="{{c.id}}" selected>{{c.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{c.id}}" >{{c.name}}</option>
+                                                {%endifequal%}
+                                            {% endfor %}    
+                                                {% endifequal %}  
+                                                
+                                              {% else %}  
+                                                {% for c in getcities %}
+                                                
+                                                 {% ifequal row.city c.name %}
+                                                
+                                                <option value="{{c.id}}" selected>{{c.name}}</option>
+                                                
+                                                {%else%}
+                                                <option value="{{c.id}}" >{{c.name}}</option>
+                                                {%endifequal%}
+                                                {% endfor %}
+                                             {% endif %}   
+                                              </select>
+                                                
+                                      </div>
+                                        </div>
+                                              
+                                                      
+                                        <div class="section" >
+                                                <label>Address<sup>*</sup></label>   
+                                                <div>
+                                                {% if address %} 
+                                                <input type="text" name="address" value="{{address}}" class=" large"   />
+                                                {% else %}
+                                                <input type="text"  name="address" value="{{row.address}}" class=" large"  />
+                                                {% endif %}
+                                                </div>
+                                           </div>
+                                             <div class="section" >
+                                                <label>Pincode</label>   
+                                                <div>
+                                                {% if pincode %} 
+                                                <input type="text" name="pincode" placeholder="in digit" onkeypress="return isNumberKey(event)" value="{{pincode}}" class=" large" maxlength="10"   />
+                                                {% else %}
+                                                <input type="text" name="pincode" placeholder="in digit" onkeypress="return isNumberKey(event)" value="{{row.pincode}}" maxlength="10" class=" large"  />
+                                                {% endif %}
+                                                </div>
+                                           </div>
+                                                       <div class="section" >
+                                                <label>Remark<sup>*</sup></label>   
+                                                <div>
+                                                
+                                                
+                                                 <input type="text" name="remark" class=" large" value="{{remark}}" maxlength="50"  />
+                                               
+                                                 
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                
+                                                </div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>status</label>   
+                                                <div class="selectWidth1">
+                                                <select class="small" name="status"  >
+                                                {% if status %}
+                                                {% ifequal status "2" %}
+                                                 <option value="1">Active</option>
+                                                <option value="2" selected>InActive</option>
+                                                {% else %}
+                                                 <option value="1" selected>Active</option>
+                                                <option value="2">InActive</option>
+                                                {% endifequal %}
+                                                {% else %}
+                                                {% if row.isActive %}
+                                                <option value="1" selected>Active</option>
+                                                <option value="2">InActive</option>
+                                                
+                                                {% else %}
+                                                <option value="1">Active</option>
+                                                <option value="2" selected>InActive</option>
+                                                {% endif %}
+                                                {% endif %}
+                                              </select>       
+                                      </div>
+                                           </div>
+                        
+
+<div class="section last">
+                                                <div>
+                                                  <input type="submit" name="editBranch" value="Save" class="btn submit_form"></input>
+</div>
+                                           </div>
+                                        </form>
+                                </div><!--  end widget-content -->
+                            
+                            
+                          <!-- start right section--> 
+                            
+{% endblock %}

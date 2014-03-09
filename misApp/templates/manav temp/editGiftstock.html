@@ -1,0 +1,149 @@
+{% extends 'dashboard.html' %}
+{% load staticfiles %}
+                    
+                  {% block leftMenu %}
+              <div id="left_menu">
+                    <ul id="main_menu" class="main_menu">
+
+                      <li class="select"><a href="/giftstock/"><span class="ico gray shadow pictures_folder" ></span><b>Gift Stock</b></a></li>
+                      
+                      
+                      
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              {%endblock%}   
+                   
+                                    {% block form1Title %}Edit Gift{% endblock %}
+                                	
+                                
+                                {% block form1Body %}
+                                    {% for error in errors %}
+                                       <font color="red">{{error}}<br></font>
+                                       {% endfor %}
+                                    
+                                       
+                                       
+                                      <form id="add_user" method="post" action="/giftstock/edit/{{iD}}/">
+                                      <h3> Add GiftStock</h3>
+                                            <div class="section" >
+                                                <label>Gift Name</label>
+                                                <div>   
+                                                {% if name %}
+                                                
+                                                 <input type="text" name="name" class=" medium" value="{{name}}" readonly  />
+                                                 {% else %}
+                                                 <input type="text" name="name" class=" medium" value="{{stkgift.name}}" readonly />
+                                                 {% endif %}
+                                                 
+                                                 
+                                                 </div>
+                                           </div>
+                                           
+                                           
+                                           
+
+                                            <div class="section" >
+                                                <label>Current Stock</label>   
+                                                <div>
+                                                
+                                                {% if updated %}
+                                                 <input type="text" name="updated" class=" medium" value="{{updated}}" readonly  />
+                                                 {% else %}
+                                                 
+                                                <input type="text" name="updated" class=" medium" value="{{stkgift.updated}}" readonly  />
+                                                
+                                                
+                                                {% endif %}
+                                                
+                                                
+                                                </div>
+                                           </div>
+                                             <div class="section" >
+                                                <label>Add Stock</label>   
+                                                <div>
+                                                
+                                             
+                                                 <input type="text" name="addstock" placeholder="in digit"  class=" medium" value="{{addstock}}" onkeypress="return isNumberKey(event)" maxlength="8"  />
+                                                                                                  
+                                                
+                                                
+                                                
+                                                </div>
+                                           </div>
+                                           
+                                            
+                                           
+                                           
+                                           
+                                                             <div class="section" >
+                                                <label>Remark</label>   
+                                                <div>
+                                                
+                                                
+                                                 <input type="text" name="remark" class=" medium" value="{{remark}}"  maxlength="50"  />
+                                               
+                                                 
+                                                
+                                                
+                                                
+                                                	
+                                                
+                                                
+                                                </div>
+                                           </div>
+                                           
+                                           
+                                           
+                                          
+<div class="section last">
+                                                <div>
+                                                <input type="submit" name="addquantity" value="Save" class="btn submit_form" >
+</div>
+                                           </div>
+                                           
+                                        
+                                <hr width="100%"></hr>
+                                 {% for error in perrors %}
+                                       <font color="red">{{error}}<br></font>
+                                       {% endfor %}
+                                <h3> Deduct GiftStock</h3>
+                                       
+                                            <div class="section" >
+                                                <label>Deduct Quantiy</label>
+                                                <div>   
+                                                
+                                                
+                                                 <input type="text" name="deduce" class=" medium" value="{{deduce}}" maxlength="8" onkeypress="return isNumberKey(event)" placeholder="in digit"    />
+                                                
+                                                 
+                                                 
+                                                 </div>
+                                           </div>
+                                           
+                                           
+                                           
+
+                                            <div class="section" >
+                                                <label>Reason</label>   
+                                                <div>
+                                                
+                                                
+                                                <textarea name="reason"  cols="" rows="">{{reason}}</textarea>
+                                                
+                                                </div>
+                                           </div>
+                                             
+       <div class="section last">
+                                                <div>
+                                <input type="submit" name="subquantity" value="Save" class="btn submit_form" >
+</div>
+                                           </div>
+                                           
+                                        </form>         
+                                </div><!--  end widget-content -->
+                            
+                            
+                          <!-- start right section--> 
+                            
+{% endblock %}

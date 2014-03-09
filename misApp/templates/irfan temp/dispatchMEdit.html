@@ -1,0 +1,125 @@
+{% extends 'dashboard.html'%}
+
+{% block form1Title%}
+Edit Dispatch Details:
+{%endblock%}
+
+{% block leftMenu %}
+              <div id="left_menu">
+                    
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+{%endblock%}
+{%block form1Body%}
+<form id="add_user" method="post" action="">
+      <div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+      </ul>
+      </div>                               
+                                                                                     
+                                          <div class="section" >
+                                                <label> Magazine </label>   
+                                                <div> <input type="text" name="magazine" class="medium"  value="{{magazine}}" readonly/></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label> Issue Month </label>   
+                                                <div> <input type="text" name="issuemonth" class="medium"  value="{{issuemonth}}" readonly/></div>
+                                           </div>
+                                           <div class="section" >
+                                                <label> Issue Year </label>   
+                                                <div> <input type="text" name="issueyear" class="medium"  value="{{issueyear}}" readonly/></div>
+                                           </div>                                           
+                                           
+                                           <div class="section" >
+                                                <label> Tracking No.</label>   
+                                                <div> <input type="text" name="courierno" class="medium"  value="{{courierno}}"/></div>
+                                           </div>
+                                           <div class="section" >
+                                                <label>Courier Name</label>   
+                                                <div class="selectWidth1">
+                                                	<select class="medium" name="courier" >
+                                                	<option value="-1" selected>Select Courier</option>
+                                                	  {%for c in couriers%}
+                                                	  {% ifequal courier c.id %}
+                                                	  <option value="{{c.id}}" selected>{{c.name}}</option>
+                                                	  {% else %}
+                                                        <option value="{{c.id}}">{{c.name}}</option>
+                                                	  {% endifequal %}
+                                                	  {%empty%}
+                                                	  <option value="-1" selected> not found !</option>
+                                                	  {%endfor%}
+                                                	  
+                                                	  		
+                                                      	
+                                                      
+                                                  
+                                                   </select>       
+                                               </div>
+                                           </div> 
+                                           
+                                           <div class="section" >
+                                                <label>Dispatch Date</label>   
+                                                <div> <input type="text" name="dispatchdate" class="datepicker" style="text-align:left" value="{{dispatchdate}}" class="medium"  /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Received Date</label>   
+                                                <div> <input type="text" name="receiveddate" class="datepicker" style="text-align:left" value="{{receiveddate}}" class="medium"  /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label> Received By </label>   
+                                                <div> <input type="text" name="receivedby" class="medium"  value="{{receivedby}}"/></div>
+                                           </div>
+                                           <div class="section" >
+                                                <label> Receiver Contact </label>   
+                                                <div> <input type="text" name="receivercontact" class="medium"  value="{{receivercontact}}"/></div>
+                                           </div>
+                                            
+                                           <div class="section" >
+                                                <label> Dispatch Address 1 </label>   
+                                                <div> <input type="text" name="dispatchaddress1" class="large"  value="{{dispatchaddress1}}"/></div>
+                                           </div>
+                                           <div class="section" >
+                                                <label> Dispatch Address 2 </label>   
+                                                <div> <input type="text" name="dispatchaddress2" class="large"  value="{{dispatchaddress2}}"/></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Status <sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                	<select class="medium" name="status" >
+                                                	  	<option value="-1" selected>Select Status</option>
+                                                	  {% ifequal status "i" %}
+                                                	  	<option value="i" selected>IN PROCESS</option>
+                                                      {% else %}
+                                                        <option value="i">IN PROCESS</option>
+                                                	  {% endifequal %}
+                                                      	
+                                                      {% ifequal status "h" %}
+                                                	  	<option value="h" selected>ON HOLD</option>
+                                                      {% else %}
+                                                        <option value="h" >ON HOLD</option>
+                                                	  {% endifequal %}
+                                                      	
+                                                      {% ifequal status "d" %}
+                                                	  	<option value="d" selected>DISPATCHED</option>
+                                                      {% else %}
+                                                        <option value="d">DISPATCHED</option>
+                                                	  {% endifequal %}
+                                                      
+                                                  
+                                                   </select>       
+                                               </div>
+                                           </div> 
+                                            <div class="section last">
+                                             <div>
+                                                  <a class="btn submit_form">Save</a>
+</div>
+                                           </div>
+                                        </form>
+{%endblock%}

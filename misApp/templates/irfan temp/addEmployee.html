@@ -1,0 +1,370 @@
+{% extends 'dashboard.html'%}
+{% load staticfiles %}
+{% block leftMenu %}
+              <div id="left_menu">
+                   <ul id="main_menu" class="main_menu">
+                       {%if CUP.department.0 or cu.isAdmin%}
+                      <li ><a href="/departments/"><span class="ico gray shadow pictures_folder" ></span><b>Department</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.role.0 or cu.isAdmin %}
+                      <li ><a href="/role/list"><span class="ico gray shadow  pictures_folder"></span><b>Role</b> </a></li>
+                      {%endif%}
+                      
+                      {%if CUP.employee.0 or cu.isAdmin%}
+                      <li class="select"><a href="/user/list" ><span class="ico gray shadow pictures_folder"></span><b>User</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazine.0 or cu.isAdmin%}
+                      <li ><a href="/magazine/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.magazineC.0 or cu.isAdmin%}
+                      <li ><a href="/combo/list"><span class="ico gray shadow pictures_folder" ></span><b>Magazine Combo</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.gift.0 or cu.isAdmin%}
+                      <li ><a href="/gifts/"><span class="ico gray shadow pictures_folder" ></span><b>Gift</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.tenure.0 or cu.isAdmin%}
+                      <li ><a href="/tenures/"><span class="ico gray shadow pictures_folder" ></span><b>Tenure</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.scheme.0 or cu.isAdmin%}
+                      <li ><a href="/schemes/"><span class="ico gray shadow pictures_folder"></span><b>Scheme</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.source.0 or cu.isAdmin%}
+                      <li ><a href="/sources/"><span class="ico gray shadow pictures_folder"></span><b>Source</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.location.0 or cu.isAdmin%}
+                      <li ><a href="/locations/"><span class="ico gray shadow pictures_folder"></span><b>Location</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.courier.0 or cu.isAdmin%}
+                      <li ><a href="/couriers/"><span class="ico gray shadow pictures_folder"></span><b>Courier</b></a></li>
+                      {%endif%}
+                      
+                      {%if CUP.branch.0 or cu.isAdmin%}
+                      <li ><a href="/branch/"><span class="ico gray shadow pictures_folder" ></span><b>Branch</b></a></li>
+                      {%endif%}
+                    </ul>
+                    <div id="footer"> &copy; Copyright 2013  </div>
+              </div>
+              {%endblock%}
+
+{% block form1Title%}
+Add User:
+{%endblock%}
+
+{%block form1Body%}
+
+<script>
+
+function setPopRole(id)
+{
+
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  
+  
+  xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    
+    //alert(xmlhttp.responseText);
+    document.getElementById("idOf_popRole").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?popRole="+id,true);
+xmlhttp.send();
+}
+
+function setPopDepartment(id)
+{
+
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  
+  
+  xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    
+    //alert(xmlhttp.responseText);
+    document.getElementById("idOf_popDepartment").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?popDepartment="+id,true);
+xmlhttp.send();
+}
+
+
+
+function getState(countryId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("statediv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?country="+countryId,true);
+xmlhttp.send();
+}
+
+
+
+function getCity(stateId)
+{
+var xmlhttp;
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("citydiv").innerHTML=xmlhttp.responseText;
+    }
+  }
+xmlhttp.open("GET","/responder?state="+stateId,true);
+xmlhttp.send();
+}
+
+</script>
+<form id="add_user" method="post" action="" enctype="multipart/form-data">
+      <div style="background:lightyellow;">
+      <ul style="color:red;style:disk;">
+                	{% for e in errors %}
+                	  <li>{{e}}</li>
+                	{%endfor%}
+      </ul>
+      </div>                               
+                                           <div class="section" >
+                                                <label>Emp Id</label>   
+                                                <div class="selectWidth1">
+                                                <input type="text" name="empid" class="medium" readonly  value="{{emppre}}{{empid}}" />       
+                                               </div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label> User Name <sup>*</sup></label>   
+                                                <div> <input type="text" name="username" maxlength="25" value="{{username}}" class="large"  /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Password<sup>*</sup></label>   
+                                                <div> <input type="password" name="password" maxlength="25" value="{{password}}" class=" large"  /></div>
+                                           </div>
+                                           <div class="section" >
+                                                <label>Confirm Password<sup>*</sup></label>   
+                                                <div> <input type="password" name="cpassword" maxlength="25"  class="large" value="{{cpassword}}" /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Email ID<sup>*</sup></label>   
+                                                <div> <input type="text" name="email" maxlength="100" value="{{email}}" class=" large"  /></div>
+                                           </div>
+                                           
+                                           
+                                           <div class="section" >
+                                                <label> designation <sup>*</sup></label>   
+                                                <div> <input type="text" name="designation" value="{{designation}}" maxlength="100" class="large"  /></div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>role <sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                <table>
+                                                <tr>
+                                                <td>
+                                                
+                                                <div id="idOf_popRole">
+                                                <select class="small"  name="role">
+                                                		<option value="-1" selected  > ---- </option>
+                                                	 {%for r in roles%}
+                                                	    {%ifequal r.id role%}
+                                                		<option value="{{r.id}}" selected>{{r.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{r.id}}">{{r.name|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" selected  > NO ROLES DEFINED ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>  
+                                                </div>
+                                                
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                <td><a href="" onclick="return openURLInCenterOfScreen('/add/role');"><img src="{% static 'images/icon_addlink.gif' %}"></a></td>
+                                                </tr>       
+                                                </table>
+                                                	     
+                                                </div>
+                                           </div>
+                                         
+                                           
+                                           
+                                           <div class="section" >
+                                                <label>Department <sup>*</sup></label>   
+                                                <div class="selectWidth1">
+                                                <table>
+                                                <tr>
+                                                <td>
+                                                
+                                                <div id="idOf_popDepartment">
+                                                <select class="small"  name="department">
+                                                		<option value="-1" selected  > ---- </option>
+                                                	  {%for d in departments%}
+                                                	    {%ifequal d.id department%}
+                                                		<option value="{{d.id}}" selected>{{d.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{d.id}}">{{d.name|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" selected  > NO DEPARTMENTS DEFINED ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>  
+                                                </div>
+                                                
+                                                </td>
+                                                <td>&nbsp;&nbsp;&nbsp;&nbsp;</td>
+                                                <td><a href="" onclick="return openURLInCenterOfScreen('/add/department');"><img src="{% static 'images/icon_addlink.gif' %}"></a></td>
+                                                </tr>       
+                                                </table>
+                                                	     
+                                                </div>
+                                           </div>
+                                           
+                                           
+                                           
+                                          
+                                           
+                                           
+                                           
+                                           <div class="section" >
+                                                <label>Name</label>   
+                                                <div>
+                                                <input type="text" name="name" class="large"  value="{{name}}" />       
+                                      			</div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Mobile NO.</label>   
+                                                <div>
+                                                <input type="text" name="mobileno" class="large" placeholder="indigit" onkeypress="return isNumberKey(event)" maxlength="12"   value="{{mobileno}}" />       
+                                      			</div>
+                                           </div>
+                                           
+                                           <div class="section" >
+                                                <label>Address</label>   
+                                                <div>
+                                                <input type="text" name="address" class="large" maxlength="100"   value="{{address}}" />       
+                                      	   		</div>
+                                           </div>
+                                           
+                                           
+                                           
+                                          
+                                           	
+                                           <div class="section" >
+                                                <label>State</label>   
+                                                <div class="selectWidth1" >
+                                                	<select class="small"  name="state" onchange="getCity(this.value)">
+                                                		<option value="-1"  selected>Select State</option>
+                                                	  {%for s in states%}
+                                                	    {%ifequal state s.id%}
+                                                		<option value="{{s.id}}" selected>{{s.name|title}}</option>
+                                                		{%else%}
+                                                		<option value="{{s.id}}" >{{s.name|title}}</option>
+                                                		{%endifequal%}
+                                                      {%empty%}
+                                                         <option value="-1" > no states found ! </option>
+                                                      {%endfor%}
+                                                       	
+                                                	</select>
+                                                	
+                                                	        
+                                                </div>
+                                           </div>
+                                           <div class="section" >
+                                                <label>City </label>   
+                                                <div class="selectWidth1" id="citydiv">
+                                                	<select class="small"  name="city" >
+                                                	<option value="-1" selected>Select City</option>
+                                                	    {%for c in cities%}
+                                                	    {%ifequal city c.id%}
+                                                	    <option value="{{c.id}}" selected  >{{c.name}}</option>
+                                                	    {%else%}
+                                                	    <option value="{{c.id}}"  >{{c.name}}</option>
+                                                	    {%endifequal%}
+                                                	    {%empty%}
+                                                		<option value="-1" selected  >Select State First</option>
+                                                		{%endfor%}
+                                                	</select>       
+                                                </div>
+                                           </div>
+                                           
+                                          <div class="section">
+                                          <label> Upload photo </label>   
+                                          <div style="padding-bottom:5px;"> 
+                                              <input type="file" name="image"  />
+                                          </div>
+                                          </div>
+                                          
+                                           
+                                            
+                                           <div class="section">
+                                                <label>Active</label>   
+                                                <div class="selectWidth1">
+                                                  {%if active %}
+                                                  <input type="checkbox" name="active" value="1" checked />
+                                                  {%else%}
+                                                  <input type="checkbox" name="active" value="1" />
+                                                  {%endif%}
+                                                  
+                                                </div>
+                                           </div>
+                                          <div class="section last">
+                                             <div>
+                                                  <input type="submit" value="Save" class="btn submit_form" name="addUser"></input>
+<a class="btn" title="Reset Form" onclick="ResetForm1()">Reset</a> </div>
+                                           </div>
+                                        </form>
+{%endblock%}

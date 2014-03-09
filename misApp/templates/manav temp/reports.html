@@ -1,0 +1,125 @@
+{% extends 'dashboard.html'%}
+{% load staticfiles %}
+
+{% block form1Title%}
+View Reports 
+{%endblock%}
+
+
+
+{%block widgetContent%}
+
+<div class="widget-content">
+                                    <!-- title box -->
+                                    
+                                      <form id="add_user" method="post" action="/reports/"> 
+                                            <!--<div class="section" >
+                                                <label>Date </label>   
+                                                <div> <input type="text"  id="datepick" class="datepicker small"  name="datepicker"   style="text-align:left" /> &nbsp; <strong>To</strong> &nbsp;&nbsp;<input type="text"  id="datepick2" class="datepicker small"  name="datepicker"   style="text-align:left" /></div>
+                                           </div>-->
+                                           
+                                                                                   
+                                           
+                                                                  
+                                                       
+                              {% block fun %}
+                           
+                              {% endblock %}  
+                            </div>
+                    {% block typereport %}
+                    <!--
+                    <div class="widget  clearfix" style="margin-top:20px;">
+                                <div class="widget-header">
+                                    <span>Notification</span> 
+                                </div>
+
+                                
+                                <div class="widget-content">
+                                <div id="UITab" style="position:relative; ">
+                                         
+                                        <div style="width:100%" class="" id="scroll_area" >
+                                          <div id="tab1" class="tab_content"> 
+                                          
+          									<table class="table table-bordered table-striped"  id="" width="200%">
+                                                    <thead align="center"  class="tr_bg_list">
+                                                      <tr>
+                                                        <td width="3%">S.N.</td>
+                                                        <td width="5%">Subscription Code</td>
+                                                        <td width="11%">Subscriber Name</td>
+                                                        <td width="5%">Subscription Date</td>
+                                                        <td width="5%">Subscriber Type</td>
+                                                        
+                                                        <td width="9%">City</td>
+                                                        <td width="6%">Mobile No.</td>
+                                                        <td width="2%"></td>
+                                                        <td width="1%">Action</td>
+                                                      </tr>
+                                                    </thead>
+                                                    
+                                                    <tbody align="center" class="font_wght">
+                                                      
+                                                      {%for r in rows%}
+                                                      <tr>
+                                                        <td>{{forloop.counter}}</td>
+                                                        <td>{{prefix}}{{r.1.id}}</td>
+                                                        <td>{{r.0.firstName}}</td>
+                                                        <td>{{r.1.date}}</td>
+                                                        
+                                                        <td>{%if r.1.type == 'i'%}Individual{%else%}Group{%endif%}</td>                                                        
+                                                        <td>{%if r.0.city%}{{r.0.city}}{%else%}----{%endif%}</td>
+                                                        <td>{%if r.0.mobileNo%}{{r.0.mobileNo}}{%else%}----{%endif%}</td>
+                                                        <td>
+                                                        	<div class="checksquared">
+                                                        		<input type="checkbox" name="{{r.1.id}}" id="check-1" value="1"   checked="checked"/>
+                                                        		<label  for="check-1" title=""></label>
+                                                            </div>
+                                                        </td>
+                                                        <td><a href="/notification/email/{{r.1.id}}"><img src="{% static 'images/email.jpeg'%}" width="33" height="33" alt="email him" title="email only to him"></a></td>
+                                                      </tr>
+                                                      {%empty%}
+                                                      <tr>
+                                                          {%if month and magazine%}
+                                                          <td colspan='8'>no subscription found </td>
+                                                          {%else%}
+                                                          <td colspan='8'>please search subscriptions first</td>
+                                                          {%endif%}
+                                                      </tr>
+                                                      {%endfor%}
+                                                    </tbody>
+                                                    
+                                          </table>
+                                     
+                                     <div class="section last" align="right">
+                                      <div >
+                                      
+                                         <input type="submit" class="btn" name="whenSend" value="Send Email to All" {%if not rows%}disabled{%endif%}/>
+									     
+									  </div>
+									 </div>
+									 </form>
+									 <br>
+                                      </div>
+                                      </div>
+                                      </div>
+                                      </div>
+                                
+                            </div></div>
+ 
+
+                                 
+                              
+                                        
+                                          {% endblock %}
+                              
+                                
+                                     
+                                
+{% endblock %}
+
+
+
+
+                                  
+                                    
+                                      
+        
